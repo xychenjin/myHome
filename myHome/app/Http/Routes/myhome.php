@@ -6,3 +6,4 @@
  * Time: 13:36
  */
 Route::get('test',['uses'=>'MyHome\\IndexController@index','as'=>'myhome.index']);
+

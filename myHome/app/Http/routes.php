@@ -12,6 +12,7 @@
 */
 
 require_once 'Routes/myhome.php';
+require_once 'Routes/arrays.php';
 
 Route::get('/', function () {
     return view('welcome');
