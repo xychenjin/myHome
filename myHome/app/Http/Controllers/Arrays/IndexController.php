@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Arrays;
 
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Collection;
 
 class IndexController extends Controller
 {
@@ -43,7 +44,11 @@ class IndexController extends Controller
         $arrayMap = $this->arrayMap();      //将回调函数作用到给定数组的单元上
 //        dd($arrayMap);
         $arrayCompact = $this->arrayCompact();  //建立一个数组，包括变量名和它们的值
-        dd($arrayCompact);
+//        dd($arrayCompact);
+        $arraySortBy = $this->getSortBy();  //框架排序
+//        dd($arraySortBy);
+        $arrayMap = $this->getMap();    //框架回调函数
+        dd($arrayMap);
     }
 
     /**
@@ -232,4 +237,33 @@ class IndexController extends Controller
         return $result;
     }
 
+    /**
+     * laravel 自定义排序
+     */
+    public function getSortBy()
+    {
+        $collection = new Collection([
+            ['name'=>'pro-001','price'=>'100','num'=>'10'],
+            ['name'=>'pro-002','price'=>'10','num'=>'1'],
+            ['name'=>'pro-003','price'=>'101','num'=>'2'],
+        ]);
+        $sortBy = $collection->sortBy(function($v,$k){
+           return $v['num'];
+        });//->forPage(1,2);
+        return $sortBy;
+    }
+
+
+    public function getMap()
+    {
+        $collection = new Collection([
+            ['name'=>'pro-001','price'=>'100','num'=>'10'],
+            ['name'=>'pro-002','price'=>'10','num'=>'1'],
+            ['name'=>'pro-003','price'=>'101','num'=>'2'],
+        ]);
+        $map = $collection->map(function($v,$k){
+            return $v['num'] * 2;
+        });
+        return $collection;
+    }
 }

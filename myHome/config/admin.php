@@ -5,7 +5,7 @@ return [
     'filter' => [
         'auth' => [
             Pingpong\Admin\Middleware\Authenticate::class,
-            Pingpong\Admin\Middleware\OnlyAdmin::class
+//            Pingpong\Admin\Middleware\OnlyAdmin::class
         ],
         'guest' => Pingpong\Admin\Middleware\RedirectIfAuthenticated::class,
     ],

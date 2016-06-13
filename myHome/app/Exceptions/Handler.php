@@ -6,7 +6,13 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use ReflectionException;
+use InvalidArgumentException;
+use ErrorException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use View;
 
 class Handler extends ExceptionHandler
 {
@@ -42,10 +48,27 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
+        if ( $e instanceof NotFoundHttpException ) {
+            View::flushSections();
+            return new Response(View::make('errors.404'));
+        }elseif($e instanceof MethodNotAllowedHttpException ){
+            View::flushSections();
+            return new Response(View::make('errors.404'));
+        }elseif($e instanceof ErrorException ){
+            View::flushSections();
+            return new Response(View::make('errors.404'));
+        }elseif($e instanceof InvalidArgumentException ){
+            View::flushSections();
+            return new Response(View::make('errors.404'));
+        }elseif($e instanceof ReflectionException ){
+            View::flushSections();
+            return new Response(View::make('errors.404'));
+        }
         return parent::render($request, $e);
     }
 }
