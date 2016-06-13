@@ -15,6 +15,9 @@ class IndexController extends Controller
 {
     public function index(){
 //         $dd = (new MyHomeBls())->getIndex();
-         $dd = (new MyHomeBls())->getHanoi();
+//         $dd = (new MyHomeBls())->getHanoi();
+        $array = [1, 5, 3, 7, 4, 2, 1, 10];
+         $dd = (new MyHomeBls())->quickSort($array);
+         dd($dd);
     }
 }

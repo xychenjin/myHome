@@ -128,6 +128,28 @@ class MyHomeBls
 
     }
 
+    //快速排序算法
+    public function quickSort($arr)
+    {
+        if(count($arr) > 1 ){
+            $temp = $arr[0];
+            $left = [];
+            $right = [];
+            for($i = 1;$i < count($arr); $i++ ){
+                if($arr[$i] <= $temp ){
+                    $left[] = $arr[$i];
+                }elseif($arr[$i] > $temp ){
+                    $right[] = $arr[$i];
+                }
+            }
+            $left = $this->quickSort($left);
+            $right = $this->quickSort($right);
+            return array_merge($left, [$temp], $right);
+        }else{
+            return $arr;
+        }
+    }
+
 }
 /**
  * 二叉树遍历
