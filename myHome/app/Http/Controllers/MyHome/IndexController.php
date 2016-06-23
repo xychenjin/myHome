@@ -18,6 +18,9 @@ class IndexController extends Controller
 //         $dd = (new MyHomeBls())->getHanoi();
         $array = [1, 5, 3, 7, 4, 2, 1, 10];
          $dd = (new MyHomeBls())->quickSort($array);
-         dd($dd);
+         //dd($dd);
+        $name = '上';
+        echo $name. "\n";
+        dd($name = str_replace('市', '', $name));
     }
 }
