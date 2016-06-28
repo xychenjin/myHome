@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jim
- * Date: 2016/6/13
- * Time: 15:46
- */
 
 namespace App\Http\Controllers\Project;
-
 
 use App\Http\Controllers\Controller;
 

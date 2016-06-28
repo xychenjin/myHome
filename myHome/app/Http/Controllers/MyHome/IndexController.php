@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jim
- * Date: 2016/6/7
- * Time: 13:38
- */
 
 namespace App\Http\Controllers\MyHome;
 
@@ -19,8 +13,9 @@ class IndexController extends Controller
         $array = [1, 5, 3, 7, 4, 2, 1, 10];
          $dd = (new MyHomeBls())->quickSort($array);
          //dd($dd);
-        $name = '上';
-        echo $name. "\n";
-        dd($name = str_replace('市', '', $name));
+        $name = str_replace('市', '', '上海市');
+//        echo $name. "\n";
+        
+        return View::make('myhome.index',[]);
     }
 }
