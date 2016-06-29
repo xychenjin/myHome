@@ -53,22 +53,6 @@ class Handler extends ExceptionHandler
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
-//        if ( $e instanceof NotFoundHttpException ) {
-//            View::flushSections();
-//            return new Response(View::make('errors.404'));
-//        }elseif($e instanceof MethodNotAllowedHttpException ){
-//            View::flushSections();
-//            return new Response(View::make('errors.404'));
-//        }elseif($e instanceof ErrorException ){
-//            View::flushSections();
-//            return new Response(View::make('errors.404'));
-//        }elseif($e instanceof InvalidArgumentException ){
-//            View::flushSections();
-//            return new Response(View::make('errors.404'));
-//        }elseif($e instanceof ReflectionException ){
-//            View::flushSections();
-//            return new Response(View::make('errors.404'));
-//        }
         return parent::render($request, $e);
     }
 }

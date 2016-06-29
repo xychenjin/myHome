@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MyHome;
 
 use App\Bls\MyHome\MyHomeBls;
 use App\Http\Controllers\Controller;
+use View;
 
 class IndexController extends Controller
 {
