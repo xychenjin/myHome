@@ -9,7 +9,7 @@ use App\Bls\User\UserBls;
 class UserController extends Controller
 {
     public function index(){
-        $user = (new UserBls())->getAll();
+        $user = (new UserBls())->getAll()->toArray();
         dd($user);
     }
 }

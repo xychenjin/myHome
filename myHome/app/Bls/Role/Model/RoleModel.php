@@ -2,9 +2,9 @@
 
 namespace App\Bls\Role\Model;
 
-use Illuminate\Database\Eloquent\Model;
+use Pingpong\Admin\Entities\Role as PingpongRole;
 
-class RoleModel extends Model
+class RoleModel extends PingpongRole
 {
     //
 }
