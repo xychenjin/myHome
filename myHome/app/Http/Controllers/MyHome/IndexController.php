@@ -30,9 +30,10 @@ class IndexController extends Controller
 
         $compared = $this->compare($odd, $compare);
 
-        $myhome = $this->mh_env();
-        dd($myhome);
-        
+//        $myhome = $this->mh_env();
+//        dd($myhome);
+        phpinfo();
+        dd();
         return View::make('myhome.index',[]);
     }
 
@@ -89,8 +90,8 @@ class IndexController extends Controller
 
     public function mh_env()
     {
-        $aaa = apache_setenv('ENV','hello ,I am Env');
-        return $aaa;
+        apache_setenv('ENV','hello ,I am Env');
+        return getenv('ENV');
     }
 
 }
