@@ -15,6 +15,7 @@ require_once 'Routes/myhome.php';
 require_once 'Routes/arrays.php';
 require_once 'Routes/project.php';
 require_once 'Routes/user.php';
+require_once 'Routes/file.php';
 
 Route::get('/', function () {
     return view('welcome');
