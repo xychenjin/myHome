@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\MyHome;
 
+use App\Bls\MainBls;
 use App\Bls\MyHome\MyHomeBls;
 use App\Http\Controllers\Controller;
 use View;
@@ -35,6 +36,14 @@ class IndexController extends Controller
         phpinfo();
         dd();
         return View::make('myhome.index',[]);
+    }
+
+    public function createPwd(){
+        $createString = '123456';
+
+        $createPwd = (new MainBls())->createPWD($createString);
+
+        dd($createPwd);
     }
 
     /**
@@ -90,8 +99,9 @@ class IndexController extends Controller
 
     public function mh_env()
     {
-        apache_setenv('ENV','hello ,I am Env');
-        return getenv('ENV');
+        return null;
     }
+
+
 
 }

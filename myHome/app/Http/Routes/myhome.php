@@ -6,4 +6,5 @@
  * Time: 13:36
  */
 Route::get('test',['uses'=>'MyHome\\IndexController@index','as'=>'myhome.index']);
+Route::get('/createPwd',['uses'=>'MyHome\\IndexController@createPwd','as'=>'myhome..create.pwd']);
 
