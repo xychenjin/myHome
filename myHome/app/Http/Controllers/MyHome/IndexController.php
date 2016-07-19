@@ -6,11 +6,16 @@ use App\Bls\MainBls;
 use App\Bls\MyHome\MyHomeBls;
 use App\Http\Controllers\Controller;
 use View;
+use Carbon\Carbon;
+use DB;
+use Illuminate\Database\QueryException;
 
 class IndexController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 //         $dd = (new MyHomeBls())->getIndex();
+
 //         $dd = (new MyHomeBls())->getHanoi();
         $array = [1, 5, 3, 7, 4, 2, 1, 10];
          $dd = (new MyHomeBls())->quickSort($array);
@@ -38,7 +43,8 @@ class IndexController extends Controller
         return View::make('myhome.index',[]);
     }
 
-    public function createPwd(){
+    public function createPwd()
+    {
         $createString = '123456';
 
         $createPwd = (new MainBls())->createPWD($createString);
@@ -53,7 +59,8 @@ class IndexController extends Controller
      * @param $next
      * @return null|string
      */
-    public function compare( $prev, $next ){
+    public function compare( $prev, $next )
+    {
         if(! is_array($prev) || ! is_array($next) ){
             return null;
         }
@@ -100,8 +107,32 @@ class IndexController extends Controller
     public function mh_env()
     {
         return null;
+
+//         $dd = (new MyHomeBls())->getHanoi();
+
     }
 
+    public function test()
+    {
+        DB::connection()->enableQueryLog();
+        try{
+            DB::transaction(function(){
+                DB::connection('db_myhome')->table('users')->update(['updated_at'=>Carbon::now()]);
+                $data = ['ddd', '333gggg@qq.com',Carbon::now(),Carbon::now()];
+                $Id = DB::insert('insert into users (name, email, created_at, updated_at) values (?, ?, ?, ?)', $data);
+                $record = DB::table('users')->where('email','333gggg@qq.com');
+                print_r($record);
+            });
+        } catch (QueryException $e) {
+            echo $e->getMessage();
+        }
 
+//        $drop = DB::delete('delete from users where name=? AND email=?',['xychenjin', '123456@qq.com']);
+
+        $users = DB::table('users')->get();
+        print_r($users);
+        $log = DB::getQueryLog();
+        dd($log);
+    }
 
 }
