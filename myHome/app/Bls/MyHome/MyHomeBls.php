@@ -13,6 +13,12 @@ class MyHomeBls
 {
     public $count = 0 ;
 
+    public $total = 0;
+
+    public $file = 0;
+
+    public $dir = 0;
+
     public function getIndex()
     {
         //创建如上图所示的二叉树
@@ -151,7 +157,39 @@ class MyHomeBls
         }
     }
 
-
+    public function getAllFile($dir)
+    {
+        $scanDir = scandir($dir);
+        if( $scanDir === false ){
+            unset($scanDir);
+            return false;
+        }
+        if ( is_array($scanDir) ){
+            while(list($key, $file) = each($scanDir) ){
+                $fileName = $dir. '/' . $file;//iconv('GBK', 'UTF-8//IGNORE', $dir. '/' . $file);
+                if($file == '.'|| $file == '..'){
+                    continue;
+                }
+                elseif( is_file($fileName) ){
+                    echo '文件：'. $fileName. "\n";
+                    $this->file ++;
+                    $this->total ++;
+                    continue;
+                }elseif( is_dir($fileName) ){
+                    echo "\n目录：{$fileName}\n";
+                    $this->dir ++;
+                    $this->total ++;
+                    $this->getAllFile($fileName);
+                }else{
+                    echo '未知类型: '.$fileName."\n";
+                }
+                unset($fileName);
+            }
+            return true;
+        }
+        unset($scanDir);
+        return false;
+    }
 }
 /**
  * 二叉树遍历

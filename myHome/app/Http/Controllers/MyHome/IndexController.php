@@ -17,11 +17,11 @@ class IndexController extends Controller
 //         $dd = (new MyHomeBls())->getIndex();
 
 //         $dd = (new MyHomeBls())->getHanoi();
-        $array = [1, 5, 3, 7, 4, 2, 1, 10];
+/*        $array = [1, 5, 3, 7, 4, 2, 1, 10];
          $dd = (new MyHomeBls())->quickSort($array);
          //dd($dd);
         $name = str_replace('市', '', '上海市');
-//        echo $name. "\n";
+        echo $name. "\n";
         echo 'this is my git checkout test'."\n";
         echo 'git help'."\n";
         echo 'git show '."\n";
@@ -36,11 +36,19 @@ class IndexController extends Controller
 
         $compared = $this->compare($odd, $compare);
 
-//        $myhome = $this->mh_env();
-//        dd($myhome);
+        $myhome = $this->mh_env();
+        dd($myhome);
         phpinfo();
-        dd();
-        return View::make('myhome.index',[]);
+        dd();*/
+
+//        echo '开始时间：'.date('Y-m-d H:i:s',time())."<br/>";
+        $myHomeBls = (new MyHomeBls());
+        $myHomeBls->getAllFile('d:/webdocument/dir');
+        echo "共计：{$myHomeBls->total}，目录：{$myHomeBls->dir}，文件：{$myHomeBls->file}\n";
+//        echo '结束时间：'.date('Y-m-d H:i:s',time())."<br/>";
+
+//        dd();
+//        return View::make('myhome.index',[]);
     }
 
     public function createPwd()
