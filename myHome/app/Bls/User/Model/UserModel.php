@@ -11,6 +11,8 @@ class UserModel extends PingpongUser
 
     protected $appends = ['is_admin'];
 
+    protected $guarded = [];
+
     public function getIsAdminAttribute()
     {
         return 'yes';

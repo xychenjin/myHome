@@ -199,4 +199,5 @@ class Node {
     public $value;
     public $left;
     public $right;
+    private $num;
 }
