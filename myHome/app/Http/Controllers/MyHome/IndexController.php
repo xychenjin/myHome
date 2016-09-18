@@ -7,6 +7,8 @@ use App\Bls\MyHome\MyHomeBls;
 use App\Bls\User\Model\UserModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Router;
 use View;
 use Carbon\Carbon;
 use DB;
@@ -18,9 +20,16 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Bls\SenseBls;
+
 
 class IndexController extends Controller
 {
+    public function __construct(Router $router)
+    {
+        $this->middleware('check.login.out', ['except' => ['index', 'visit']]);
+    }
+
     public function index(Request $request)
     {
 //         $dd = (new MyHomeBls())->getIndex();
@@ -301,12 +310,69 @@ class IndexController extends Controller
 //        $hashedPassword = Hash::make('secretpassword');
 //        dd($hashedPassword);
 
-        dd(crypt('122'));
-        $check = Hash::check('secretpassword', '$2y$10$ogl4ORT0Zg7fsrxndh2lOezh4c0mO7SlZZ5kgra1i4a4v9U.PSxa.');
-        dd($check);
+//        dd(crypt('122'));
+//        $check = Hash::check('secretpassword', '$2y$10$ogl4ORT0Zg7fsrxndh2lOezh4c0mO7SlZZ5kgra1i4a4v9U.PSxa.');
+//        dd($check);
+//        $input = $request->all();
+//        if (! empty($input)) {
+//            dd($input);
+//        }
+//        $router->pattern('id', '[0-9]+');
+//
+//        dd($router);
+//
+        Validator::extend('sensitive_char', function($attribute, $value, $parameters, $validator) use($request) {
+            return $this->validateRegex($value);
+        });
+
+
+        $rules = ['name' => 'required|sensitive_char'];
+        $messages = [
+            'required' => '字符为必填',
+            'sensitive_char' => '含有敏感字符'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+//        $this->validate($request, $rules);
+        if ($validator->fails()){
+            dd($validator->errors()->all());
+        }
+        dd('validator passed!');
+        $ddd = $request->get('name');
+
+        //还可以使用str_count来进行查找
+        if ( preg_match('/^((用户名1)|(aaa))/i', $ddd)) {
+            dd('含有非法字符');
+        }
+        dd('不含有非法字符');
+
+        $aa = preg_match('/^(user)*/i', $ddd );
+        dd($aa);
 
         return View::make('myhome.index',[]);
     }
+
+    public function visit( Request $request)
+    {
+        $q = $request->get('q');
+        $qT = $request->get('q-t');
+        $senseBls = new SenseBls();
+
+        if ( ! empty($q) || ! empty($qT)) {
+            $senseBls->sense($q, 4 );
+            $info = $senseBls->getInfo();
+        }
+//        $is = is_numeric(' 12333 ');
+//        Cache::put('cache_name', '111111111', 10);
+//
+
+        return View::make('myhome.visit', [
+            'q'=> isset($q) ? $q : '' ,
+            'error'=> isset($info['contains']) ? $info['contains'] : '',
+            'error_msg'=> isset($info['resultCodeDesc']) ? $info['resultCodeDesc'] : ''
+        ]);
+    }
+
 
     public function createPwd()
     {
@@ -442,4 +508,16 @@ class IndexController extends Controller
         }
         return $picUrl;
     }
+
+    public function ajaxTest(Request $request)
+    {
+        $input = $request->all();
+
+//        dd($input);
+
+        return (new JsonResponse())->success();
+    }
+
+
+
 }
