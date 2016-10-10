@@ -89,7 +89,8 @@ class SenseBls
                     'user',
                     '用户名',
                     'aaa',
-                    '共产党'
+                    '共产党',
+                    'cad'
                 ];
             case static::TYPE_REGEX_USE_COMPLEX:
                 return [
@@ -290,7 +291,7 @@ class SenseBls
     //获取含有信息
     public function getReplace()
     {
-        return $this->getResultDesc(). ': '. $this->getResult();
+        return $this->result ?  $this->getResultDesc(). ': '. $this->getResult() : self::TYPE_REGEX_SUCCESS_DESC ;
     }
 
     public function formatMatched($matched = [])

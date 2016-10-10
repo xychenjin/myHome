@@ -128,7 +128,7 @@ class IndexController extends Controller
 //          echo url('user/profile');
 
 //        $id = "522321199203203717";
-//        dd(substr($id,-6));//截取末尾位数
+//        dd(substr($id,-6));//截取末尾位数2
 //        $ip = '210.110.11.49';
 
 //        dd(ip2long($ip));
@@ -365,14 +365,185 @@ class IndexController extends Controller
 //        $is = is_numeric(' 12333 ');
 //        Cache::put('cache_name', '111111111', 10);
 //
+//        $str  = 'dadmin123';
+//        dd(chunk_split($str, 4, '-'));
 
+//        dd(! preg_match('/^((400)|(admin)|(user)|(member)|(管理员)|(官方)|(东福)|(东方福利)|(福利)|(票师傅)|(票师付)|(弹性福利))/', $str));
+//######################## 题1 ######
+//        $str1 = null;
+//        $str2 = false;
+//        echo $str1==$str2 ? '相等' : '不相等';
+//        $str3 = '';
+//        $str4 = 0;
+//        echo $str3==$str4 ? '相等' : '不相等';
+//        $str5 = 0;
+//        $str6 = '0';
+//        echo $str5===$str6 ? '相等' : '不相等';
+//######################## 题2 ######
+//        $a1 = null;
+//        $a2 = false;
+//        $a3 = 0;
+//        $a4 = '';
+//        $a5 = '0';
+//        $a6 = 'null';
+//        $a7 = array();
+//        $a8 = array(array());
+//        echo empty($a1) ? 'true' : 'false';
+//        echo empty($a2) ? 'true' : 'false';
+//        echo empty($a3) ? 'true' : 'false';
+//        echo empty($a4) ? 'true' : 'false';
+//        echo empty($a5) ? 'true' : 'false';
+//        echo empty($a6) ? 'true' : 'false';
+//        echo empty($a7) ? 'true' : 'false';
+//        echo empty($a8) ? 'true' : 'false';
+        //true,true,true,true,true,false,true,false;
+//######################## 题3 ######
+//        $test = 'aaaaaa';
+//        $abc = & $test;
+//        unset($test);
+//        echo $abc;
+        // aaaaaa
+#       题4
+//        $count = 5;
+//        function get_count(){
+//            static $count = 0;
+//            return $count++;
+//        }
+//        echo $count;//5
+//        ++$count;   //6
+//        echo get_count();   //0
+//        echo get_count();   //1
+
+#       题5
+#
+//        $GLOBALS['var1'] = 5;
+//        $var2 = 1;
+//        function get_value(){
+//            global $var2;
+//            $var1 = 0;
+//            return $var2++;
+//        }
+//        get_value();
+//        echo $var1;     //undefined
+//        echo $var2;     //1
+        //throw new exception, 1
+#       题6
+//        function get_arr($arr){
+//            unset($arr[0]);
+//        }
+//        $arr1 = array(1, 2);
+//        $arr2 = array(1, 2);
+////        get_arr(&$arr1);
+//        get_arr($arr2);
+//        echo count($arr1);  //2
+//        echo count($arr2);  //2
+        //2
+//        7. 使用五种以上方式获取一个文件的扩展名
+//要求：dir/upload.image.jpg，找出 .jpg 或者 jpg ，
+//必须使用PHP自带的处理函数进行处理，方法不能明显重复，可以封装成函数，比如 get_ext1($file_name), get_ext2($file_name)
+//        $fileName = public_path('favicon.ico');
+//
+//        $extension = $this->getExtension($fileName) ;
+//        dd($extension);
+
+/*
+ *         二、算法题
+1. 使用PHP描述冒泡排序和快速排序算法，对象可以是一个数组
+2. 使用PHP描述顺序查找和二分查找（也叫做折半查找）算法，顺序查找必须考虑效率，对象可以是一个有序数组
+3. 写一个二维数组排序算法函数，能够具有通用性，可以调用php内置函数
+*/
+
+//        $ad = $this->quickSort([1, 4, 2, 4, 6, 9]);
+        $ad = $this->bubbleSort([1, 4, 2, 4, 6, 9]);
+        dd($ad);
         return View::make('myhome.visit', [
             'q'=> isset($q) ? $q : '' ,
-            'error'=> isset($info['contains']) ? $info['contains'] : '',
+            'error'=> isset($info['replace']) ? $info['replace'] : '',
             'error_msg'=> isset($info['resultCodeDesc']) ? $info['resultCodeDesc'] : ''
         ]);
     }
 
+    //快速排序
+    public function quickSort($arr)
+    {
+        if ( empty($arr) ) {
+            return $arr;
+        }
+
+        if (! is_array($arr)) {
+            $arr = str_split($arr);
+        }
+
+        if ( count($arr) == 1) {
+            return $arr;
+        }
+
+        $start = $arr[0];
+        $shortArr = [];
+        $lengthArr = [];
+        for($i= 1; $i < count($arr); $i++) {
+            if ( $start < $arr[$i]) {
+                array_push($lengthArr, $arr[$i]);
+            }else{
+                array_push($shortArr, $arr[$i]);
+            }
+        }
+        $newShortArr = $this->quickSort($shortArr);
+        $newLengthArr = $this->quickSort($lengthArr);
+        return array_merge($newShortArr, [$start], $newLengthArr);
+    }
+
+    //冒泡排序
+    public function bubbleSort($arr)
+    {
+        if ( empty($arr)) return $arr;
+
+        if ( ! is_array($arr)) {
+            $arr = str_split($arr);
+        }
+
+        if (count($arr) == 1) {
+            return $arr;
+        }
+
+        for ($i = 0; $i < count($arr)-1; $i++) {
+            $temp = $arr[$i];
+            if ($temp > $arr[$i + 1]) {
+                $arr[$i] = $arr[$i + 1];
+                $arr[$i + 1] = $temp;
+            }
+        }
+
+        return $arr;
+    }
+
+    //顺序查找
+    public function orderSearch($array, $search)
+    {
+        if ( empty($array) || empty($search))return false;
+
+        if ( count($array) == 1) {
+            return $array[0] == $search;
+        }
+
+        if (! is_array($array) ) {
+            $array = str_split($array);
+        }
+
+        foreach ($array as $key => $value) {
+            if ( $value == $search) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //折半查找
+    public function binarySearch($array, $search)
+    {
+
+    }
 
     public function createPwd()
     {
@@ -381,6 +552,19 @@ class IndexController extends Controller
         $createPwd = (new MainBls())->createPWD($createString);
 
         dd($createPwd);
+    }
+
+    public function getExtension($fileName)
+    {
+        if (is_file($fileName)){
+//            return substr($fileName, strrpos($fileName, '.') +1);
+//            $aa =explode('.', $fileName);
+//                return end($aa);
+                return pathinfo($fileName, PATHINFO_EXTENSION);
+//                return pathinfo($fileName)['extension'];
+//                return substr(strrchr($fileName, '.'), 1);
+        }
+        return '';
     }
 
     /**

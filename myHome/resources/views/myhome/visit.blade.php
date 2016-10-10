@@ -11,7 +11,8 @@
 <!doctype>
 <html>
     <head>
-        <title>visit page</title>
+        <title>验证-非法关键字</title>
+        <meta charset="utf-8" />
         <style>
             .text-center{margin: 0 auto;padding: 200px 450px;}
             input[name=q]{height: 44px;width: 320px;padding: 12px 8px;}
