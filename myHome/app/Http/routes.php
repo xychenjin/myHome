@@ -19,6 +19,9 @@ require_once 'Routes/file.php';
 require_once 'Routes/httpCode.php';
 require_once 'Routes/index.php';
 require_once 'Routes/design.php';
+require_once 'Routes/designDemo.php';
+require_once 'Routes/test.php';
+require_once 'Routes/preg.php';
 
 Route::get('/', function () {
     return view('welcome');

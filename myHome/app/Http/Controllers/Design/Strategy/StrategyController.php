@@ -29,4 +29,5 @@ class StrategyController extends Controller
         $f2 = $ul->find( new RandomStrategy() );
         print_r( $f2 );
     }
+
 }
