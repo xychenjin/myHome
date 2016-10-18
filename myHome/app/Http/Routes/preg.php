@@ -9,4 +9,8 @@ Route::group(['prefix' => 'preg'], function(){
 
     Route::get('/test', ['uses'=> 'Preg\\PregController@preg', 'as'=>'preg.test']);
 
+    Route::get('/searchKey', ['uses'=> 'Preg\\PregController@searchKey', 'as'=>'preg.searchKey']);
+
+    Route::get('/getImg', ['uses'=> 'Preg\\PregController@getImg', 'as'=>'preg.getImg']);
+
 });
