@@ -13,4 +13,6 @@ Route::group(['prefix' => 'preg'], function(){
 
     Route::get('/getImg', ['uses'=> 'Preg\\PregController@getImg', 'as'=>'preg.getImg']);
 
+    Route::get('/export', ['uses'=> 'Preg\\PregController@export', 'as'=>'preg.export']);
+
 });

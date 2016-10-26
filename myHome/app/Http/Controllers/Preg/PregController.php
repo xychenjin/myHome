@@ -64,4 +64,15 @@ class PregController extends Controller
         }
     }
 
+    public function export()
+    {
+        $url = "http://blog.csdn.net/hectorhua/article/details/13767361";
+
+        $file = @file_get_contents($url);
+
+        preg_match_all('/(?<=\<div\>)[^<,^>](?=\</div\>)/i', $file, $matches);
+
+        dd($matches);
+    }
+
 }

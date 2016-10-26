@@ -22,6 +22,8 @@ require_once 'Routes/design.php';
 require_once 'Routes/designDemo.php';
 require_once 'Routes/test.php';
 require_once 'Routes/preg.php';
+require_once 'Routes/keyConsts.php';
+require_once 'Routes/map.php';
 
 Route::get('/', function () {
     return view('welcome');

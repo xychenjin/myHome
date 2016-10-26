@@ -18,4 +18,9 @@ Route::group(['prefix'=>'/test'], function(){
 
 
     Route::get('/getShow', ['uses'=>'Test\\TestController@getShow', 'as'=>'test.getShow']);//获取场次JSON
+
+    Route::get('/doWhere', ['uses' =>'Test\\TestController@doWhere', 'as'=>'test.doWhere']);//do while循环
+
+    Route::get('/doSwitch', ['uses' =>'Test\\TestController@doSwitch', 'as'=>'test.doSwitch']);//do while + switch循环
+
 });

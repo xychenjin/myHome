@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Test;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TestController extends Controller
@@ -165,5 +166,87 @@ class TestController extends Controller
         dd($arr);
     }
 
+    public function doWhere()
+    {
+        $i = 0;
+        $array = [];
+        do{
+            $i++;
+            $rand = rand(1,99999999);
 
+            echo "The number is $i, ". $rand. "<br/>";
+            $array[$i] = $rand;
+        }
+        while( $i < 25);
+        print_r($array);
+    }
+
+    public function doSwitch()
+    {
+        try {
+            $inputs = Input::all();
+
+            $currentFloor = $inputs['currentFloor'] ? intval($inputs['currentFloor']) : 1;  //当前层
+            $stopOn = $inputs['stopOn'] ? intval($inputs['stopOn']) : 10;    //要去第几层
+            $floors = $inputs['floors'] ? intval($inputs['floors']) : 20;//总楼层
+            $directUp = $inputs['directUp'] && $inputs['directUp'] > 0 ? true : false;//方向：上、下
+
+            do {
+                $haiyou =  abs($currentFloor - $stopOn);
+
+                //假设要去的楼层不停站
+                if ( isset($floors[$stopOn]['nonStop']) && $floors[$stopOn]['nonStop']) {
+                    echo "第{$stopOn}层, 不停站！<br/>";
+                    break;
+                }
+
+                if ( $directUp && $currentFloor == $floors) {
+                    echo "我们已经在最高层, 上不去了！<br/>";
+                    break;
+                }
+
+                if (! $directUp && $currentFloor == 1) {
+                    echo "我们已经在最底层, 下不去了！<br/>";
+                    break;
+                }
+
+                if ($currentFloor > $floors || $currentFloor < 1 ) {
+                    throw new \Exception('参数错误！currentFloor = '. $currentFloor);
+                    break;
+                }
+
+                $daole = $this->callStop($currentFloor, $stopOn);
+
+                if ($daole) {
+                    echo "我们现在在第{$currentFloor}层, 到了！";
+                } else
+                    echo "我们现在在第{$currentFloor}层, 还有:". $haiyou ."站<br/>";
+
+                if ($directUp) {
+                    $currentFloor ++;
+                }else
+                    $currentFloor --;
+            }
+                while(! $daole );
+
+        } catch (\Exception $e) {
+            echo "出错了！".$e->getMessage()." at line ". $e->getLine();
+        }
+
+    }
+
+    /**
+     * @param $currentFloor int 当前楼层
+     * @param $stopOn  int 要去的楼层
+     * @return bool
+     */
+    public function callStop($currentFloor , $stopOn)
+    {
+        //假设要去的楼层是当前楼层
+        if ($currentFloor == $stopOn ) {
+            return true;
+        }
+
+        return false;
+    }
 }
