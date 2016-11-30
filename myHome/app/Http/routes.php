@@ -24,6 +24,8 @@ require_once 'Routes/test.php';
 require_once 'Routes/preg.php';
 require_once 'Routes/keyConsts.php';
 require_once 'Routes/map.php';
+require_once 'Routes/json.php';
+require_once 'Routes/codeBeautify.php';
 
 Route::get('/', function () {
     return view('welcome');

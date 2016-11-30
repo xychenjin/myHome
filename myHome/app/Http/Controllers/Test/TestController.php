@@ -249,4 +249,15 @@ class TestController extends Controller
 
         return false;
     }
+
+    public function test()
+    {
+
+        $file = file_get_contents('file:///D:/webdocument/testJson/seats201611281124.json');
+
+        dd(json_decode($file, true));
+
+    }
+
+
 }
