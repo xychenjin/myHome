@@ -92,7 +92,6 @@ class DownloadController extends Controller
     public function getDb(Request $request)
     {
         $jsonResponse = new JsonResponse();
-
         if (empty($request->hostName) || empty($request->userName)) {
             return $jsonResponse->error(1000001);
         }

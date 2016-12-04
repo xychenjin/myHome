@@ -33,6 +33,7 @@ class ConnectBls
             $dsn = "mysql:host=". $hostName. ($port ? ';port='.$port.';':'') . ($database ? ';dbname='. $database : '');
             $pdo = new \PDO($dsn, $userName, $password);
             $pdo->exec('set names utf8');
+
             $con = new Connection($pdo, $database ? $database : '');
 
             $this->connection = $con ? $con : null;

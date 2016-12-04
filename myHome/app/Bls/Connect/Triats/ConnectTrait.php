@@ -16,6 +16,7 @@ trait ConnectTrait {
         foreach ($dbLists as $db) {
             $checkbox .= '<div class="col-md-2">';
             $checkbox .= Form::checkbox('dbName[]', $db->Database, false, ['class' => 'db_'.$db->Database , 'id'=> $db->Database]);
+
             $checkbox .= Form::label($db->Database, $db->Database, array('class' => ''));
             $checkbox .= '</div>';
         }
@@ -44,5 +45,6 @@ trait ConnectTrait {
         $tableList .= '</div>';
         return $tableList;
     }
+
 }
 

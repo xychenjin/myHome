@@ -14,9 +14,13 @@
 @section("content")
     <div class="container">
 
+<<<<<<< HEAD
         <div class="line">
             {!! $errors->first('error', '<div class="text-danger">:message</div>') !!}
         </div>
+=======
+        <div class="line"></div>
+>>>>>>> 44e6e3423b392ef5459e1a3cff4ee49949a7c4ec
         {!! Form::open(['route' => 'download.dbDown', 'method' => 'put']) !!}
         <div class="form-horizontal">
             <div class="form-group">
@@ -144,6 +148,7 @@
 
             $.ajax({
                 url:"{{ route('download.getDb') }}",
+
                 dataType:"json",
                 method:"post",
                 data:data,
@@ -252,5 +257,6 @@
             alert(e.message);
         }
     }
+
 </script>
 @endsection
