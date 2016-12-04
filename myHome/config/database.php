@@ -52,12 +52,24 @@ return [
             'prefix'   => '',
         ],
 
-        'db_myhome' => [
+        'mysql' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', 'localhost'),
+            'database'  => env('DB_DATABASE', 'db_first'),
+            'username'  => env('DB_USERNAME', 'jimm'),
+            'password'  => env('DB_PASSWORD', '123456s'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
+        'db_first' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST_HOME', '127.0.0.1'),
-            'database'  => env('DB_DATABASE_HOME', 'db_myhome'),
-            'username'  => env('DB_USERNAME_HOME', 'xychenjin'),
-            'password'  => env('DB_PASSWORD_HOME', 'xychenjin123456'),
+            'database'  => env('DB_DATABASE_HOME', 'db_first'),
+            'username'  => env('DB_USERNAME_HOME', 'jimm'),
+            'password'  => env('DB_PASSWORD_HOME', '123456'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

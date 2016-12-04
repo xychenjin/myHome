@@ -9,7 +9,11 @@
 namespace App\Bls\Download;
 
 
-class IDownload
+interface IDownload
 {
+    //追加数据
+    public function append($data);
 
+    //导出数据
+    public function export();
 }

@@ -6,10 +6,22 @@
  * Time: 下午 6:59
  */
 
-namespace App\Bls\Download;
+namespace App\Bls\Download\Type;
 
-
-class JsonType
+class Json
 {
+    public function __construct($dir = '', $file = '')
+    {
 
+    }
+
+    public function append($data)
+    {
+        dd($data);
+    }
+
+    public function export()
+    {
+
+    }
 }

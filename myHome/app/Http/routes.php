@@ -32,3 +32,5 @@ require_once 'Routes/download.php';
 Route::get('/', function () {
     return view('welcome');
 });
+
+

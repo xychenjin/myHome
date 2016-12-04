@@ -6,10 +6,22 @@
  * Time: 下午 7:00
  */
 
-namespace App\Bls\Download;
+namespace App\Bls\Download\Type;
 
-
-class CsvType
+class Csv
 {
+    public function __construct($dir = '', $file = '')
+    {
 
+    }
+
+    public function append($data)
+    {
+
+    }
+
+    public function export()
+    {
+
+    }
 }
