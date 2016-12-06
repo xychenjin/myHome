@@ -6,8 +6,11 @@
  * Time: 16:06
  */
 return [
-    'information_schema',
-    'mysql',
-    'performance_schema',
-    'test'
+    //系统数据库
+    'sysDb' => [
+        'information_schema',
+        'mysql',
+        'performance_schema',
+        'test'
+    ]
 ];

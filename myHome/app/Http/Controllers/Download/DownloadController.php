@@ -23,16 +23,21 @@ class DownloadController extends Controller
 {
     use ConnectTrait;
 
-    public function db()
+    public function db(Request $request)
     {
-        return View::make('Test.download', []);
+        if(strpos(php_uname(),"Windows") !== false) {
+            $path = "C:\Users\administrator\Desktop";
+        }
+
+        return View::make('Test.download', compact('path'));
     }
 
     public function dbDown(Request $request)
     {
         $jsonResponse = new JsonResponse();
-        if (empty($request->hostName) || empty($request->userName) || empty($request->dbName)
-            || empty($request->tbName)
+
+        if (empty($request->hostName) || empty($request->userName)
+            || empty($request->tbName) || empty($request->type)
         ) {
             return $jsonResponse->error(1000001);
         }
@@ -50,13 +55,19 @@ class DownloadController extends Controller
         }
 
         try {
+
             $download = new Download($request->type, isset($request->dir) ? $request->dir : '');
-            dd($download);
+
             foreach ($request->tbName as $item => $tb) {
+                $desc = $connection->select('show create table tb=?', [$tb]);
+                $download->append($desc);
+
                 $res = $connection->select('select * from tb=?', [$tb]);
                 $download->append($res);
             }
+
             $download->export();
+
             return redirect()->back();
         } catch (\Exception $e) {
             dd($e->getMessage());

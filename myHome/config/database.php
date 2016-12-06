@@ -64,10 +64,10 @@ return [
             'strict'    => false,
         ],
 
-        'db_first' => [
+        'db_myhome' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST_HOME', '127.0.0.1'),
-            'database'  => env('DB_DATABASE_HOME', 'db_first'),
+            'database'  => env('DB_DATABASE_HOME', 'db_myhome'),
             'username'  => env('DB_USERNAME_HOME', 'jimm'),
             'password'  => env('DB_PASSWORD_HOME', '123456'),
             'charset'   => 'utf8',

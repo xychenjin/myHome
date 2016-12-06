@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>@yield('title', '测试')</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="{{ staticUrl('js/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
+    <link href="{{ staticUrl('css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- bootstrap.js below is only needed if you wish to the feature of viewing details
          of text file preview via modal dialog -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="{{ staticUrl('js/bootstrap.min.js') }}" type="text/javascript"></script>
     @yield('style')
 </head>
 <body class="skin-blue fixed">

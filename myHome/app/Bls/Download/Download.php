@@ -38,19 +38,20 @@ class Download implements IDownload
     private function choose($type, $dir)
     {
         $type = strtolower($type);
+
         switch ($type) {
             case 'json':
                 $this->obj = new Json($dir);
-                break;
+                return;
             case 'csv':
                 $this->obj = new Csv($dir);
-                break;
+                return;
             case 'sql':
                 $this->obj = new Sql($dir);
-                break;
+                return;
             case 'txt':
                 $this->obj = new Txt($dir);
-                break;
+                return;
         }
 
         throw new \Exception('未知类型');

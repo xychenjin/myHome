@@ -14,13 +14,10 @@
 @section("content")
     <div class="container">
 
-<<<<<<< HEAD
         <div class="line">
             {!! $errors->first('error', '<div class="text-danger">:message</div>') !!}
         </div>
-=======
-        <div class="line"></div>
->>>>>>> 44e6e3423b392ef5459e1a3cff4ee49949a7c4ec
+
         {!! Form::open(['route' => 'download.dbDown', 'method' => 'put']) !!}
         <div class="form-horizontal">
             <div class="form-group">
@@ -67,18 +64,11 @@
                 <div class="col-sm-10" id="tb-list"></div>
             </div>
 
-            {{--<div class="form-group">--}}
-                {{--<label class="col-sm-2 control-label">&nbsp;</label>--}}
-                {{--<div class="col-sm-10">--}}
-                    {{--{!! Form::button('获取列表', ['class'=>'btn btn-default', 'id'=>'getDb'])!!}--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
             <div class="form-group">
                 <label class="col-sm-2 control-label">存放目录：</label>
                 <div class="col-sm-10">
-                    {!! Form::text('path', '', ['class'=>'form-control', 'size'=>100, 'id'=>'path']) !!}
-                    {!! Form::button('选择目录', ['class'=>'btn btn-default', 'id'=>'getDb', 'onclick' => "browseFolder('path')"])!!}
+                    {!! Form::text('path', $path ? $path : '', ['class'=>'form-control', 'size'=>100, 'id'=>'path']) !!}
+                    {{--{!! Form::button('选择目录', ['class'=>'btn btn-default', 'id'=>'getDb', 'onclick' => "browseFolder('path')"])!!}--}}
                 </div>
             </div>
 
@@ -224,38 +214,6 @@
                 $(obj).html('取消');
             }
         });
-    }
-
-    function browseFolder(path) {
-        try {
-            var Message = "\u8bf7\u9009\u62e9\u6587\u4ef6\u5939"; //选择框提示信息
-
-            var xmlHttp;
-
-            //判断浏览器是否支持ActiveX控件
-            if(window.ActiveXObject){
-                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            else if(window.XMLHttpRequest){
-                xmlHttp = new XMLHttpRequest()
-            }
-
-            var Folder = xmlHttp.BrowseForFolder(0, Message, 64, 17); //起始目录为：我的电脑
-            //var Folder = Shell.BrowseForFolder(0, Message, 0); //起始目录为：桌面
-            if (Folder != null) {
-                Folder = Folder.items(); // 返回 FolderItems 对象
-                Folder = Folder.item(); // 返回 Folderitem 对象
-                Folder = Folder.Path; // 返回路径
-                if (Folder.charAt(Folder.length - 1) != "\\") {
-                    Folder = Folder + "\\";
-                }
-                document.getElementById(path).value = Folder;
-                return Folder;
-            }
-        }
-        catch (e) {
-            alert(e.message);
-        }
     }
 
 </script>
