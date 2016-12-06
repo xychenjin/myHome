@@ -11,8 +11,11 @@ namespace App\Bls\Download;
 
 interface IDownload
 {
-    //追加数据
-    public function append($data);
+    //添加数据
+    public function with($data);
+
+    //追加数据到文档中
+    public function append();
 
     //导出数据
     public function export();

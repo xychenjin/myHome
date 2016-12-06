@@ -17,4 +17,8 @@ Route::group(['prefix'=>'/download'], function() {
 
     Route::post('/getDb', ['uses' => 'Download\\DownloadController@getDb', 'as' => 'download.getDb']);
     Route::post('/getTb', ['uses' => 'Download\\DownloadController@getTb', 'as' => 'download.getTb']);
+
+    //导出成功
+    Route::get('/success', ['uses' => 'Download\\DownloadController@success', 'as' => 'download.success']);
+
 });

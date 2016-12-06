@@ -16,7 +16,9 @@ use App\Consts\Connect\ConnectConst;
 use App\Http\Controllers\Controller;
 use App\Library\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use View;
 
 class DownloadController extends Controller
@@ -26,10 +28,12 @@ class DownloadController extends Controller
     public function db(Request $request)
     {
         if(strpos(php_uname(),"Windows") !== false) {
-            $path = "C:\Users\administrator\Desktop";
+            //默认存放路径
+            $path = "";
         }
-
-        return View::make('Test.download', compact('path'));
+            //限制导出条数
+            $limit = 0;
+        return View::make('download.index', compact('path', 'limit'));
     }
 
     public function dbDown(Request $request)
@@ -37,7 +41,7 @@ class DownloadController extends Controller
         $jsonResponse = new JsonResponse();
 
         if (empty($request->hostName) || empty($request->userName)
-            || empty($request->tbName) || empty($request->type)
+            || empty($request->tbName) || empty($request->fileType)
         ) {
             return $jsonResponse->error(1000001);
         }
@@ -56,24 +60,38 @@ class DownloadController extends Controller
 
         try {
 
-            $download = new Download($request->type, isset($request->dir) ? $request->dir : '');
+            $download = new Download($request->fileType, isset($request->path) ? $request->path : '');
 
             foreach ($request->tbName as $item => $tb) {
-                $desc = $connection->select('show create table tb=?', [$tb]);
-                $download->append($desc);
+                try {
+                    //是否需要导出表结构
+                    if ($request->structure) {
+                        $desc = $connection->select('show create table '. $tb);
+                        $download->with($desc);
+                    }
 
-                $res = $connection->select('select * from tb=?', [$tb]);
-                $download->append($res);
+                    //导出的结果集拼接
+                    $query = $this->getQueries($tb, $request->all());
+                    $res = $connection->select($query);
+                    $download->with($res);
+
+                    $download->append();
+                } catch (\Exception $e) {
+                    dd($e->getMessage());
+                }
             }
-
-            $download->export();
-
-            return redirect()->back();
+            return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5()]));
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return redirect()->back()->withInput($request->all())
                 ->withErrors($e->getMessage());
         }
+    }
+
+    public function success(Request $request)
+    {
+        $file = (new Download($request->type))->getStorage($request->md5);
+
+        return View::make('download.success', ['file' => $file]);
     }
 
     public function testConnect(Request $request)

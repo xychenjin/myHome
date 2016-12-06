@@ -61,7 +61,7 @@ trait ConnectTrait {
         }
 
         foreach ($tbLists as $tb) {
-            $tableList .= '<div class="col-md-3" >';
+            $tableList .= '<div class="col-md-3 success" >';
             $tableList .= Form::checkbox('tbName[]', $db.'.'.$tb->table_name, false, ['class' => 'db_'.$tb->table_name , 'id'=> $db.'.'.$tb->table_name]);
             $tableList .= Form::label($db.'.'.$tb->table_name, $tb->table_name, array('class' => ''));
             $tableList .= '</div>';
@@ -69,6 +69,27 @@ trait ConnectTrait {
         $tableList .= '</div>';
         $tableList .= '</div>';
         return $tableList;
+    }
+
+    /**
+     * 组装查询语句
+     *
+     * @param $request
+     * @return string
+     */
+    private function getQueries($tb, $request)
+    {
+        $query = 'select * from '. $tb;
+
+        if (isset($request['sort']) && ! empty($request['sort']) ) {
+            $query .= " sort by ". (strtr($request['sort'], '-_', ' ,'));
+        }
+
+        if (isset($request['limit']) && ! empty($request['limit']) ) {
+            $query .= " limit 0,{$request['limit']}";
+        }
+
+        return $query;
     }
 
 }

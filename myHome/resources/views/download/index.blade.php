@@ -73,12 +73,53 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">导出类型：</label>
+                <label class="col-sm-2 control-label">导出文件类型：</label>
                 <div class="col-sm-10">
-                    {!! Form::select('type', ['json'=>'.json', 'sql'=>'.sql', 'txt'=>'.txt', 'csv'=>'.csv'],null
+                    {!! Form::select('fileType', ['json'=>'.json', 'sql'=>'.sql', 'txt'=>'.txt', 'csv'=>'.csv'],null
                         , ['class'=>'form-control']) !!}
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">导出表结构：</label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        {!! Form::radio('structure', '1', true, array('class' => 'col-sm-1 ', 'id'=> 'need-yes')) !!}
+                        <label class="col-sm-2 " for="need-yes">需要</label>
+                    </div>
+                    <div class="row">
+                        {!! Form::radio('structure', '0', false, array('class' => 'col-sm-1 ', 'id'=> 'need-no')) !!}
+                        <label class="col-sm-2 " for="need-no">不需要</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">导出结果：</label>
+                <div class="col-sm-10">
+                    {!! Form::select('dataType', ['create'=>'表插入型(INSERT)', 'select'=>'仅结果集'], null, ['class'=>'form-control']) !!}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">条数限制：（默认不限制）</label>
+                <div class="col-sm-10">
+                    {!! Form::text('limit', $limit ? $limit : '0', ['class'=>'form-control', 'size'=>100, 'id'=>'limit']) !!}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序规则：</label>
+                <div class="col-sm-10">
+                    {!! Form::select('sort', [ 'id-asc'=>'ID顺序', 'id-desc'=>'ID倒序',
+                                                'updated-asc'=>'更新时间顺序', 'updated-desc'=>'更新时间顺序',
+                                                'id-asc_updated-asc'=>'ID,更新时间顺序', 'id-desc_updated-desc'=>'ID,更新时间倒序',
+                                                'id-asc_updated-desc'=>'ID顺序,更新时间倒序', 'id-desc_updated-asc'=>'ID顺序,更新时间倒序'
+                                               ], 'id-desc'
+                        , ['class'=>'form-control']) !!}
+                </div>
+            </div>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label">&nbsp;</label>
                 <div class="col-sm-10">

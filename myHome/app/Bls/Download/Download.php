@@ -16,44 +16,88 @@ use App\Bls\Download\Type\Txt;
 class Download implements IDownload
 {
     protected $obj = null;
+    
+    protected $path = '';
 
-    protected $file = '';
-    protected $dir = '';
-
-    public function __construct($type, $dir = '')
+    public function __construct($type = '', $path = '')
     {
-        $this->choose($type, $dir);
+        $this->choose($type, $path);
     }
 
-    public function append($data)
+    public function prepare()
     {
-        return $this->obj->append($data);
+
     }
 
+    public function with($data)
+    {
+        return $this->obj->with($data);
+    }
+    /**
+     * 追加至文件中
+     * @param $data
+     * @return mixed
+     */
+    public function append()
+    {
+        return $this->obj->append();
+    }
+
+    /**
+     * 导出文件夹
+     *
+     * @return mixed
+     */
     public function export()
     {
         return $this->obj->export();
     }
 
-    private function choose($type, $dir)
+    /**
+     * 获取加密后的文件对应的路径
+     *
+     * @return mixed
+     */
+    public function getMd5()
+    {
+        return $this->obj->getMd5();
+    }
+
+    /**
+     * 获取文件存储位置
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function getStorage($key)
+    {
+        return $this->obj->getStorage($key);
+    }
+
+    /**
+     * 自定义选择工厂类
+     *
+     * @param $type
+     * @param $path
+     * @throws \Exception
+     */
+    private function choose($type, $path)
     {
         $type = strtolower($type);
-
         switch ($type) {
             case 'json':
-                $this->obj = new Json($dir);
+                $this->obj = new Json($path);
                 return;
             case 'csv':
-                $this->obj = new Csv($dir);
+                $this->obj = new Csv($path);
                 return;
             case 'sql':
-                $this->obj = new Sql($dir);
+                $this->obj = new Sql($path);
                 return;
             case 'txt':
-                $this->obj = new Txt($dir);
+                $this->obj = new Txt($path);
                 return;
         }
-
-        throw new \Exception('未知类型');
+        throw new \Exception('未知导出文件类型');
     }
 }
