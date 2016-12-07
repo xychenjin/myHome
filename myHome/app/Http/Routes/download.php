@@ -20,5 +20,10 @@ Route::group(['prefix'=>'/download'], function() {
 
     //导出成功
     Route::get('/success', ['uses' => 'Download\\DownloadController@success', 'as' => 'download.success']);
+    //key查看
+    Route::get('/key/detail', ['uses' => 'Download\\DownloadController@keyDetail', 'as' => 'download.keyDetail']);
+    //日志查看
+    Route::get('/logs', ['uses' => 'Download\\DownloadController@logs', 'as' => 'logs']);
+    Route::get('/log/view', ['uses' => 'Download\\DownloadController@view', 'as' => 'log.view']);
 
 });

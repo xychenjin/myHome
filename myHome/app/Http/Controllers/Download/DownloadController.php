@@ -38,12 +38,12 @@ class DownloadController extends Controller
 
     public function dbDown(Request $request)
     {
-        $jsonResponse = new JsonResponse();
 
         if (empty($request->hostName) || empty($request->userName)
             || empty($request->tbName) || empty($request->fileType)
         ) {
-            return $jsonResponse->error(1000001);
+            return redirect()->back()->withInput($request->all())
+                ->withErrors(1000001);
         }
 
         try {
@@ -51,16 +51,27 @@ class DownloadController extends Controller
                 '' , isset($request->hostPort) ? $request->hostPort : null);
         } catch (\Exception $e) {
             $message = ConnectConst::getType($e->getMessage()) ;
-            return $jsonResponse->error(1000002, $message);
+            return redirect()->back()->withInput($request->all())
+                ->withErrors($message);
         }
 
         if (! $connection) {
-            return $jsonResponse->error(1000002);
+            return redirect()->back()->withInput($request->all())
+                ->withErrors(1000002);
         }
 
         try {
 
             $download = new Download($request->fileType, isset($request->path) ? $request->path : '');
+
+            //打印调用参数信息
+            $download->with([
+                'Timestamp' => 'Created_at: '. date("Y-m-d H:i:s"),
+                'url' => $request->url(),
+                'Queries' => $request->all(),
+            ]);
+
+            $download->with("---------------------------------------------------------------------");
 
             foreach ($request->tbName as $item => $tb) {
                 try {
@@ -68,18 +79,21 @@ class DownloadController extends Controller
                     if ($request->structure) {
                         $desc = $connection->select('show create table '. $tb);
                         $download->with($desc);
+                        $download->with("---------------------------------------------------------------------");
                     }
 
                     //导出的结果集拼接
-                    $query = $this->getQueries($tb, $request->all());
+                    $query = $this->getQueries($connection, $tb, $request->all());
+
                     $res = $connection->select($query);
                     $download->with($res);
 
-                    $download->append();
                 } catch (\Exception $e) {
-                    dd($e->getMessage());
+                    $download->with($e->getMessage());
                 }
             }
+            $download->append();
+
             return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5()]));
         } catch (\Exception $e) {
             return redirect()->back()->withInput($request->all())
@@ -89,9 +103,28 @@ class DownloadController extends Controller
 
     public function success(Request $request)
     {
-        $file = (new Download($request->type))->getStorage($request->md5);
+        $bls = new Download($request->type);
+        $file = $bls->getStorage($request->md5);
+        $jsonFile = $bls->getLocal();
+        $path = strtr(public_path(). '/'. $bls->getStorageDir(), '\\', '/');
 
-        return View::make('download.success', ['file' => $file]);
+        $files = [];
+        scanMyDir($path, $files, $path, '');
+        array_pop($files);
+        $storagePath = ltrim(getHost(),'/'). '/'. $bls->getStorageDir();
+
+        return View::make('download.success', compact('file', 'jsonFile', 'request', 'files', 'storagePath') );
+    }
+
+    public function keyDetail(Request $request)
+    {
+        $bls = new Download($request->type);
+
+        $file = file_get_contents( $bls->getLocal());
+        $json = json_decode($file);
+        $array = json_decode($file, true);
+
+        return View::make('download.keyDetail', compact('json', 'array', 'request') );
     }
 
     public function testConnect(Request $request)
@@ -174,6 +207,46 @@ class DownloadController extends Controller
         $tb = $this->createTableList($request->db, collect($res));
 
         return $jsonResponse->success(compact('tb'));
+    }
+
+    /**
+     * 查看日志列表
+     *
+     * @param Request $request
+     */
+    public function logs(Request $request)
+    {
+        $path = strtr(storage_path(). "/logs/temp", '\\', '/');
+
+        $files = [];
+        scanMyDir($path, $files, $path, '');
+
+        return View::make('log.view', compact('files', 'request'));
+
+    }
+
+    /**
+     * 查看日志Log文件
+     *
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function view(Request $request)
+    {
+        if ( isset($request->file) && ! empty($request->file)) {
+            try {
+                $file = strtr(storage_path(). "/logs/temp", '\\', '/') . '/'. $request->file;
+                $handler = fopen($file, "r");
+                while (! feof($handler)) {
+                    echo fgets($handler) . "<br>";
+                }
+                fclose($handler);
+            } catch(\Exception $e) {
+                throw $e;
+            }
+        } else {
+            throw new \Exception('参数错误');
+        }
     }
 
 }

@@ -26,8 +26,6 @@ class Json
 
     private $unCreate = true;
 
-    private $data = [];
-
     /**
      * Json constructor.
      * @param string $dir   自定义文件存放目录
@@ -35,14 +33,11 @@ class Json
      */
     public function __construct($dir = '', $file = '')
     {
-        $this->path = is_dir($dir) ? $dir : $this->path.'/'.date('Y-m-d') ;
+        $this->path = is_dir($dir) ? $dir : $this->path .'/'.date('Y-m-d') ;
         $this->filename = date('Y-m-d-His'). '.json';
 
-        if (! file_exists($this->path)) {
-            mkdir($this->path, 0777, true);
-        }
         $this->file = $this->path . '/'. $this->filename;
-        $this->fileBls = new FileBls($this->storageFile);
+        $this->fileBls = new FileBls($this->file);
     }
 
     private function getUrl()
@@ -50,22 +45,12 @@ class Json
         return 'http://'. env('HOST_HTML'). '/storage/json';
     }
 
-    private function getHost()
-    {
-        $domain = env('HOST_DOMAIN');
-        return strpos('http://', $domain) !== false ? $domain : 'http://'. $domain;
-    }
-
-    public function with($data)
-    {
-        $this->data[] = $data;
-    }
-
-    public function append()
+    public function append($data)
     {
         try {
-            $data = $this->format($this->data);
+            $data = $this->format($data);
 
+            $this->fileBls->setFile($this->file);
             $this->fileBls->write(json_encode($data));
 
             $this->md5 = md5($this->file);
@@ -85,9 +70,10 @@ class Json
     {
         $this->unCreate = false;
 
+        $this->fileBls->setFile($this->storageFile);
         $this->fileBls->setType(FILE_NO_DEFAULT_CONTEXT);
 
-        return $this->fileBls->store([$this->md5 => rtrim($this->getHost(), '/'). '/'. $this->file]);
+        return $this->fileBls->storeKey([$this->md5 => rtrim(getHost(), '/'). '/'. $this->file]);
     }
 
     private function format($data)
@@ -97,16 +83,48 @@ class Json
 
     public function export()
     {
-        return rtrim($this->getHost(), '/'). '/'.$this->file;
+        return rtrim(getHost(), '/'). '/'.$this->file;
     }
 
+    /**
+     * 获取文件加密字符
+     *
+     * @return string
+     */
     public function getMd5()
     {
         return $this->md5;
     }
 
+    /**
+     * 获取文件导出存储位置
+     *
+     * @param $key
+     * @return string
+     */
     public function getStorage($key)
     {
+        $this->fileBls->setFile($this->storageFile);
         return $this->fileBls->getKey($key);
+    }
+
+    public function getStorageDir()
+    {
+        return $this->path;
+    }
+
+    /**
+     * 获取完整的文件存储目录
+     *
+     * @return string
+     */
+    public function getLocal()
+    {
+        return rtrim(getHost(), '/'). '/'. $this->storageFile;
+    }
+
+    public function __destruct()
+    {
+        // TODO: Implement __destruct() method.
     }
 }

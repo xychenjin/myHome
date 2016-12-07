@@ -19,6 +19,8 @@ class Download implements IDownload
     
     protected $path = '';
 
+    protected $data = [];
+
     public function __construct($type = '', $path = '')
     {
         $this->choose($type, $path);
@@ -31,7 +33,7 @@ class Download implements IDownload
 
     public function with($data)
     {
-        return $this->obj->with($data);
+        $this->data[] = empty($data) ? null: (array)$data;
     }
     /**
      * 追加至文件中
@@ -40,7 +42,7 @@ class Download implements IDownload
      */
     public function append()
     {
-        return $this->obj->append();
+        return $this->obj->append($this->data);
     }
 
     /**
@@ -64,7 +66,7 @@ class Download implements IDownload
     }
 
     /**
-     * 获取文件存储位置
+     * 获取文件存储路径：可域名访问
      *
      * @param $key
      * @return mixed
@@ -72,6 +74,26 @@ class Download implements IDownload
     public function getStorage($key)
     {
         return $this->obj->getStorage($key);
+    }
+
+    /**
+     * 获取导出文件存储目录
+     *
+     * @return mixed
+     */
+    public function getStorageDir()
+    {
+        return $this->obj->getStorageDir();
+    }
+
+    /**
+     * 获取KEY存放目录
+     *
+     * @return mixed
+     */
+    public function getLocal()
+    {
+        return $this->obj->getLocal();
     }
 
     /**
@@ -99,5 +121,10 @@ class Download implements IDownload
                 return;
         }
         throw new \Exception('未知导出文件类型');
+    }
+
+    public function __destruct()
+    {
+        // TODO: Implement __destruct() method.
     }
 }

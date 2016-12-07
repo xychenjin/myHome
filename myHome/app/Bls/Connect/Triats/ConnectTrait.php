@@ -7,6 +7,7 @@
  */
 namespace App\Bls\Connect\Triats;
 use Form;
+use Illuminate\Database\Connection;
 
 trait ConnectTrait {
 
@@ -72,17 +73,42 @@ trait ConnectTrait {
     }
 
     /**
+     * 格式化排序语句
+     *
+     * @param $str
+     * @return array
+     */
+    private function formatOrderBy($str)
+    {
+        $res = [];
+        $explods = explode('_', $str);
+        foreach($explods as $key => $item) {
+            $res[$key] = explode('-', $item);
+        }
+        return $res;
+    }
+
+    /**
      * 组装查询语句
      *
      * @param $request
      * @return string
      */
-    private function getQueries($tb, $request)
+    private function getQueries(Connection $con, $tb, $request)
     {
         $query = 'select * from '. $tb;
 
-        if (isset($request['sort']) && ! empty($request['sort']) ) {
-            $query .= " sort by ". (strtr($request['sort'], '-_', ' ,'));
+        if (isset($request['orderBy']) && ! empty($request['orderBy']) ) {
+            $formatOrderBy = $this->formatOrderBy($request['orderBy']);
+            $orderBy = '';
+
+            foreach($formatOrderBy as $item) {
+                $exists = count($con->select('describe '. $tb. ' '. $item[0]));
+                $temp = $exists ? $item[0] . ' '. $item[1] : '';
+                $orderBy .= $orderBy && $temp ? ',' .$temp : $temp;
+            }
+
+            $query .= $orderBy ? " order by ". $orderBy : '';
         }
 
         if (isset($request['limit']) && ! empty($request['limit']) ) {

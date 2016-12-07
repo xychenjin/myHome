@@ -19,14 +19,24 @@ class FileBls
     public function __construct($file)
     {
         $this->file = $file;
-
-        $path = substr($this->file, 0, strrpos($this->file, '/'));
-
-        if (! file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
     }
 
+    /**
+     * 设置写入文件
+     *
+     * @param $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * 设置文件读写类型
+     *
+     * @param $type
+     * @throws \Exception
+     */
     public function setType($type)
     {
         switch($type) {
@@ -41,28 +51,24 @@ class FileBls
     }
 
     /**
-     * 解析本地存储文件，将其全部读取出来
+     * 解析本地存储文件，将其全部读取出来，拿取不到返回空数组
      *
      * @return array|mixed
      */
     private function parse()
     {
-        $path = substr($this->file, 0, strrpos($this->file, '/'));
-        if (! file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-        if (! file_exists($this->file)) {
-            $this->write();
-        }
-        $file = file_get_contents($this->file);
         $data = [];
-        if ( $file != '') {
-            $data = json_decode($file, true);
+        if ( file_exists($this->file)) {
+            $file = file_get_contents($this->file);
+            if ( $file != '') {
+                $data = json_decode($file, true);
+            }
         }
+
         return $data;
     }
 
-    public function store( array $data)
+    public function storeKey( array $data)
     {
         $parseData = $this->parse();
         foreach ($data as $key => $value) {
@@ -85,13 +91,18 @@ class FileBls
     }
 
     /**
-     * 写入文件:当文件较大时，自动锁
+     * 不存在时会自动创建并写入文件:当文件较大时，自动锁
      *
      * @param string $data
      * @return bool
      */
     public function write($data = '')
     {
+        if (! file_exists($this->file)) {
+            $path = substr($this->file, 0, strrpos($this->file, '/'));
+            if (! file_exists($path)) mkdir($path, 0777, true);
+        }
+
         $handler = fopen($this->file, $this->type);
 
         if (flock($handler, LOCK_EX)) {

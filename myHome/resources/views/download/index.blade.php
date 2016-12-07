@@ -1,14 +1,14 @@
 @extends($html)
 
 @section('title')
-    测试：导出数据库至指定文件
+    测试：导出数据库至指定文件中
 @endsection
 @section('style')
     <link rel="shortcut ico" type="images/x-icon" href="/favicon.ico" />
 @endsection
 
 @section('content-header')
-    <h1 class="text-center">下载数据库并导出</h1>
+    <h1 class="text-center">数据库导出并下载</h1>
 @endsection
 
 @section("content")
@@ -111,7 +111,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">排序规则：</label>
                 <div class="col-sm-10">
-                    {!! Form::select('sort', [ 'id-asc'=>'ID顺序', 'id-desc'=>'ID倒序',
+                    {!! Form::select('orderBy', [ 'id-asc'=>'ID顺序', 'id-desc'=>'ID倒序',
                                                 'updated-asc'=>'更新时间顺序', 'updated-desc'=>'更新时间顺序',
                                                 'id-asc_updated-asc'=>'ID,更新时间顺序', 'id-desc_updated-desc'=>'ID,更新时间倒序',
                                                 'id-asc_updated-desc'=>'ID顺序,更新时间倒序', 'id-desc_updated-asc'=>'ID顺序,更新时间倒序'
@@ -207,13 +207,16 @@
                     userName:$("#userName").val(),
                     password:$("#password").val()
                 };
+
+                var db = $(this).val();
+
                 if ($.trim(data.hostName) == '' || $.trim(data.userName) == '' ) {
                     alert('输入参数错误');
                     return false;
                 }
 
                 $.ajax({
-                    url:"{{ route('download.getTb') }}" + "?db=" + $(this).val(),
+                    url:"{{ route('download.getTb') }}" + "?db=" + db,
                     dataType:"json",
                     method:"post",
                     data:data,
@@ -224,7 +227,7 @@
                             if ($("#tb_" + $(obj).val()).length)
                                 $("#tb_" + $(obj).val()).remove();
                             $("#tb-list").append($(res.data.tb))
-                                    .bind('click', bindCheckAll());
+                                    .bind('click', bindCheckAll(db));
 
                         }
                     }
@@ -237,19 +240,19 @@
         });
     }
 
-    function bindCheckAll() {
-        $(".checkAll").bind('click', function () {
+    function bindCheckAll(db) {
+        $("button[id=checkAll_" + db +"]").bind('click', function () {
             var obj = this;
             var check = $(obj).data('check');
             if (check) {
-                $(obj).parent().parent().children().find("[type=checkbox]").each(function(){
-                    $(this).attr("checked",false);
+                $(obj).parent().parent().children().find("[type=checkbox]:checked").each(function(){
+                   $(this).prop('checked', false);
                 });
                 $(obj).data('check', false);
                 $(obj).html('全选');
             } else {
                 $(obj).parent().parent().children().find("[type=checkbox]").each(function(){
-                    $(this).attr("checked",true);
+                    $(this).prop('checked', true);
                 });
                 $(obj).data('check', true);
                 $(obj).html('取消');
