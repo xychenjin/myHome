@@ -8,6 +8,8 @@
 namespace App\Bls\Connect\Triats;
 use Form;
 use Illuminate\Database\Connection;
+use Illuminate\Log\Writer;
+use Monolog\Logger;
 
 trait ConnectTrait {
 
@@ -62,9 +64,9 @@ trait ConnectTrait {
         }
 
         foreach ($tbLists as $tb) {
-            $tableList .= '<div class="col-md-3 success" >';
-            $tableList .= Form::checkbox('tbName[]', $db.'.'.$tb->table_name, false, ['class' => 'db_'.$tb->table_name , 'id'=> $db.'.'.$tb->table_name]);
-            $tableList .= Form::label($db.'.'.$tb->table_name, $tb->table_name, array('class' => ''));
+            $tableList .= '<div class="col-md-4 success" >';
+            $tableList .= Form::checkbox('tbName[]', $tb->table_name, false, ['class' => 'col-md-1' , 'id'=> $tb->table_name]);
+            $tableList .= Form::label($tb->table_name, $tb->table_rows, ['class' => 'col-md-3' ,'title'=>$tb->table_rows]);
             $tableList .= '</div>';
         }
         $tableList .= '</div>';
@@ -118,5 +120,24 @@ trait ConnectTrait {
         return $query;
     }
 
+    /**
+     * 格式化查询表语句
+     * @param $db
+     * @return string
+     */
+    private function queryTbByDb($db)
+    {
+        return sprintf(' SELECT CONCAT("%s",".", TABLE_NAME) as table_name,'
+            .' IFNULL(CONCAT(TABLE_NAME,"(",TABLE_ROWS, ")"),CONCAT(TABLE_NAME,"(0)")) as table_rows,'
+            .'table_rows AS tableRowCount '
+            .' FROM information_schema.tables WHERE table_schema="%s" ORDER BY tableRowCount DESC', $db, $db);
+    }
+
+    public function log($msg = '')
+    {
+        $log = new Writer(new Logger(''));
+        $log->useFiles(storage_path(). '/logs/temp/'. date('Y-m-d').'.log');
+        $log->error($msg);
+    }
 }
 

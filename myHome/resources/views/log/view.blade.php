@@ -14,7 +14,7 @@
 
 @section("content")
     <div class="container">
-        <div class="row text-right" style="margin-right: 20px">{!! link_to_route('download.success', '返回', ['type' => $request->type, 'md5' => $request->md5]) !!}</div>
+        <div class="row text-right" style="margin-right: 20px">{!! link_to_route('download.history', '返回', ['type' => $request->type, 'md5' => $request->md5]) !!}</div>
 
         <div class="tab-content">
             <div class="form-group">

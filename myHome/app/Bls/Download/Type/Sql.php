@@ -8,20 +8,12 @@
 
 namespace App\Bls\Download\Type;
 
-class Sql
+class Sql extends Type
 {
-    public function __construct($dir = '', $file = '')
-    {
+    //文件的上层目录
+    protected $path = 'sql';
 
-    }
+    //文件的扩展名
+    protected $extension = '.sql';
 
-    public function append($data)
-    {
-
-    }
-
-    public function export()
-    {
-
-    }
 }

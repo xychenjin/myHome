@@ -14,37 +14,18 @@
 @section("content")
     <div class="container">
 
-        <div class="line">
+        <div class="row">
             {!! link_to_route('download.db', '返回') !!}
         </div>
 
         <div class="form-group-lg" >
             <h3 class="text-success" style="font-family: 华文细黑;color:red"><small style="color:green;">导出</small>&nbsp;成功！</h3>
-
-            @if($files)
-                <div class="row">
-                    <label class="col-sm-2">文件目录：</label>
-                    <div class="col-sm-10">
-                        @foreach($files as $item)
-                            <div class="row">{!! HTML::link($storagePath. '/' .$item, $item, ['target'=>'_blank'], '') !!}</div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             <div class="row">
-                <label class="col-sm-2">文件地址：</label>
-                {!! HTML::link($file, $file, ['target'=>'_blank'], '') !!}
-            </div>
-            <div class="row">
-                <label class="col-sm-2">Key存储地址：</label>
-                {!! link_to_route('download.keyDetail', $jsonFile, [ 'type'=>$request->type, 'md5'=> $request->md5]) !!}
+                <label class="col-sm-2">&nbsp;</label>
+                {!! link_to_route('logs', '查看错误日志', []) !!}
             </div>
 
-            <div class="row">
-                <label class="col-sm-2">查看错误日志：</label>
-                {!! link_to_route('logs', $jsonFile, [ 'type' => $request->type, 'md5'=> $request->md5]) !!}
-            </div>
+            @include('download.partials.share', ['showKey' => true])
         </div>
     </div>
 

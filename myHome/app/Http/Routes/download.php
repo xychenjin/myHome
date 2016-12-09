@@ -23,7 +23,8 @@ Route::group(['prefix'=>'/download'], function() {
     //key查看
     Route::get('/key/detail', ['uses' => 'Download\\DownloadController@keyDetail', 'as' => 'download.keyDetail']);
     //日志查看
-    Route::get('/logs', ['uses' => 'Download\\DownloadController@logs', 'as' => 'logs']);
+    Route::get('/logs', ['uses' => 'Download\\DownloadController@logLists', 'as' => 'logs']);
     Route::get('/log/view', ['uses' => 'Download\\DownloadController@view', 'as' => 'log.view']);
+    Route::get('/history', ['uses' => 'Download\\DownloadController@history', 'as' => 'download.history']);
 
 });

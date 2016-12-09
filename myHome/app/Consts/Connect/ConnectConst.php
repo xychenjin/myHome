@@ -40,7 +40,7 @@ class ConnectConst extends BaseConsts
         return array_get(static::consts(), $item);
     }
 
-    public static function getType($message)
+    public static function getMessage($message)
     {
         switch (true) {
             case str_contains($message,'SQLSTATE[HY000] [2002]'):

@@ -8,20 +8,11 @@
 
 namespace App\Bls\Download\Type;
 
-class Csv
+class Csv extends Type
 {
-    public function __construct($dir = '', $file = '')
-    {
+    //文件的上层目录
+    protected $path = 'csv';
 
-    }
-
-    public function append($data)
-    {
-
-    }
-
-    public function export()
-    {
-
-    }
+    //文件的扩展名
+    protected $extension = '.csv';
 }

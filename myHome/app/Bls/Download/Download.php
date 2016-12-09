@@ -16,19 +16,25 @@ use App\Bls\Download\Type\Txt;
 class Download implements IDownload
 {
     protected $obj = null;
-    
-    protected $path = '';
+
+    /**
+     * 文件导出目录
+     *
+     * @var string
+     */
+    protected $path = 'temp/';
 
     protected $data = [];
 
     public function __construct($type = '', $path = '')
     {
-        $this->choose($type, $path);
+        //设置存放导出文件的位置：将保存在网站根目录的自定义或temp文件中
+        $this->choose($type, $path ? rtrim($path, '/') : $this->path);
     }
 
-    public function prepare()
+    public function getData()
     {
-
+        return $this->data;
     }
 
     public function with($data)

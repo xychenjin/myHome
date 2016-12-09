@@ -104,13 +104,12 @@ class FileBls
         }
 
         $handler = fopen($this->file, $this->type);
-
         if (flock($handler, LOCK_EX)) {
             fwrite($handler, $data);
             flock($handler, LOCK_UN);
         }
-
         fclose($handler);
+
         return true;
     }
 }
