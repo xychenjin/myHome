@@ -15,4 +15,24 @@ class Txt extends Type
 
     //文件的扩展名
     protected $extension = '.txt';
+
+    protected function format(array $data)
+    {
+        $res = '';
+        while (list($key, $value ) = each($data)) {
+            switch (gettype($value)) {
+                case 'object':
+                    $res .= $this->format((array)$value);
+                    break;
+                case 'array':
+                    $res .= is_numeric($key) ? '': $key . "  =>  ";
+                    $res .= $this->format($value);
+                    break;
+                case 'string':
+                    $res .= $key ."  =>  ".  iconv('UTF-8', 'GB2312//IGNORE', $value) . "\r\n";
+                    break;
+            }
+        }
+        return $res;
+    }
 }

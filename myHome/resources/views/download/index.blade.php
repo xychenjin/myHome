@@ -284,6 +284,8 @@
                         $("#db-list").append($(res.data.db))
                                 .bind('click', bindClick())
                                 .bind('click', clearDanger());
+                        $("#tb-list").children().remove();
+
                     }
                 }
             });

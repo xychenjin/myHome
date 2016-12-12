@@ -133,4 +133,13 @@ class Download implements IDownload
     {
         // TODO: Implement __destruct() method.
     }
+
+    /**
+     * 清空数据值
+     */
+    public function free()
+    {
+        $data = & $this->data;
+        unset($this->data, $data);
+    }
 }

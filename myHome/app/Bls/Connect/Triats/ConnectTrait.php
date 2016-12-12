@@ -18,6 +18,7 @@ trait ConnectTrait {
      *
      * @param $data
      * @param $cnf
+     * @deprecated
      * @return mixed
      */
     public function filter($data, $cnf)
@@ -92,19 +93,21 @@ trait ConnectTrait {
 
     /**
      * 组装查询语句
-     *
-     * @param $request
+     * @param Connection $con
+     * @param $tb
+     * @param $request  请求参数
+     * @param int $start 开始于
      * @return string
      */
-    private function getQueries(Connection $con, $tb, $request)
+    private function getQueries(Connection $con, $tb, array $request = [], $start = 0)
     {
-        $query = 'select * from '. $tb;
+        $query = 'SELECT * FROM '. $tb;
 
         if (isset($request['orderBy']) && ! empty($request['orderBy']) ) {
             $formatOrderBy = $this->formatOrderBy($request['orderBy']);
             $orderBy = '';
 
-            foreach($formatOrderBy as $item) {
+            foreach ($formatOrderBy as $item) {
                 $exists = count($con->select('describe '. $tb. ' '. $item[0]));
                 $temp = $exists ? $item[0] . ' '. $item[1] : '';
                 $orderBy .= $orderBy && $temp ? ',' .$temp : $temp;
@@ -114,7 +117,7 @@ trait ConnectTrait {
         }
 
         if (isset($request['limit']) && ! empty($request['limit']) ) {
-            $query .= " limit 0,{$request['limit']}";
+            $query .= " limit {$start},{$request['limit']}";
         }
 
         return $query;

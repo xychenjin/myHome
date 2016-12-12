@@ -92,27 +92,73 @@ class DownloadController extends Controller
             ]);
 
             $download->with("---------------------------------------------------------------------");
-
+            //开启过期机制
+            set_time_limit(0);
             foreach ($request->tbName as $item => $tb) {
                 try {
+                    $res = $connection->select('SELECT count(1) as existed FROM information_schema.TABLES WHERE table_name = "'
+                        . explode('.', $tb)[1].'" AND TABLE_SCHEMA ="'. explode('.', $tb)[0].'"');
+                    if (! $res[0]->existed) {
+                        continue;
+                    }
+
+                    $tb = '`'. str_replace('.', '`.`', $tb) . '`';
                     //是否需要导出表结构
-                    if ($request->structure) {
+                    if ( $request->structure) {
                         $download->with("DROP TABLE IF EXISTS $tb ");
 
-                        $desc = $connection->select('show create table '. $tb);
+                        $desc = $connection->select('SHOW CREATE TABLE '. $tb);
                         $download->with($desc);
                         $download->with("--------------------------------------------------------------------");
                     }
 
-                    //导出的结果集拼接
-                    $query = $this->getQueries($connection, $tb, $request->all());
-                    $res = $connection->select($query);
-                    count($res)>0 && $download->with("共计导出：". count($res). "条");
+                    $res = $connection->select('SELECT COUNT(1) AS total FROM '. $tb);
+                    $total = $res[0]->total;
+                    $max = config('limit.max');
+                    $limit = config('limit.pitch');
+                    //数据量过大，分批次导出
+                    if ($total > $max) {
+                        //开始
+                        $i = 0;
+                        //成功条数
+                        $succeed = 0;
+                        //计算需要轮循次数
+                        $times = ceil($total/$limit);
 
-                    $dataBls->setData($res);
-                    $dataBls->setPrefix($tb);
-                    $download->with($dataBls->parse());
+                        while($i < $times) {
+                            try {
+                                //导出的结果集拼接
+                                $query = $this->getQueries($connection, $tb, [
+                                    'orderBy' => $request->get('orderBy'),
+                                    'limit' => $limit
+                                ], ($i * $limit -1) > 0 ? ($i * $limit -1) : 0);
+                                $res = $connection->select($query);
 
+                                $dataBls->setData($res);
+                                $dataBls->setPrefix($tb);
+                                $download->with($dataBls->parse());
+                                $download->append();
+                                $download->free();
+                                $succeed += count($res);
+                            } catch (\Exception $e) {
+                                $msg = ExceptionConst::format([ '数据批量导出操作', $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
+                                Log::error($msg);
+                            }
+                            $i++ ;
+                        }
+                        $succeed > 0  && $download->with("共计导出：". $succeed. "条") ;
+                        $succeed > 0 && $download->append();
+                    } else {
+                        //导出的结果集拼接
+                        $query = $this->getQueries($connection, $tb, $request->all());
+                        $res = $connection->select($query);
+
+                        count($res)>0 && $download->with("共计导出：". count($res). "条");
+
+                        $dataBls->setData($res);
+                        $dataBls->setPrefix($tb);
+                        $download->with($dataBls->parse());
+                    }
                 } catch (\Exception $e) {
                     $msg = ExceptionConst::format([ '数据查询操作', $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
                     Log::error($msg);
@@ -120,7 +166,6 @@ class DownloadController extends Controller
             }
 
             $download->append();
-
             return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5()]));
         } catch (\Exception $e) {
             $msg = ExceptionConst::format([ '导出文件', $e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode()]);

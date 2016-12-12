@@ -85,14 +85,13 @@ class DataBls
     public function parse()
     {
         if (! $this->needTransfer) return $this->data;
-
         return $this->format();
     }
 
     private function format()
     {
         if (empty($this->data) || ! is_array($this->data)) {
-            return is_array($this->data) ? [] : '';
+            return is_array($this->data) ? [] : NULL;
         }
 
         $data = '';
@@ -102,12 +101,14 @@ class DataBls
             $tempArray = (array)$value;
             if (empty($columns)) $columns = array_keys($tempArray);
             $array = array_map(function ($item) use($columns) {
-                return is_string($item) ? "'$item'" : $item;
+                return is_string($item) ? "'". $item. "'" : ($item === null ? 'NULL' : $item);
             }, $tempArray);
             $temp = implode(',', $array);
             $data .= $data ? ',' . sprintf($this->standard, $temp) : sprintf($this->standard, $temp);
         }
-
+        $columns = array_map(function($item) {
+            return "`".$item."`";
+        }, $columns);
         $this->setStandard(self::CASE_ALL);
         $this->columns = implode(',', $columns);
         return $this->create($data);

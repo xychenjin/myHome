@@ -15,4 +15,10 @@ class Json extends Type
 
     //文件的扩展名
     protected $extension = '.json';
+
+    //格式化文本输出格式
+    protected function format(array $data)
+    {
+        return json_encode($data);
+    }
 }

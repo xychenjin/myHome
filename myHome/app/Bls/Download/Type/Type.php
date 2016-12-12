@@ -96,15 +96,17 @@ class Type
 
     /**
      * 将数据追加到文件中
-     * @param $data
+     *
+     * @param array $data
      * @throws \Exception
      */
-    public function append($data)
+    public function append(array $data)
     {
         try {
             $data = $this->format($data);
             $this->fileBls->setFile($this->file);
-            $this->fileBls->write(json_encode($data));
+            $this->fileBls->setType(FILE_APPEND);
+            $this->fileBls->write($data);
             $this->md5 = md5($this->file);
             $this->unCreate && $this->storage();
         } catch(\Exception $e) {
@@ -127,7 +129,13 @@ class Type
         return $this->fileBls->storeKey([$this->md5 => rtrim(getHost(), '/'). '/'. $this->file]);
     }
 
-    private function format($data)
+    /**
+     * 格式化输出数据
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function format(array $data)
     {
         return $data;
     }

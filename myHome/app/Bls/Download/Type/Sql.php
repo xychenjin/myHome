@@ -16,4 +16,29 @@ class Sql extends Type
     //文件的扩展名
     protected $extension = '.sql';
 
+    /**
+     * 格式化将数据
+     *
+     * @param array $data
+     * @return string
+     */
+    protected function format(array $data)
+    {
+        $res = '';
+        while (list($key, $value ) = each($data)) {
+            switch (gettype($value)) {
+                case 'object':
+                    $res .= $this->format((array)$value);
+                    break;
+                case 'array':
+                    $res .= is_numeric($key) ? '' : $key .  "  =>  ";
+                    $res .= $this->format($value);
+                    break;
+                case 'string':
+                    $res .= is_numeric($key) ? iconv('UTF-8', 'GB2312', $value). "\r\n" : $key ."  =>  ".  iconv('UTF-8', 'GB2312', $value). "\r\n";
+                    break;
+            }
+        }
+        return $res;
+    }
 }
