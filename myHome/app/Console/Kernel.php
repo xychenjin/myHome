@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\Inspire::class,
         Commands\scanMyFiles::class,
         Commands\TestConsole::class,
+        Commands\Database\createUser::class,
     ];
 
     /**
