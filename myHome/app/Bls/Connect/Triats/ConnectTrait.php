@@ -65,7 +65,7 @@ trait ConnectTrait {
         }
 
         foreach ($tbLists as $tb) {
-            $tableList .= '<div class="col-md-4 success" >';
+            $tableList .= '<div class="'. (strlen($tb->table_rows) > 30 ? 'row' : 'col-md-4  success').'" >';
             $tableList .= Form::checkbox('tbName[]', $tb->table_name, false, ['class' => 'col-md-1' , 'id'=> $tb->table_name]);
             $tableList .= Form::label($tb->table_name, $tb->table_rows, ['class' => 'col-md-3' ,'title'=>$tb->table_rows]);
             $tableList .= '</div>';

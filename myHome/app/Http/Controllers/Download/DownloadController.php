@@ -157,6 +157,8 @@ class DownloadController extends Controller
                         $dataBls->setData($res);
                         $dataBls->setPrefix($tb);
                         $download->with($dataBls->parse());
+                        $download->append();
+                        $download->free();
                     }
                 } catch (\Exception $e) {
                     $msg = ExceptionConst::format([ '数据查询操作', $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
@@ -164,7 +166,6 @@ class DownloadController extends Controller
                 }
             }
 
-            $download->append();
             return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5()]));
         } catch (\Exception $e) {
             $msg = ExceptionConst::format([ '导出文件', $e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode()]);
