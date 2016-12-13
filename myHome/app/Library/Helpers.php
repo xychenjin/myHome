@@ -93,3 +93,21 @@ if (! function_exists("scanMyDir")) {
         }
     }
 }
+
+if (! function_exists("generateCardPwd")) {
+    /**
+     * 随机生成卡密的方法
+     *
+     * @return string
+     */
+    function generateCardPwd()
+    {
+        $str = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $len = strlen($str);
+        $res = '';
+        for ($i = 0; $i < 16; $i++) {
+           $res .= substr($str, mt_rand(0, $len-1), 1);
+        }
+        return $res;
+    }
+}

@@ -147,7 +147,6 @@ class DownloadController extends Controller
                             $i++ ;
                         }
                         $succeed > 0  && $download->with("共计导出：". $succeed. "条") ;
-                        $succeed > 0 && $download->append();
                     } else {
                         //导出的结果集拼接
                         $query = $this->getQueries($connection, $tb, $request->all());

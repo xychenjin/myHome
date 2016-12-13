@@ -17,6 +17,12 @@ class Kernel extends ConsoleKernel
         Commands\scanMyFiles::class,
         Commands\TestConsole::class,
         Commands\Database\createUser::class,
+
+        //修复脚本刷的用户的错误密码
+        Commands\Database\updateUserPwd::class,
+
+        //生成空白卡
+        Commands\M2016\Card\CreateBlank::class,
     ];
 
     /**

@@ -6,8 +6,8 @@ use Pingpong\Admin\Entities\User as PingpongUser;
 
 class UserModel extends PingpongUser
 {
-    protected $connection = 'db_myhome';
-    protected $table = 'users';
+    protected $connection = 'db_2016';
+    protected $table = 't_user';
 
     protected $appends = ['is_admin'];
 

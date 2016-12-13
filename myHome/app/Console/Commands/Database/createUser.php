@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands\Database;
 
-use App\Bls\User\Model\UserModel;
+use Pingpong\Admin\Entities\User as UserModel;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class createUser extends Command
 {
@@ -19,7 +20,7 @@ class createUser extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '刷入数据库用户数据';
 
     /**
      * Create a new command instance.
@@ -41,21 +42,25 @@ class createUser extends Command
         //
         $this->line('开始：'. date('Y-m-d H:i:s'));
 
-        $bar = $this->output->createProgressBar(1);
+        $bar = $this->output->createProgressBar(10);
+        $this->output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
 
-        $i = 10000;
-//        while ($i < 10000) {
-            $name = 'userName'.date('Ymd').(sprintf('%06d', $i));
-            $model = UserModel::create([
-                'name' => $name,
-                'email' => date('Ymd').(sprintf('%06d', $i)).'@qq.com',
-                'password' => bcrypt($name),
-            ]);
-            $bar->advance();
-            $i++;
-//        }
+        (new UserModel)->getConnection()->transaction(function() use($bar) {
+            $i = 15001;
+            while ($i < 15011) {
+                $name = date('Ymd').(sprintf('%06d', $i));
+                UserModel::create([
+                    'name' => $name,
+                    'email' => $name. '@qq.com',
+                    'password' => $name,
+                ]);
+                $bar->advance();
+                $i++;
+            }
+        });
+
         $bar->finish();
-
+        $this->line('');
         $this->line('结束：'. date('Y-m-d H:i:s'));
     }
 }

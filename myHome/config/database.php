@@ -76,6 +76,18 @@ return [
             'strict'    => false,
         ],
 
+        'db_m2016' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST_M2016', ''),
+            'database'  => env('DB_DATABASE_M2016', ''),
+            'username'  => env('DB_USERNAME_M2016', ''),
+            'password'  => env('DB_PASSWORD_M2016', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),
