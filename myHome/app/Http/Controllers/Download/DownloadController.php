@@ -80,8 +80,8 @@ class DownloadController extends Controller
         }
 
         try {
-
             $download = new Download($request->fileType, isset($request->path) ? $request->path : '');
+
             $dataBls = new DataBls('', isset($request->dataType) ? $request->dataType : '');
 
             //打印调用参数信息
@@ -166,7 +166,8 @@ class DownloadController extends Controller
                 }
             }
 
-            return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5()]));
+            return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5(),
+                'path'=> isset($request->path) ? $request->path : '']));
         } catch (\Exception $e) {
             $msg = ExceptionConst::format([ '导出文件', $e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode()]);
             Log::error($msg);
@@ -183,7 +184,7 @@ class DownloadController extends Controller
      */
     public function success(Request $request)
     {
-        $bls = new Download($request->type);
+        $bls = new Download($request->type, isset($request->path) ? $request->path : '');
         $file = $bls->getStorage($request->md5);
         $jsonFile = $bls->getLocal();
         $path = strtr(public_path(). '/'. $bls->getStorageDir(), '\\', '/');

@@ -5,6 +5,9 @@
 @endsection
 @section('style')
     <link rel="shortcut ico" type="images/x-icon" href="/favicon.ico" />
+    <style>
+
+    </style>
 @endsection
 
 @section('content-header')
@@ -221,12 +224,18 @@
 
         </div>
         {!! Form::close() !!}
+
+        <div id="loading" style="display: none;">
+            加载中..
+            <img src="{!! staticUrl('recources/img/loading072.gif') !!}" mce_src="{!! staticUrl('recources/img/loading072.gif') !!}" alt="loading.." />
+        </div>
     </div>
 
 @endsection
 
 @section('script')
 <script>
+
     $(function() {
         //测试连接
         $('#testConnection').click(function() {
@@ -289,6 +298,10 @@
                     }
                 }
             });
+        });
+
+        $("input[type=submit]").click(function() {
+            $(this).attr('disabled', true);
         });
     });
 

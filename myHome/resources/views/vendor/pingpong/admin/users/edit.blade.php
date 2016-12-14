@@ -2,9 +2,9 @@
 
 @section('content-header')
 	<h1>
-		Edit
+		编辑
 		&middot;
-		<small>{!! link_to_route('admin.users.index', 'Back') !!}</small>
+		<small>{!! link_to_route('admin.users.index', '返回') !!}</small>
 	</h1>
 @stop
 

@@ -4,9 +4,9 @@
 	
 	
 	<h1>
-		Add New
+		添加
 		&middot;
-		<small>{!! link_to_route('admin.users.index', 'Back') !!}</small>
+		<small>{!! link_to_route('admin.users.index', '返回') !!}</small>
 	</h1>
 
 @stop

@@ -2,9 +2,9 @@
 
 @section('content-header')
 	<h1>
-		{!! $title or 'All Users' !!} ({!! $users->count() !!})
+		{!! $title or '用户列表' !!} ({!! $users->count() !!})
 		&middot;
-		<small>{!! link_to_route('admin.users.create', 'Add New') !!}</small>
+		<small>{!! link_to_route('admin.users.create', '新增') !!}</small>
 	</h1>
 @stop
 
@@ -16,11 +16,11 @@
 
 	<table class="table">
 		<thead>
-			<th>No</th>
-			<th>Name</th>
-			<th>Email</th>
-			<th>Created At</th>
-			<th class="text-center">Action</th>
+			<th>序号</th>
+			<th>名称</th>
+			<th>邮箱</th>
+			<th>注册时间</th>
+			<th class="text-center">操作</th>
 		</thead>
 		<tbody>
 			@foreach ($users as $user)
@@ -30,7 +30,7 @@
 				<td>{!! $user->email !!}</td>
 				<td>{!! $user->created_at !!}</td>
 				<td class="text-center">
-					<a href="{!! route('admin.users.edit', $user->id) !!}">Edit</a>
+					<a href="{!! route('admin.users.edit', $user->id) !!}">编辑</a>
 					&middot;
 					@include('admin::partials.modal', ['data' => $user, 'name' => 'users'])
 				</td>

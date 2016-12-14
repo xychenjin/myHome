@@ -4,9 +4,9 @@
 @section('content-header')
 	
 	<h1>
-		Edit
+		编辑
 		&middot;
-		<small>{!! link_to_route('admin.roles.index', 'Back') !!}</small>
+		<small>{!! link_to_route('admin.roles.index', '返回') !!}</small>
 	</h1>
 @stop
 

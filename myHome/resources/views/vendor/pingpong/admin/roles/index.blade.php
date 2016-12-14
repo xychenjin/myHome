@@ -2,9 +2,9 @@
 
 @section('content-header')
 	<h1>
-		All Roles ({!! $roles->count() !!})
+		角色列表 ({!! $roles->count() !!})
 		&middot;
-		<small>{!! link_to_route('admin.roles.create', 'Add New') !!}</small>
+		<small>{!! link_to_route('admin.roles.create', '添加') !!}</small>
 	</h1>
 @stop
 
@@ -12,13 +12,13 @@
 
 	<table class="table">
 		<thead>
-			<th>No</th>
-			<th>Name</th>
-			<th>Alias</th>
-			<th>Description</th>
-			<th>Permissions</th>
-			<th>Created At</th>
-			<th class="text-center">Action</th>
+			<th>序号</th>
+			<th>名称</th>
+			<th>别名</th>
+			<th>描述</th>
+			<th>权限</th>
+			<th>创建时间</th>
+			<th class="text-center">操作</th>
 		</thead>
 		<tbody>
 			@foreach ($roles as $role)
@@ -34,7 +34,7 @@
 				</td>
 				<td>{!! $role->created_at !!}</td>
 				<td class="text-center">
-					<a href="{!! route('admin.roles.edit', $role->id) !!}">Edit</a>
+					<a href="{!! route('admin.roles.edit', $role->id) !!}">编辑</a>
 					&middot;
 					@include('admin::partials.modal', ['data' => $role, 'name' => 'roles'])
 				</td>

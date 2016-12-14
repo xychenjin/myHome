@@ -28,8 +28,10 @@ class Download implements IDownload
 
     public function __construct($type = '', $path = '')
     {
+        $this->path = ! empty($path) ? rtrim($path, '/') : $this->path;
+
         //设置存放导出文件的位置：将保存在网站根目录的自定义或temp文件中
-        $this->choose($type, $path ? rtrim($path, '/') : $this->path);
+        $this->choose($type, $this->path);
     }
 
     public function getData()

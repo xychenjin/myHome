@@ -1,5 +1,5 @@
 <a data-toggle="modal" href="#modal-delete-{!! $data->id !!}">
-  Delete
+  删除
 </a>
 <div id="modal-delete-{!! $data->id !!}" class="modal text-left fade">
   <div class="modal-dialog">
@@ -7,16 +7,16 @@
       {!! Form::open(['method' => 'DELETE', 'route' => ["admin.$name.destroy", $data->id]])!!}
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h1 class="modal-title">Delete Data</h1>
+        <h1 class="modal-title">删除数据</h1>
       </div>
       <div class="modal-body">
         <p>
-          Are you sure want to delete this data?
+          确认删除数据?
         </p>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Yes</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="submit" class="btn btn-primary">确认</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
       </div>
       {!! Form::close() !!}
     </div><!-- /.modal-content -->

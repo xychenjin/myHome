@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Administrator | @yield('title', 'Dashboard')</title>
+    <title>MyHome | @yield('title', '操作管理平台')</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     @include('admin::partials.style')
     @yield('style')

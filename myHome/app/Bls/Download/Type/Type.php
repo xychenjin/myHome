@@ -83,11 +83,11 @@ class Type
      */
     public function __construct($dir = '', $file = '')
     {
-        $this->storageFile = rtrim(is_dir($dir) ? $dir : $this->dir, '/') . '/'. rtrim($this->path, '/') . '/'. $this->storageFile;
+        $this->storageFile = ltrim(rtrim(! empty($dir) ? $dir : $this->dir, '/') . '/'. rtrim($this->path, '/') . '/'. $this->storageFile, '/');
 
-        $this->path =  rtrim(is_dir($dir) ? $dir : $this->dir, '/') . '/' . $this->path .'/'.date('Y-m-d') ;
+        $this->path =  ltrim(rtrim(! empty($dir)  ? $dir : $this->dir, '/') . '/' . $this->path .'/'.date('Y-m-d'), '/') ;
         $this->filename = date('Y-m-d-His'). $this->extension;
-        $this->file =  $this->path . '/'. $this->filename;
+        $this->file =  ltrim($this->path . '/'. $this->filename, '/');
 
         if (! isset($this->fileBls) ) {
             $this->fileBls = new FileBls($this->file);
@@ -142,7 +142,7 @@ class Type
 
     protected function export()
     {
-        return rtrim(getHost(), '/'). '/'.$this->file;
+        return rtrim(getHost(), '/'). '/'. $this->file;
     }
 
     /**

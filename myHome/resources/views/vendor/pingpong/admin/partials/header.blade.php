@@ -210,7 +210,7 @@
             </ul>
         </li>
         <li class="footer">
-            <a href="#">View all tasks</a>
+            <a href="#">查看全部任务</a>
         </li>
     </ul>
 </li>
@@ -227,7 +227,7 @@
 
             <p>
                 {!! Auth::user()->name !!}
-                <small>Member since {!! Auth::user()->created_at->format('M, Y') !!}</small>
+                <small>注册于{!! Auth::user()->created_at->format('M, Y') !!}</small>
             </p>
         </li>
         <!-- Menu Body -->
@@ -245,10 +245,10 @@
         <!-- Menu Footer-->
         <li class="user-footer">
             <div class="pull-left">
-                <a href="{!! route('admin.settings') !!}" class="btn btn-default btn-flat">Settings</a>
+                <a href="{!! route('admin.settings') !!}" class="btn btn-default btn-flat">设置</a>
             </div>
             <div class="pull-right">
-                <a href="{!! route('admin.logout') !!}" class="btn btn-default btn-flat">Sign out</a>
+                <a href="{!! route('admin.logout') !!}" class="btn btn-default btn-flat">退出</a>
             </div>
         </li>
     </ul>
