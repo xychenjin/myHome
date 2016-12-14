@@ -19,7 +19,7 @@
         <div class="tab-content">
             <div class="form-group">
                 @foreach($files as $file)
-                    <div class="row">{!! link_to_route('log.view', $file, ['file' => $file], ['target'=>'_blank']) !!}</div>
+                    <div class="row">{!! link_to_route('log.view', $file->fileFormat, ['file' => $file->fileUrl], ['target'=>'_blank']) !!}</div>
                 @endforeach
             </div>
         </div>

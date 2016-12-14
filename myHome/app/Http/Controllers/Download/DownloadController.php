@@ -186,6 +186,11 @@ class DownloadController extends Controller
     {
         $bls = new Download($request->type, isset($request->path) ? $request->path : '');
         $file = $bls->getStorage($request->md5);
+        $getContext = file_get_contents($file);
+        $temp = 'temp.tmp';
+        file_put_contents($temp, $getContext);
+        $file .= formatFileSize($file) ? "(". formatFileSize($temp). ")" : '';
+        @unlink($temp);
         $jsonFile = $bls->getLocal();
         $path = strtr(public_path(). '/'. $bls->getStorageDir(), '\\', '/');
         $files = [];

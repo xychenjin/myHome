@@ -3,7 +3,7 @@
         <label class="col-sm-2">文件列表：</label>
         <div class="col-sm-10">
             @foreach($files as $item)
-                <div class="row">{!! HTML::link(rtrim($storagePath , '/').'/'.$item, $item, ['target'=>'_blank'], '') !!}</div>
+                <div class="row">{!! HTML::link(rtrim($storagePath , '/').'/'.$item->fileUrl, $item->fileFormat, ['target'=>'_blank'], '') !!}</div>
             @endforeach
         </div>
     </div>

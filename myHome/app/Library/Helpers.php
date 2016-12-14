@@ -75,9 +75,10 @@ if (! function_exists("scanMyDir")) {
      * @param array $appends 必须：追加至原始数组中
      * @param string $search 可选：文件路径中需要过滤的文档，相对于传入目录
      * @param string $replace 可选：替换操作，当过滤参数添加时，默认替换为空
+     * @param boolean $showDetail 是否需要展示详细信息
      * @return array &引用
      */
-    function scanMyDir($path, & $appends, $search = '', $replace = '')
+    function scanMyDir($path, & $appends, $search = '', $replace = '', $showDetail = true)
     {
         $dir = scandir($path);
 
@@ -86,7 +87,9 @@ if (! function_exists("scanMyDir")) {
             if ($val == '.' || $val == '..') {
                 continue;
             } elseif (is_file($fileName)) {
-                array_push($appends, ltrim(str_replace($search, $replace, $fileName), '/'));
+                $fileUrl = ltrim(str_replace($search, $replace, $fileName), '/');
+                $fileFormat = $showDetail ? $fileUrl . '(' . formatFileSize($fileName).')' : $fileUrl;
+                array_push($appends, (object)compact('fileUrl', 'fileFormat'));
             } elseif (is_dir($fileName)) {
                 scanMyDir($fileName, $appends, $search, $replace);
             }
@@ -107,6 +110,36 @@ if (! function_exists("generateCardPwd")) {
         $res = '';
         for ($i = 0; $i < 16; $i++) {
            $res .= substr($str, mt_rand(0, $len-1), 1);
+        }
+        return $res;
+    }
+}
+
+if (! function_exists("formatFileSize")) {
+    function formatFileSize($file)
+    {
+        if (! is_file($file)) return '';
+
+        $size = filesize($file);
+        switch($size) {
+            case $size<1024:
+                //字节数
+                $res = $size .'bytes';
+                break;
+            case $size>=1024 && $size < (1024*1024):
+                //千字节
+                $res = number_format(($size/(1024)), 2, '.', '') . 'Kb';
+                break;
+            case $size>=(1024*1024) && $size < (1024*1024*1024):
+                //兆字节
+                $res = number_format(($size/(1024*1024)), 2, '.', '') . 'Mb';
+                break;
+            case $size>=(1024*1024*1024):
+                //吉字节
+                $res = number_format(($size/(1024*1024*1024)), 2, '.', '') . 'Gb';
+                break;
+            default:
+                $res = $size;
         }
         return $res;
     }
