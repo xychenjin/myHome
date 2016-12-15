@@ -280,6 +280,19 @@ class TestController extends Controller
         dd(collect($file)->count());
     }
 
+    public function println()
+    {
+        $arrs = [
+            'zhangsan' => '001',
+            'id' => 'id',
+            'birthday' => '2016-12-14 00:00:01',
+        ];
 
+        $arrs = (object)$arrs;
+
+        foreach($arrs as $key => $arr) {
+            dd($arrs->{$key});
+        }
+    }
 
 }

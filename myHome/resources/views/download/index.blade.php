@@ -3,6 +3,7 @@
 @section('title')
     测试：导出数据库至指定文件中
 @endsection
+
 @section('style')
     <link rel="shortcut ico" type="images/x-icon" href="/favicon.ico" />
     <style>
@@ -303,6 +304,8 @@
         $("input[type=submit]").click(function() {
             $(this).attr('disabled', true);
         });
+
+        $("input[type=submit]").attr('disabled', false);
     });
 
     function bindClick(){

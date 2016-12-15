@@ -1,0 +1,21 @@
+
+<div class="form-group panel-body ">
+    {!! Form::open(['method' => 'get']) !!}
+    <div class="form-inline">
+        <label>打卡日期：</label>
+        {!! Form::select('day', $selectDays,  isset($searchData['day']) ? $searchData['day'] : null, ['class'=>'form-control']) !!}
+        <label>周次：</label>
+        {!! Form::select('week', $selectWeeks,  isset($searchData['week']) ? $searchData['week'] : null, ['class'=>'form-control']) !!}
+        <label>工具：</label>
+        {!! Form::text('tool', isset($searchData['tool']) ? $searchData['tool'] : null, ['class'=>'form-control']) !!}
+        <label>打卡人：</label>
+        {!! Form::text('userName', isset($searchData['userName']) ? $searchData['userName'] : null, ['class'=>'form-control']) !!}
+        <label>截止日期：</label>
+        {!! Form::select('startDay', $selectDays,  isset($searchData['startDay']) ? $searchData['startDay'] : null, ['class'=>'form-control']) !!}
+        - {!! Form::select('endDay', $selectDays,  isset($searchData['endDay']) ? $searchData['endDay'] : null, ['class'=>'form-control']) !!}
+
+        {!! Form::submit('查询', ['class'=>'btn btn-primary']) !!}
+    </div>
+    {!! Form::close() !!}
+</div>
+

@@ -22,7 +22,8 @@ Route::group(['prefix'=>'/test'], function(){
         Route::get('/', ['uses'=>'Test\\AuthController@index', 'as'=>'test.auth']);
     });
 
-
+    //打印
+    Route::get('/print' , ['uses'=>'Test\\TestController@println', 'as'=>'test.print']);
 });
 
 

@@ -28,6 +28,7 @@ require_once 'Routes/json.php';
 require_once 'Routes/codeBeautify.php';
 require_once 'Routes/encode.php';
 require_once 'Routes/download.php';
+require_once 'Routes/commute.php';
 
 Route::get('/', function () {
     return view('welcome');
