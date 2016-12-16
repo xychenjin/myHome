@@ -119,6 +119,6 @@ trait CommuteTraits
      */
     public function getSelectWeeks()
     {
-        return collect(['请选择'])->merge($this->weekThes());
+        return $this->weekThes();
     }
 }

@@ -5,7 +5,14 @@
         <label>打卡日期：</label>
         {!! Form::select('day', $selectDays,  isset($searchData['day']) ? $searchData['day'] : null, ['class'=>'form-control']) !!}
         <label>周次：</label>
-        {!! Form::select('week_th', $selectWeeks,  isset($searchData['week']) ? $searchData['week'] : null, ['class'=>'form-control']) !!}
+
+        <select class="form-control" name="week_th">
+            <option >请选择</option>
+            @foreach($selectWeeks as $key=>$val)
+                <option id="" value="{!! $key !!}">{!! $val !!}</option>
+            @endforeach
+        </select>
+        
         <label>工具：</label>
         {!! Form::text('tools', isset($searchData['tool']) ? $searchData['tool'] : null, ['class'=>'form-control']) !!}
         <label>打卡人：</label>
