@@ -2,7 +2,7 @@
 <html class="bg-black">
     <head>
         <meta charset="UTF-8">
-        <title>Administrator | Login</title>
+        <title>MyHome | @yield('title', '操作管理平台登录')</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="{!! admin_asset('components/bootstrap/dist/css/bootstrap.min.css') !!}" rel="stylesheet" type="text/css"/>
         <link href="{!! admin_asset('components/fontawesome/css/font-awesome.min.css') !!}" rel="stylesheet"
@@ -20,7 +20,7 @@ type="text/css"/>
     <body class="bg-black">
 
         <div class="form-box" id="login-box">
-            <div class="header">Sign In</div>
+            <div class="header">登 录</div>
             {!! Form::open(['route' => 'admin.login.store']) !!}
                 <div class="body bg-gray">
                     @if(Session::has('flash_message'))
@@ -29,17 +29,17 @@ type="text/css"/>
                         </p>
                     @endif
                     <div class="form-group">
-                        <input type="text" name="email" class="form-control" placeholder="Email"/>
+                        <input type="text" name="email" class="form-control" placeholder="邮箱"/>
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="Password"/>
+                        <input type="password" name="password" class="form-control" placeholder="密码"/>
                     </div>
                     <div class="form-group checkbox" style="margin-left:20px;">
-                        <input type="checkbox" name="remember" value="1" /> Remember me
+                        <input type="checkbox" name="remember" value="1" /> 记住账号
                     </div>
                 </div>
                 <div class="footer">
-                    <button type="submit" class="btn bg-olive btn-block">Sign me in</button>
+                    <button type="submit" class="btn bg-olive btn-block">登录</button>
                     <!--
                     <p><a href="#">I forgot my password</a></p>
 

@@ -21,14 +21,14 @@ class CommuteBls
         if (isset($searchData['day']) && ! empty($searchData['day'])) {
             $query->where('day', $searchData['day']);
         }
-        if (isset($searchData['week']) && ! empty($searchData['week'])) {
-            $query->where('week', $searchData['week']);
+        if (isset($searchData['week_th']) && ! empty($searchData['week_th'])) {
+            $query->where('week_th', $searchData['week_th']);
         }
         if (isset($searchData['userName']) && ! empty($searchData['userName'])) {
             $query->whereIn('user_id', User::where('name', 'like', '%'.$searchData['userName']. '%')->lists('id'));
         }
-        if (isset($searchData['tool']) && !empty($searchData['tool'])) {
-            $query->where('tools', 'like','%'. trim($searchData['tool']) . '%');
+        if (isset($searchData['tools']) && !empty($searchData['tools'])) {
+            $query->where('tools', 'like','%'. trim($searchData['tools']) . '%');
         }
         if (isset($searchData['startDay']) && !empty($searchData['startDay'])) {
             $query->where('day', '>=', $searchData['startDay']);

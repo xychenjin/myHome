@@ -62,4 +62,22 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function store()
+    {
+        $credentials = \Input::only('email', 'password');
+        $remember = \Input::has('remember');
+
+        if (\Auth::attempt($credentials, $remember)) {
+            $_SESSION['admin'] = \Auth::id();
+
+            return $this->redirect('myHome')->withFlashMessage('Login Success!');
+        }
+
+        if (getenv('PINGPONG_ADMIN_TESTING')) {
+            return \Redirect::to('admin/login')->withFlashMessage('Login failed!')->withFlashType('danger');
+        }
+
+        return \Redirect::back()->withFlashMessage('Login failed!')->withFlashType('danger');
+    }
 }

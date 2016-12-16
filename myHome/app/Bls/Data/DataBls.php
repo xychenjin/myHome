@@ -121,6 +121,7 @@ class DataBls
 
     public function setData($data)
     {
+        if ( is_object($data))  throw new \LogicException('类型错误：Object需要转成数组或字符串');
         $this->data = $data;
     }
 

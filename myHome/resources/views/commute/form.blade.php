@@ -31,7 +31,7 @@
     <div class="row">
         <label class="col-sm-2 control-label">下班打卡时间:</label>
         <div class="col-sm-10">
-            {!! Form::text('clock_off_at', isset($model) ? $model->clock_off_at : null , ['class' => 'form-control datetime']) !!}
+            {!! Form::text('clock_off_at', isset($model) && $model->clock_off_at > 0 ? $model->clock_off_at : null , ['class' => 'form-control datetime']) !!}
         </div>
     </div>
 </div>

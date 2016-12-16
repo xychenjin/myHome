@@ -1,4 +1,4 @@
-@extends($html)
+@extends($layouts)
 
 @section('title')
     测试：导出数据库至指定文件中

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Commute\Traits;
 
+use App\Bls\Commute\Model\CommuteModel;
 use Carbon\Carbon;
 
 trait CommuteTraits
@@ -100,5 +101,24 @@ trait CommuteTraits
             $data[$key]->weekdayDesc = $this->getWeekDay($item->weekday);
         }
         return $data;
+    }
+
+    /**
+     * 返回打卡日期列表
+     * @return mixed
+     */
+    public function getSelectDays()
+    {
+        $res = collect(['请选择']);
+        return $res->merge(CommuteModel::select('day')->orderBy('day', 'desc')->lists('day', 'day'));
+    }
+
+    /**
+     * 返回选择周次
+     * @return array
+     */
+    public function getSelectWeeks()
+    {
+        return collect(['请选择'])->merge($this->weekThes());
     }
 }

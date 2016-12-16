@@ -5,9 +5,9 @@
         <label>打卡日期：</label>
         {!! Form::select('day', $selectDays,  isset($searchData['day']) ? $searchData['day'] : null, ['class'=>'form-control']) !!}
         <label>周次：</label>
-        {!! Form::select('week', $selectWeeks,  isset($searchData['week']) ? $searchData['week'] : null, ['class'=>'form-control']) !!}
+        {!! Form::select('week_th', $selectWeeks,  isset($searchData['week']) ? $searchData['week'] : null, ['class'=>'form-control']) !!}
         <label>工具：</label>
-        {!! Form::text('tool', isset($searchData['tool']) ? $searchData['tool'] : null, ['class'=>'form-control']) !!}
+        {!! Form::text('tools', isset($searchData['tool']) ? $searchData['tool'] : null, ['class'=>'form-control']) !!}
         <label>打卡人：</label>
         {!! Form::text('userName', isset($searchData['userName']) ? $searchData['userName'] : null, ['class'=>'form-control']) !!}
         <label>截止日期：</label>
@@ -15,6 +15,16 @@
         - {!! Form::select('endDay', $selectDays,  isset($searchData['endDay']) ? $searchData['endDay'] : null, ['class'=>'form-control']) !!}
 
         {!! Form::submit('查询', ['class'=>'btn btn-primary']) !!}
+
+        @if (isset($searchData['day'])
+         || isset($searchData['week'])
+         || isset($searchData['tool'])
+         || isset($searchData['userName'])
+         || isset($searchData['startDay'])
+         || isset($searchData['endDay'])
+        )
+            {!! link_to_route('commute.index', '清除') !!}
+        @endif
     </div>
     {!! Form::close() !!}
 </div>

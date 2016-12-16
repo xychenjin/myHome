@@ -1,5 +1,5 @@
 <?php use Illuminate\Support\Debug\Dumper;?>
-@extends($html)
+@extends($layouts)
 
 @section('title')
     测试：查看错误日志

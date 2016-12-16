@@ -1,4 +1,4 @@
-@extends($html)
+@extends($layouts)
 
 @section('title')
     测试：添加打卡单

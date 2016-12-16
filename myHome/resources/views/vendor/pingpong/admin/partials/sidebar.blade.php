@@ -26,7 +26,7 @@
         {!! Form::close() !!}
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        {!! Menu::get('admin-menu') !!}
+        {!! Menu::get('myHome-menu') !!}
     </section>
     <!-- /.sidebar -->
 </aside>

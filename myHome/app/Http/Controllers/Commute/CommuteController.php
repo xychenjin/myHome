@@ -6,6 +6,7 @@ use App\Bls\Commute\CommuteBls;
 use App\Bls\Commute\Model\CommuteModel;
 use App\Bls\Data\DataBls;
 use App\Bls\Download\Download;
+use App\Consts\Download\DownloadConst;
 use App\Consts\Exception\ExceptionConst;
 use App\Http\Controllers\Commute\Traits\CommuteTraits;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class CommuteController extends Controller
         $res = $bls->getListByPage($searchData);
         $data = $this->formatList($res);
 
-        $selectWeeks = [];
-        $selectDays = [];
+        $selectWeeks = $this->getSelectWeeks();
+        $selectDays = $this->getSelectDays();
+        $dataType = DownloadConst::dataType();
 
         !empty($searchData['day']) && $data->appends('day', $searchData['day']);
         !empty($searchData['week']) && $data->appends('week', $searchData['week']);
@@ -39,7 +41,7 @@ class CommuteController extends Controller
         !empty($searchData['startDay']) && $data->appends('startDay', $searchData['startDay']);
         !empty($searchData['endDay']) && $data->appends('endDay', $searchData['endDay']);
 
-        return \View::make('commute.list', compact('data', 'searchData', 'selectDays', 'selectWeeks'));
+        return \View::make('commute.list', compact('data', 'searchData', 'selectDays', 'selectWeeks','dataType'));
     }
 
     /**
@@ -153,7 +155,7 @@ class CommuteController extends Controller
     {
         $model = CommuteModel::findOrFail($id);
 
-        $model->delete();
+        $model->softDelete();
 
         return redirect()->route('commute.index');
     }
@@ -167,7 +169,6 @@ class CommuteController extends Controller
         try {
             $download = new Download(isset($request->fileType) ? $request->fileType : 'csv', isset($request->path) ? $request->path : '');
             $dataBls = new DataBls('', isset($request->dataType) ? $request->dataType : '');
-
             //打印调用参数信息
             $download->with([
                 'Timestamp' => 'Created_at: '. date("Y-m-d H:i:s"),
@@ -179,11 +180,12 @@ class CommuteController extends Controller
             set_time_limit(0);
 
             //导出的结果集拼接
-            $res = CommuteModel::all();
+            $res = CommuteModel::all()->toArray();
             count($res)>0 && $download->with("共计导出：". count($res). "条");
             $dataBls->setData($res);
             $dataBls->setPrefix('db_m2016.t_commute');
             $download->with($dataBls->parse());
+            dd($download->getData());
             $download->append();
             $download->free();
 

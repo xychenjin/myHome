@@ -15,5 +15,6 @@ class ViewComposer
     public function compose($view)
     {
         $view->with('html', 'partials.html');
+        $view->with('layouts', 'admin::layouts.master');
     }
 }

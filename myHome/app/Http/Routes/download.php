@@ -6,7 +6,7 @@
  * Time: 18:19
  */
 
-Route::group(['prefix'=>'/download'], function() {
+Route::group(['prefix'=>'/download', 'middleware' => ['auth', 'menu']], function() {
 
     //下载数据库
     Route::get('/db', ['uses' => 'Download\\DownloadController@db', 'as' => 'download.db']);

@@ -7,7 +7,7 @@
  */
 
 //上下班打卡记录
-Route::group(['prefix' =>'/commute'], function(){
+Route::group(['prefix' =>'/commute', 'middleware' => 'auth'], function(){
    Route::get('/', ['uses' => 'Commute\\CommuteController@index', 'as' => 'commute.index']);
    Route::get('/create', ['uses' => 'Commute\\CommuteController@create', 'as' => 'commute.create']);
    Route::put('/store', ['uses' => 'Commute\\CommuteController@store', 'as' => 'commute.store']);

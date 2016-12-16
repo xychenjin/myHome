@@ -1,4 +1,4 @@
-@extends($html)
+@extends($layouts)
 <?php
 $id = str_random();
 ?>
@@ -19,12 +19,12 @@ $id = str_random();
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="row">
-                    <p>{!! link_to_route('commute.create', '打卡',[], ['class' => 'btn btn-warning']) !!}</p>
-                    <p class="text-right">
+                    <span>{!! link_to_route('commute.create', '打卡',[], ['class' => 'btn btn-warning']) !!}</span>
+                    <span class="text-right">
                         <a data-toggle="modal" href="#popup-{!! $id !!}" class='btn btn-success'>
                             导出文件
                         </a>
-                    </p>
+                    </span>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@ $id = str_random();
                                             </div>
                                             <div class="modal-body">
                                                 <p>
-                                                    确认删除数据?
+                                                    删除将不可见，不可编辑，确认删除数据?
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
@@ -120,6 +120,37 @@ $id = str_random();
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">存放目录：</label>
+                                    <div class="col-sm-10">
+                                        {!! Form::text('path', isset($path )? $path : '', ['class'=>'form-control', 'size'=>100, 'id'=>'path']) !!}
+                                        {{--{!! Form::button('选择目录', ['class'=>'btn btn-default', 'id'=>'getDb', 'onclick' => "browseFolder('path')"])!!}--}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-offset-2 col-sm-10">
+                                        {!! $errors->first('path', '<div class="text-danger">:message</div>') !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">导出结果：</label>
+                                    <div class="col-sm-10">
+                                        {!! Form::select('dataType', $dataType, null, ['class'=>'form-control']) !!}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-offset-2 col-sm-10">
+                                        {!! $errors->first('dataType', '<div class="text-danger">:message</div>') !!}
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <a href="javascript:;" class="btn btn-primary" id='confirm-{!! $id !!}'>确认</a>
@@ -141,7 +172,12 @@ $id = str_random();
     <script>
         $(function(){
             $("a[id^=confirm-]").click(function() {
-              window.location.href = "{!! route('commute.export') !!}" + '?fileType='+ $("select[name=fileType]").val();
+                var params = {
+                    fileType: $("select[name=fileType]").val(),
+                    path:$("input[name=path]").val(),
+                    dataType:$("select[name=dataType]").val()
+                };
+                window.location.href = "{!! route('commute.export') !!}" + '?' + $.param(params);
             });
         });
     </script>
