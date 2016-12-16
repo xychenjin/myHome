@@ -89,9 +89,9 @@ if (! function_exists("scanMyDir")) {
             } elseif (is_file($fileName)) {
                 $fileUrl = ltrim(str_replace($search, $replace, $fileName), '/');
                 $fileFormat = $showDetail ? $fileUrl . '(' . formatFileSize($fileName).')' : $fileUrl;
-                array_push($appends, (object)compact('fileUrl', 'fileFormat'));
+                $appends[$val] = (object)compact('fileUrl', 'fileFormat');
             } elseif (is_dir($fileName)) {
-                scanMyDir($fileName, $appends, $search, $replace);
+                scanMyDir($fileName, $appends, $search, $replace, $showDetail);
             }
         }
     }

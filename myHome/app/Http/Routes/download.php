@@ -27,4 +27,6 @@ Route::group(['prefix'=>'/download', 'middleware' => ['auth', 'menu']], function
     Route::get('/log/view', ['uses' => 'Download\\DownloadController@view', 'as' => 'log.view']);
     Route::get('/history', ['uses' => 'Download\\DownloadController@history', 'as' => 'download.history']);
 
+    //删除
+    Route::get('/delete', ['uses' => 'Download\\DownloadController@delete', 'as' => 'download.delete']);
 });

@@ -32,7 +32,7 @@ require_once 'Routes/commute.php';
 require_once 'Routes/admin.php';
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('myHome');
 });
 
 

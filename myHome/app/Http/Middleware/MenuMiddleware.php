@@ -20,11 +20,7 @@ class MenuMiddleware
     {
         $this->user = \Auth::user();
 
-        if (! \Auth::check()) {
-            return redirect()->route('admin.login.index');
-        }
-
-        $this->create();
+        $this->user && $this->create();
 
         return $next($request);
     }

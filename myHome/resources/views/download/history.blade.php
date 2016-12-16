@@ -8,15 +8,12 @@
 @endsection
 
 @section('content-header')
-    <h1 class="text-center">查看历史记录</h1>
+    <h1 class="text-center">查看历史记录</h1> {!! link_to_route('download.db', '返回') !!}
 @endsection
 
 @section("content")
     <div class="container">
 
-        <div class="line">
-            {!! link_to_route('download.db', '返回') !!}
-        </div>
         <div class="row">
 
             <label class="col-sm-2">&nbsp;</label>
@@ -25,7 +22,7 @@
 
         <div class="form-group-lg" >
 
-            @include('download.partials.share', ['showKey' => false, 'showLogs' => true])
+            @include('download.partials.share', ['showKey' => false, 'showLogs' => true, 'delete'=>true])
         </div>
     </div>
 

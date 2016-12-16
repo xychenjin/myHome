@@ -21,7 +21,7 @@ type="text/css"/>
 
         <div class="form-box" id="login-box">
             <div class="header">登 录</div>
-            {!! Form::open(['route' => 'admin.login.store']) !!}
+            {!! Form::open(['route' => 'login.store']) !!}
                 <div class="body bg-gray">
                     @if(Session::has('flash_message'))
                         <p class="login-flash-text text-danger">

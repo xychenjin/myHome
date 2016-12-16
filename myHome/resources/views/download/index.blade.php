@@ -146,14 +146,14 @@
             <div class="form-group">
                 <div class="row">
                     <label class="col-sm-2 control-label">导出表结构：</label>
-                    <div class="col-sm-10">
-                        <div class="row">
+                    <div class="col-sm-10 row">
+                        <div class="col-md-2">
                             {!! Form::radio('structure', '1', true, array('class' => 'col-sm-1 ', 'id'=> 'need-yes')) !!}
-                            <label class="col-sm-2 " for="need-yes">需要</label>
+                            <label class="control-label" for="need-yes">需要</label>
                         </div>
-                        <div class="row">
+                        <div class="col-md-2">
                             {!! Form::radio('structure', '0', false, array('class' => 'col-sm-1 ', 'id'=> 'need-no')) !!}
-                            <label class="col-sm-2 " for="need-no">不需要</label>
+                            <label class="control-label" for="need-no">不需要</label>
                         </div>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
 
             <div class="form-group">
                 <div class="row">
-                    <label class="col-sm-2 control-label">条数限制：（默认不限制）</label>
+                    <label class="col-sm-2 control-label">单表导出条数限制：（默认不限制）</label>
                     <div class="col-sm-10">
                         {!! Form::text('limit', $limit ? $limit : '0', ['class'=>'form-control', 'size'=>100, 'id'=>'limit']) !!}
                     </div>
@@ -210,11 +210,24 @@
                 <div class="row">
                     <div class="col-md-offset-2 col-sm-10">
                         {!! $errors->first('orderBy', '<div class="text-danger">:message</div>') !!}
-                        {!! $errors->first('downloadFailed', '<div class="text-danger">:message</div>') !!}
                     </div>
                 </div>
             </div>
 
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-2 control-label">添加文字：</label>
+                    <div class="col-sm-10">
+                        {!! Form::textarea('desc', isset($desc) ? $desc : null, ['class'=>'form-control', 'placeholder'=> '导出文件中，输入自定义信息']) !!}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-2 col-sm-10">
+                        {!! $errors->first('desc', '<div class="text-danger">:message</div>') !!}
+                        {!! $errors->first('downloadFailed', '<div class="text-danger">:message</div>') !!}
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">&nbsp;</label>

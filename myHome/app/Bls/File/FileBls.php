@@ -112,4 +112,15 @@ class FileBls
 
         return true;
     }
+
+    public function transfer()
+    {
+        $file = $this->file;
+        $getContext = file_get_contents($file);
+        $temp = 'temp.tmp';
+        file_put_contents($temp, $getContext);
+        $file .= formatFileSize($file) ? "(". formatFileSize($temp). ")" : '';
+        @unlink($temp);
+        return $file;
+    }
 }

@@ -71,7 +71,7 @@ class AuthController extends Controller
         if (\Auth::attempt($credentials, $remember)) {
             $_SESSION['admin'] = \Auth::id();
 
-            return $this->redirect('myHome')->withFlashMessage('Login Success!');
+            return \Redirect::route('myHome')->withFlashMessage('Login Success!');
         }
 
         if (getenv('PINGPONG_ADMIN_TESTING')) {

@@ -6,7 +6,7 @@
  * Time: 11:24
  */
 Route::group(['prefix' => '/login'], function(){
-    Route::get('/store', ['uses' => 'Auth\\AuthController@store','as' => 'login.store']);
+    Route::post('/store', ['uses' => 'Auth\\AuthController@store','as' => 'login.store']);
 });
 
 Route::group(['prefix' => config('admin.prefix', 'admin')], function () {

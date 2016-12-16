@@ -13,6 +13,7 @@ use App\Bls\Connect\ConnectBls;
 use App\Bls\Connect\Triats\ConnectTrait;
 use App\Bls\Data\DataBls;
 use App\Bls\Download\Download;
+use App\Bls\File\FileBls;
 use App\Consts\Connect\ConnectConst;
 use App\Consts\Download\DownloadConst;
 use App\Consts\Exception\ExceptionConst;
@@ -20,6 +21,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Download\Validations\DownloadFormValidation;
 use App\Library\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use View;
 use Illuminate\Support\Facades\Log;
 
@@ -47,12 +50,21 @@ class DownloadController extends Controller
 
     public function history(Request $request)
     {
-
         $path = strtr(public_path(). '/temp/', '\\', '/');
 
-        $files = [];
-        scanMyDir($path, $files, $path, '');
+        $scanFiles = [];
+        scanMyDir($path, $scanFiles, $path, '');
         $storagePath = ltrim(getHost(),'/'). '/temp/';
+        krsort($scanFiles);
+        $collection = new Collection($scanFiles);
+
+        $perPage = 10;
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        $currentPageResults = $collection->slice(($currentPage-1) * $perPage, $perPage)->all();
+        $files = new LengthAwarePaginator($currentPageResults, count($collection), $perPage);
+        $files->setPath($request->url());
 
         $storage = strtr(storage_path(). '/logs/', '\\', '/');
         $logs = [];
@@ -79,9 +91,10 @@ class DownloadController extends Controller
                 ->withErrors(['connectionFailed' => '连接失败：'. $messages]);
         }
 
-        try {
-            $download = new Download($request->fileType, isset($request->path) ? $request->path : '');
 
+        try {
+            $startAt = date('Y-m-d H:i:s');
+            $download = new Download($request->fileType, isset($request->path) ? $request->path : '');
             $dataBls = new DataBls('', isset($request->dataType) ? $request->dataType : '');
 
             //打印调用参数信息
@@ -167,7 +180,10 @@ class DownloadController extends Controller
             }
 
             return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5(),
-                'path'=> isset($request->path) ? $request->path : '']));
+                        'path'=> isset($request->path) ? $request->path : ''])
+                )
+                ->withFlashMessage("导出成功! 开始于: ". $startAt. ', 结束于: '. date('Y-m-d H:i:s'))
+                ->withFlashType('success');
         } catch (\Exception $e) {
             $msg = ExceptionConst::format([ '导出文件', $e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode()]);
             Log::error($msg);
@@ -185,13 +201,13 @@ class DownloadController extends Controller
     public function success(Request $request)
     {
         $bls = new Download($request->type, isset($request->path) ? $request->path : '');
-        $file = $bls->getStorage($request->md5);
-        $getContext = file_get_contents($file);
-        $temp = 'temp.tmp';
-        file_put_contents($temp, $getContext);
-        $file .= formatFileSize($file) ? "(". formatFileSize($temp). ")" : '';
-        @unlink($temp);
-        $jsonFile = $bls->getLocal();
+        $storagefile = $bls->getStorage($request->md5);
+        $fileBls = new FileBls($storagefile);
+        $file = $fileBls->transfer();
+        $localFile = $bls->getLocal();
+        $fileBls->setFile($localFile);
+        $jsonFile = $fileBls->transfer();
+
         $path = strtr(public_path(). '/'. $bls->getStorageDir(), '\\', '/');
         $files = [];
         scanMyDir($path, $files, $path, '');
@@ -344,5 +360,22 @@ class DownloadController extends Controller
         }
     }
 
+    /**
+     * 删除文件
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|string
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $path = strtr(public_path(). '/temp/', '\\', '/');
+            $file = rtrim($path, '/') .'/'.$request->file;
+            if (is_file($file)) @unlink($file);
+            return redirect()->back()->withFlashMessage('删除成功！')->withFlashType('success');
+        } catch(\Exception $e) {
+           return $e->getMessage();
+        }
+    }
 
 }

@@ -144,4 +144,6 @@ class Download implements IDownload
         $data = & $this->data;
         unset($this->data, $data);
     }
+
+
 }
