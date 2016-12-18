@@ -30,6 +30,8 @@ require_once 'Routes/encode.php';
 require_once 'Routes/download.php';
 require_once 'Routes/commute.php';
 require_once 'Routes/admin.php';
+require_once 'Routes/cart.php';
+require_once 'Routes/code.php';
 
 Route::get('/', function () {
     return redirect()->route('myHome');

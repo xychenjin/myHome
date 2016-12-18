@@ -12,11 +12,18 @@ return [
         'history' => '历史记录',
         'keys' => '查看Key',
         'logs' => '查看Log',
+        'desc' => '新加表结构',
     ],
 
     'commute' =>[
         'title' => '考勤管理',
         'all' => '打卡列表',
         'create' => '打卡',
+    ],
+
+    'cart' =>[
+        'title' => '学车管理',
+        'all' => '记录列表',
+        'create' => '添加',
     ]
 ];

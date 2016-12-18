@@ -42,12 +42,12 @@ class createUser extends Command
         //
         $this->line('开始：'. date('Y-m-d H:i:s'));
 
-        $bar = $this->output->createProgressBar(10);
+        $bar = $this->output->createProgressBar(10000);
         $this->output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
 
         (new UserModel)->getConnection()->transaction(function() use($bar) {
-            $i = 15001;
-            while ($i < 15011) {
+            $i = 20000;
+            while ($i < 30000) {
                 $name = date('Ymd').(sprintf('%06d', $i));
                 UserModel::create([
                     'name' => $name,

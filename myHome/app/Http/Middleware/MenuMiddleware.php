@@ -35,6 +35,7 @@ class MenuMiddleware
             $this->addUserMenu($menu); //添加员工管理列表
             $this->addDownloadMenu($menu); //导出数据库列表
             $this->addCommuteMenu($menu); //打卡记录表
+            $this->addCartRecordMenu($menu); //学车记录表
 
         });
     }
@@ -71,6 +72,7 @@ class MenuMiddleware
                     $sub->divider(3);
 //                    $sub->route('download.keyDetail', trans('menus.download.keys'), [], 4);
                     $sub->route('logs', trans('menus.download.logs'), [], 5);
+                    $sub->route('code.desc', trans('menus.download.desc'), [], 6);
                 }, 4, ['icon' => 'fa fa-users']);
             }
         } catch(\Exception $e) {
@@ -85,6 +87,20 @@ class MenuMiddleware
                 $menu->dropdown(trans('menus.commute.title'), function ($sub) {
                     $sub->route('commute.index', trans('menus.commute.all'), [], 1);
                     $sub->route('commute.create', trans('menus.commute.create'), [], 2);
+                }, 3, ['icon' => 'fa fa-users']);
+            }
+        } catch(\Exception $e) {
+
+        }
+    }
+
+    private function addCartRecordMenu($menu)
+    {
+        try {
+            if ($this->user) {
+                $menu->dropdown(trans('menus.cart.title'), function ($sub) {
+                    $sub->route('cart.record', trans('menus.cart.all'), [], 1);
+                    $sub->route('cart.create', trans('menus.cart.create'), [], 2);
                 }, 3, ['icon' => 'fa fa-users']);
             }
         } catch(\Exception $e) {

@@ -12,7 +12,7 @@
 @endsection
 
 @section("content")
-    <div class="container">
+
 
         <div class="row">
 
@@ -24,7 +24,7 @@
 
             @include('download.partials.share', ['showKey' => false, 'showLogs' => true, 'delete'=>true])
         </div>
-    </div>
+
 
 @endsection
 

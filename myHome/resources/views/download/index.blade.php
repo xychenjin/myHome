@@ -16,9 +16,9 @@
 @endsection
 
 @section("content")
-    <div class="container">
+
         {!! Form::open(['route' => 'download.dbDown', 'method' => 'put']) !!}
-        <div class="form-horizontal">
+        {{--<div class="form-horizontal">--}}
             <div class="form-group">
                 <div class="row">
                     <label class="col-md-2 control-label">主机：</label>
@@ -236,14 +236,14 @@
                 </div>
             </div>
 
-        </div>
+        {{--</div>--}}
         {!! Form::close() !!}
 
         <div id="loading" style="display: none;">
             加载中..
             <img src="{!! staticUrl('recources/img/loading072.gif') !!}" mce_src="{!! staticUrl('recources/img/loading072.gif') !!}" alt="loading.." />
         </div>
-    </div>
+
 
 @endsection
 
