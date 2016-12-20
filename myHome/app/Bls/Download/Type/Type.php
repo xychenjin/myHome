@@ -186,4 +186,9 @@ class Type
     {
         // TODO: Implement __destruct() method.
     }
+
+    public function getFile()
+    {
+        return rtrim(getHost(), '/'). '/'.$this->file;
+    }
 }

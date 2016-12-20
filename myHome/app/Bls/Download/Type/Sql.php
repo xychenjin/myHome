@@ -35,7 +35,7 @@ class Sql extends Type
                     $res .= $this->format($value);
                     break;
                 case 'string':
-                    $res .= is_numeric($key) ? iconv('UTF-8', 'GB2312', $value). "\r\n" : $key ."  =>  ".  iconv('UTF-8', 'GB2312', $value). "\r\n";
+                    $res .= is_numeric($key) ? iconv('UTF-8', 'GB2312//IGNORE', $value). "\r\n" : $key ."  =>  ".  iconv('UTF-8', 'GB2312//IGNORE', $value). "\r\n";
                     break;
             }
         }

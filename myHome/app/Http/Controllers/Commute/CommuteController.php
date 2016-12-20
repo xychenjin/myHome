@@ -94,7 +94,8 @@ class CommuteController extends Controller
             ]);
         }
 
-        return redirect()->route('commute.index');
+        return redirect()->route('commute.index')->withFlashMessage('打卡成功！')
+            ->withFlashType('success');
     }
 
     /**

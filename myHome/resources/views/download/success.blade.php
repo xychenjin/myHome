@@ -20,6 +20,10 @@
 
         <div class="form-group-lg" >
             <h3 class="text-success" style="font-family: 华文细黑;color:red"><small style="color:green;">导出</small>&nbsp;成功！</h3>
+
+            <!--打印错误输出信息-->
+            {!! $errors->first('errorsMsg', '<div class="text-danger">:message</div>') !!}
+
             <div class="row">
                 <label class="col-sm-2">&nbsp;</label>
                 {!! link_to_route('logs', '查看错误日志', []) !!}

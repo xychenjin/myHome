@@ -8,10 +8,12 @@
 
 @endsection
 
+@section('content-header')
+    <h1><strong class="text-warning">{!! date('Y年m月d日') !!}</strong><small>{!! link_to_route('commute.index', '返回') !!}</small></h1>
+@endsection
+
 @section('content')
-    <div class="text-center">
-        <h1><strong class="text-warning">{!! date('Y年m月d日') !!}</strong></h1><small>{!! link_to_route('commute.index', '返回') !!}</small>
-    </div>
+
     <div class="container">
         <div class="form-horizontal">
 

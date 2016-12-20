@@ -9,20 +9,16 @@
 @endsection
 
 @section('content-header')
-    <h1 class="text-center">日志列表文件</h1>
+    <h1 >日志列表文件</h1>
 @endsection
 
 @section("content")
-        <div class="row text-right" style="margin-right: 20px">{!! link_to_route('download.history', '返回', ['type' => $request->type, 'md5' => $request->md5]) !!}</div>
 
-        <div class="tab-content">
-            <div class="form-group">
-                @foreach($files as $file)
-                    <div class="row">{!! link_to_route('log.view', $file->fileFormat, ['file' => $file->fileUrl], ['target'=>'_blank']) !!}</div>
-                @endforeach
-            </div>
+        <div class="form-group">
+            @foreach($files as $file)
+               <p>{!! link_to_route('log.view', $file->fileFormat, ['file' => $file->fileUrl], ['target'=>'_blank']) !!}</p>
+            @endforeach
         </div>
-
 
 
 @endsection

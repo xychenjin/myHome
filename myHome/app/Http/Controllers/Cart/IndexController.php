@@ -34,7 +34,7 @@ class IndexController extends Controller
         $input = $request->all();
         (new CartRecordBls())->store($input);
 
-        return redirect()->route('cart.record');
+        return redirect()->route('cart.record')->withFlashMessage('添加成功')->withFlashType('success');
     }
 
     public function update(Request $request , $id)

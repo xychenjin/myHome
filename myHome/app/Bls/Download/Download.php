@@ -145,5 +145,8 @@ class Download implements IDownload
         unset($this->data, $data);
     }
 
-
+    public function getFile()
+    {
+        return $this->obj->getFile();
+    }
 }

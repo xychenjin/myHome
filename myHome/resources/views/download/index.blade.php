@@ -12,7 +12,7 @@
 @endsection
 
 @section('content-header')
-    <h1 class="text-center">MySql数据库导出并下载</h1>
+    <h1 >MySql数据库导出并下载</h1>
 @endsection
 
 @section("content")

@@ -11,7 +11,7 @@ return [
         'export' => '数据库导出',
         'history' => '历史记录',
         'keys' => '查看Key',
-        'logs' => '查看Log',
+        'logs' => '查看日志',
         'desc' => '新加表结构',
     ],
 

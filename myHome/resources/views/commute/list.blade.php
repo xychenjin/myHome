@@ -10,21 +10,21 @@ $id = str_random();
 
 @endsection
 
+@section('content-header')
+   <h1>打卡记录表</h1>
+@endsection
+
 @section('content')
 
-    <div class="text-center">
-        <h1>打卡记录表</h1>
-    </div>
+
     <div class="container">
-        <div class="form-horizontal">
+        {{--<div class="form-horizontal">--}}
             <div class="form-group">
-                <div class="row">
-                    <span>{!! link_to_route('commute.create', '打卡',[], ['class' => 'btn btn-warning']) !!}</span>
-                    <span class="text-right">
+                <div class="row text-right">
+                    {!! link_to_route('commute.create', '打卡',[], ['class' => 'btn btn-warning']) !!}
                         <a data-toggle="modal" href="#popup-{!! $id !!}" class='btn btn-success'>
                             导出文件
                         </a>
-                    </span>
                 </div>
             </div>
 
@@ -165,7 +165,7 @@ $id = str_random();
                 {!! $data->render() !!}
             </div>
         </div>
-    </div>
+    {{--</div>--}}
 @endsection
 
 @section('script')

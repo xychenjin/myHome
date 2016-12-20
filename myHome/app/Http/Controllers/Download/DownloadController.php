@@ -91,7 +91,6 @@ class DownloadController extends Controller
                 ->withErrors(['connectionFailed' => '连接失败：'. $messages]);
         }
 
-
         try {
             $startAt = date('Y-m-d H:i:s');
             $download = new Download($request->fileType, isset($request->path) ? $request->path : '');
@@ -101,12 +100,16 @@ class DownloadController extends Controller
             $download->with([
                 'Timestamp' => 'Created_at: '. date("Y-m-d H:i:s"),
                 'url' => $request->url(),
+                'file' => $download->getFile(),
                 'Queries' => $request->all(),
             ]);
 
             $download->with("---------------------------------------------------------------------");
             //开启过期机制
             set_time_limit(0);
+            //统计错误信息
+            $errorsMsg = '' ;
+            $errorsCount = 0;
             foreach ($request->tbName as $item => $tb) {
                 try {
                     $res = $connection->select('SELECT count(1) as existed FROM information_schema.TABLES WHERE table_name = "'
@@ -153,9 +156,12 @@ class DownloadController extends Controller
                                 $download->append();
                                 $download->free();
                                 $succeed += count($res);
+
                             } catch (\Exception $e) {
-                                $msg = ExceptionConst::format([ '数据批量导出操作', $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
+                                $msg = ExceptionConst::format([ '数据批量导出操作:'.$tb, $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
                                 Log::error($msg);
+                                $errorsMsg .= "<br/>". $msg;
+                                $errorsCount += 1;
                             }
                             $i++ ;
                         }
@@ -170,18 +176,25 @@ class DownloadController extends Controller
                         $dataBls->setData($res);
                         $dataBls->setPrefix($tb);
                         $download->with($dataBls->parse());
+
                         $download->append();
                         $download->free();
+
                     }
                 } catch (\Exception $e) {
-                    $msg = ExceptionConst::format([ '数据查询操作', $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
+                    $msg = ExceptionConst::format([ '数据查询操作:'.$tb , $e->getMessage(), $e->getFile(), $e->getLine(),$e->getCode()]);
                     Log::error($msg);
+                    $errorsMsg .= "<br/>". $msg;
+                    $errorsCount += 1;
                 }
             }
+
+            $errorsMsg = $errorsCount && $errorsMsg ? "本次导出共计有 {$errorsCount} 处异常错误<br/>". $errorsMsg : '' . $errorsMsg;
 
             return redirect(route('download.success', ['type'=> $request->fileType, 'md5' => $download->getMd5(),
                         'path'=> isset($request->path) ? $request->path : ''])
                 )
+                ->withErrors(compact('errorsMsg'))
                 ->withFlashMessage("导出成功! 开始于: ". $startAt. ', 结束于: '. date('Y-m-d H:i:s'))
                 ->withFlashType('success');
         } catch (\Exception $e) {

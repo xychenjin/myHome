@@ -11,7 +11,8 @@ namespace App\Consts\Exception;
 
 class ExceptionConst
 {
-    const SPRINT_MESSAGE = '%s时出错：%s,位于文件：%s, 第%u行。错误码：%u';
+    const SPRINT_MESSAGE_FIVE = '%s时出错：%s,位于文件：%s, 第%u行。错误码：%u';
+    const SPRINT_MESSAGE_FOUR = '%s时出错：%s,位于文件：%s, 第%u行。';
 
     /**
      * 可以传单个数组，也可以逗号分隔传递参数
@@ -47,10 +48,10 @@ class ExceptionConst
                 $res = sprintf(static::SPRINT_MESSAGE, $args[0], $args[1], $args[2]);
                 break;
             case 4:
-                $res = sprintf(static::SPRINT_MESSAGE, $args[0], $args[1], $args[2], $args[3]);
+                $res = sprintf(static::SPRINT_MESSAGE_FOUR, $args[0], $args[1], $args[2], $args[3]);
                 break;
             case 5:
-                $res = sprintf(static::SPRINT_MESSAGE, $args[0], $args[1], $args[2], $args[3], $args[4]);
+                $res = sprintf(static::SPRINT_MESSAGE_FIVE, $args[0], $args[1], $args[2], $args[3], $args[4]);
                 break;
             case 6:
                 $res = sprintf(static::SPRINT_MESSAGE, $args[0], $args[1], $args[2], $args[3], $args[4], $args[5]);
