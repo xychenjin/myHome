@@ -164,6 +164,26 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-2 control-label">是否导出数据：</label>
+                    <div class="col-sm-10 row">
+                        <div class="col-md-2">
+                            {!! Form::radio('export', '1', true, array('class' => 'col-sm-1 ', 'id'=> 'export-yes')) !!}
+                            <label class="control-label" for="export-yes">导出</label>
+                        </div>
+                        <div class="col-md-2">
+                            {!! Form::radio('export', '0', false, array('class' => 'col-sm-1 ', 'id'=> 'export-no')) !!}
+                            <label class="control-label" for="export-no">不导出</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-2 col-sm-10">
+                        {!! $errors->first('structure', '<div class="text-danger">:message</div>') !!}
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="row">
@@ -319,6 +339,21 @@
         });
 
         $("input[type=submit]").attr('disabled', false);
+
+        $("#export-yes, #export-no").on('ifClicked', function(event) {
+            var p = $(this).parents('.form-group');
+            var v = $(this).val();
+            var show = true;
+            if (v == '0') {
+                show = false;
+            }
+            var dom = p.nextAll('.form-group');
+            if (dom === undefined) return false;
+            var c = parseInt(dom.length)-1;
+            var n = p.nextAll('.form-group:lt('+ c +')');
+            show ? n.show() : n.hide();
+            return true;
+        });
     });
 
     function bindClick(){

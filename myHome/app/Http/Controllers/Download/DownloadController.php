@@ -128,6 +128,12 @@ class DownloadController extends Controller
                         $download->with("--------------------------------------------------------------------");
                     }
 
+                    //是否需要导出数据
+                    if (! $request->export) {
+                        $download->append();
+                        continue;
+                    }
+
                     $res = $connection->select('SELECT COUNT(1) AS total FROM '. $tb);
                     $total = $res[0]->total;
                     $max = config('limit.max');

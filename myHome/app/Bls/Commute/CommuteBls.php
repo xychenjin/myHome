@@ -21,7 +21,7 @@ class CommuteBls
         if (isset($searchData['day']) && ! empty($searchData['day'])) {
             $query->where('day', $searchData['day']);
         }
-        if (isset($searchData['week_th']) && ! empty($searchData['week_th'])) {
+        if (isset($searchData['week_th']) && is_numeric($searchData['week_th'])) {
             $query->where('week_th', $searchData['week_th']);
         }
         if (isset($searchData['userName']) && ! empty($searchData['userName'])) {
