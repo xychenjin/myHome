@@ -12,4 +12,6 @@ class UserController extends Controller
         $user = (new UserBls())->getAll()->toArray();
         dd($user);
     }
+
+
 }

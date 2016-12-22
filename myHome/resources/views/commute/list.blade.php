@@ -16,7 +16,6 @@ $id = str_random();
 
 @section('content')
 
-
     <div class="container">
         {{--<div class="form-horizontal">--}}
             <div class="form-group">
@@ -34,17 +33,18 @@ $id = str_random();
                 <thead>
                     <tr>
                         <th>序号</th>
+                        <th>周次</th>
                         <th>打卡日期</th>
                         <th>出发时间</th>
                         <th>到公司打卡时间</th>
-                        <th>下班打卡时间</th>
-                        <th>天次</th>
-                        <th>周次</th>
+                        {{--<th>下班打卡时间</th>--}}
                         <th>周几</th>
+                        <th>天次</th>
                         <th>上车时间</th>
                         <th>工具</th>
                         <th>备注说明</th>
                         <th>打卡人</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -52,17 +52,18 @@ $id = str_random();
                     @foreach($data as $item)
                         <tr>
                             <td>{!! $item->id !!}</td>
-                            <td>{!! $item->day !!}</td>
+                            <td>{!! $item->weekTh !!}</td>
+                            <td>{!! link_to_route( 'commute.detail', $item->day, ['id' => $item->id],['class' => $item->is_subscribe ? 'text-warning' : '']) !!}</td>
                             <td>{!! $item->start_at !!}</td>
                             <td>{!! $item->clock_at !!}</td>
-                            <td>{!! $item->clock_off_at > 0 ? $item->clock_off_at : null !!}</td>
-                            <td>{!! $item->day_th ? '第'. $item->day_th .'天': null !!}</td>
-                            <td>{!! $item->weekTh !!}</td>
+                            {{--<td>{!! $item->clock_off_at > 0 ? $item->clock_off_at : null !!}</td>--}}
                             <td>{!! $item->weekdayDesc !!}</td>
+                            <td>{!! $item->day_th ? '第'. $item->day_th .'天': null !!}</td>
                             <td>{!! $item->boarding_at > 0 ?  $item->boarding_at: null !!}</td>
                             <td>{!! $item->tools !!}</td>
                             <td>{!! $item->desc !!}</td>
                             <td>{!! !is_null($item->user()->first()) ? $item->user()->first()->name : null !!}</td>
+                            <td>{!! $item->created_at !!}</td>
                             <td>
                                 {!! HTML::link(route('commute.edit',['id' => $item->id]), '编辑') !!} &middot;
                                 <a data-toggle="modal" href="#modal-delete-{!! $item->id !!}" class="btn btn-danger">

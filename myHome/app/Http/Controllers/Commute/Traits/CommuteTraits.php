@@ -121,4 +121,25 @@ trait CommuteTraits
     {
         return $this->weekThes();
     }
+
+    /**
+     * 获取补签日期：未签到日期往前推30天
+     *
+     * @return array
+     */
+    public function getSubscribeDates()
+    {
+        $res = [];
+        $dates = CommuteModel::selectRaw('day')->distinct()->lists('day', 'day')->toArray();
+        $i = 1;
+        set_time_limit(0);
+        while (count($res) < 30) {
+            $date = date('Y-m-d', strtotime('-'. $i.' day'));
+            $strTime = strtotime($date);
+            if (! array_search($date, $dates))
+                $res[$date] = date('Y年m月d日', $strTime) . ' ' . $this->getWeekDay(date('w', $strTime));
+            $i++;
+        }
+        return $res;
+    }
 }

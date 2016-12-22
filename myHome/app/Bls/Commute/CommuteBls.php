@@ -14,7 +14,7 @@ use Pingpong\Admin\Entities\User;
 
 class CommuteBls
 {
-    public function getListByPage($searchData, $orderByRaw = 'id desc', $paginator = 10)
+    public function getListByPage($searchData, $orderByRaw = 'day desc, updated_at desc', $paginator = 10)
     {
         $query = CommuteModel::query();
 
@@ -35,6 +35,10 @@ class CommuteBls
         }
         if (isset($searchData['endDay']) && !empty($searchData['endDay'])) {
             $query->where('day', '<=', $searchData['endDay']);
+        }
+
+        if (isset($searchData['subscribe']) && is_numeric($searchData['subscribe'])) {
+            $query->where('is_subscribe', $searchData['subscribe']);
         }
 
         return $query->orderByRaw($orderByRaw)->paginate($paginator);

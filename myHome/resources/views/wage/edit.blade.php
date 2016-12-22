@@ -8,14 +8,15 @@
 
 @endsection
 
+@section('content-header')
+    <h1>编辑<small>{!! link_to_route('wage.index', '返回') !!}</small></h1>
+@endsection
+
 @section('content')
-    <div class="text-center">
-        <h1>编辑</h1><small>{!! link_to_route('commute.index', '返回') !!}</small>
-    </div>
     <div class="container">
         <div class="form-horizontal">
 
-            @include('commute.partials.form')
+            @include('wage.form')
 
         </div>
     </div>

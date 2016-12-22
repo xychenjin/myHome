@@ -21,4 +21,13 @@ Route::group(['prefix' =>'/commute', 'middleware' => 'auth'], function(){
        ->where(['id' => '[0-9]+']);
 
     Route::get('/export', ['uses' => 'Commute\\CommuteController@export', 'as' => 'commute.export']);
+    Route::get('/{id}/detail', ['uses' => 'Commute\\CommuteController@detail', 'as' => 'commute.detail'])
+        ->where(['id' => '[0-9]+']);
+
+    //补签
+    Route::group(['prefix' => 'subscribe'], function(){
+        Route::get('/', ['uses' => 'Commute\\SubscribeController@index', 'as' => 'commute.subscribe']);
+        Route::put('/store', ['uses' => 'Commute\\SubscribeController@store', 'as' => 'commute.subscribe.store']);
+    });
+
 });

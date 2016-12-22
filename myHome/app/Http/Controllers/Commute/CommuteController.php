@@ -40,6 +40,7 @@ class CommuteController extends Controller
         !empty($searchData['tool']) && $data->appends('tool', $searchData['tool']);
         !empty($searchData['startDay']) && $data->appends('startDay', $searchData['startDay']);
         !empty($searchData['endDay']) && $data->appends('endDay', $searchData['endDay']);
+        !empty($searchData['subscribe']) && $data->appends('subscribe', $searchData['subscribe']);
 
         return \View::make('commute.list', compact('data', 'searchData', 'selectDays', 'selectWeeks','dataType'));
     }
@@ -57,7 +58,9 @@ class CommuteController extends Controller
         $weekDays = $this->weekDays();
         //年份
         $yearThes = $this->yearThes();
-        return \view::make('commute.create', compact('weekThes', 'weekDays', 'yearThes'));
+        //是否已经打过卡了
+        $commuted = CommuteModel::where('day', date('Y-m-d'))->exists();
+        return \view::make('commute.create', compact('weekThes', 'weekDays', 'yearThes', 'commuted'));
     }
 
     /**
@@ -89,9 +92,8 @@ class CommuteController extends Controller
         ]);
 
         if (! $model) {
-            return redirect()->back()->withInput()->withErrors([
-
-            ]);
+            return redirect()->back()->withInput()->withFlashMessage('打卡失败！')
+                ->withFlashType('danger');
         }
 
         return redirect()->route('commute.index')->withFlashMessage('打卡成功！')
@@ -104,9 +106,11 @@ class CommuteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function detail($id)
     {
-        //
+        $model = CommuteModel::findOrFail($id);
+        $model->weekdayDesc = $this->getWeekDay($model->weekday);
+        return \View::make('commute.detail', compact('model'));
     }
 
     /**
@@ -197,4 +201,5 @@ class CommuteController extends Controller
             return $msg;
         }
     }
+
 }

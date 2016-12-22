@@ -32,11 +32,16 @@ class MenuMiddleware
             $menu->setPresenter('Pingpong\Admin\Presenters\SidebarMenuPresenter');
             $menu->route('myHome', trans('admin.menus.dashboard'), [], 0, ['icon' => 'fa fa-dashboard']);
 
-            $this->addUserMenu($menu); //添加员工管理列表
-            $this->addDownloadMenu($menu); //导出数据库列表
-            $this->addCommuteMenu($menu); //打卡记录表
-            $this->addCartRecordMenu($menu); //学车记录表
-
+            //添加员工管理
+            $this->addUserMenu($menu);
+            //导出数据库
+            $this->addDownloadMenu($menu);
+            //打卡记录菜单
+            $this->addCommuteMenu($menu);
+            //学车记录菜单
+            $this->addCartRecordMenu($menu);
+            //工资管理菜单
+            $this->addWageMenu($menu);
         });
     }
 
@@ -55,6 +60,7 @@ class MenuMiddleware
                     $sub->divider(3);
                     $sub->route('admin.roles.index', trans('admin.menus.roles'), [], 4);
                     $sub->route('admin.permissions.index', trans('admin.menus.permissions'), [], 5);
+                    $sub->route('admin.users.pwd', trans('admin.menus.users.pwd'), [], 6);
                 }, 2, ['icon' => 'fa fa-users']);
             }
         } catch(\Exception $e) {
@@ -87,6 +93,7 @@ class MenuMiddleware
                 $menu->dropdown(trans('menus.commute.title'), function ($sub) {
                     $sub->route('commute.index', trans('menus.commute.all'), [], 1);
                     $sub->route('commute.create', trans('menus.commute.create'), [], 2);
+                    $sub->route('commute.subscribe', trans('menus.commute.subscribe'), [], 3);
                 }, 3, ['icon' => 'fa fa-users']);
             }
         } catch(\Exception $e) {
@@ -107,4 +114,19 @@ class MenuMiddleware
 
         }
     }
+
+    private function addWageMenu($menu)
+    {
+        try {
+            if ($this->user) {
+                $menu->dropdown(trans('menus.wage.title'), function ($sub) {
+                    $sub->route('wage.index', trans('menus.wage.list'), [], 1);
+                    $sub->route('wage.create', trans('menus.wage.add'), [], 2);
+                }, 3, ['icon' => 'fa fa-users']);
+            }
+        } catch(\Exception $e) {
+
+        }
+    }
+
 }

@@ -28,6 +28,9 @@
             {!! Form::select('startDay', $selectDays,  isset($searchData['startDay']) ? $searchData['startDay'] : null, ['class'=>'form-control']) !!}
             - {!! Form::select('endDay', $selectDays,  isset($searchData['endDay']) ? $searchData['endDay'] : null, ['class'=>'form-control']) !!}
 
+            <label>是否补签</label>
+            {!! Form::select('subscribe', [''=>'请选择', 1=>'是', 0=>'否'],  isset($searchData['subscribe']) ? $searchData['subscribe'] : null, ['class'=>'form-control']) !!}
+
             {!! Form::submit('查询', ['class'=>'btn btn-primary']) !!}
 
             @if (isset($searchData['day'])

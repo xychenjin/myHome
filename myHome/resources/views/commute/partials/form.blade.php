@@ -1,5 +1,7 @@
 @if(isset($model))
     {!! Form::open(['url' => route('commute.update', ['id' => $model->id]), 'method' => 'post']) !!}
+@elseif(isset($subscribe) && $subscribe)
+    {!! Form::open(['url' => route('commute.subscribe.store'), 'method' => 'put']) !!}
 @else
     {!! Form::open(['url' => route('commute.store'), 'method' => 'put']) !!}
 @endif
@@ -9,11 +11,34 @@
     {{--<link href="{{ getHost().'/packages/pingpong/admin/adminlte/css/datepicker/datepicker3.css' }}"/>--}}
 @endsection
 
+@if(isset($subscribe) && $subscribe)
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-2 control-label">补签日期:</label>
+            <div class="col-sm-10">
+                {!! Form::select('subscribeDate', $subscribeDates, null , ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-10">
+                {!! $errors->first('subscribeDate', '<div class="text-danger">:message</div>') !!}
+            </div>
+        </div>
+    </div>
+@endif
+
 <div class="form-group">
     <div class="row">
         <label class="col-sm-2 control-label">出发时间:</label>
         <div class="col-sm-10">
             {!! Form::text('start_at', isset($model) ? $model->start_at : null , ['class' => 'form-control moment']) !!}
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+        <div class="col-sm-10">
+            {!! $errors->first('start_at', '<div class="text-danger">:message</div>') !!}
         </div>
     </div>
 </div>
@@ -25,6 +50,12 @@
             {!! Form::text('clock_at', isset($model) ? $model->clock_at : null , ['class' => 'form-control datetime']) !!}
         </div>
     </div>
+    <div class="row">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+        <div class="col-sm-10">
+            {!! $errors->first('clock_at', '<div class="text-danger">:message</div>') !!}
+        </div>
+    </div>
 </div>
 
 <div class="form-group">
@@ -32,6 +63,12 @@
         <label class="col-sm-2 control-label">下班打卡时间:</label>
         <div class="col-sm-10">
             {!! Form::text('clock_off_at', isset($model) && $model->clock_off_at > 0 ? $model->clock_off_at : null , ['class' => 'form-control datetime']) !!}
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+        <div class="col-sm-10">
+            {!! $errors->first('clock_off_at', '<div class="text-danger">:message</div>') !!}
         </div>
     </div>
 </div>
@@ -42,6 +79,12 @@
             <label class="col-sm-2 control-label">一年中的第几天:</label>
             <div class="col-sm-10">
                 {!! Form::text('day_th', isset($model) ? $model->day_th : null , ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-10">
+                {!! $errors->first('day_th', '<div class="text-danger">:message</div>') !!}
             </div>
         </div>
     </div>
@@ -55,6 +98,12 @@
                 {!! Form::text('day', isset($model) ? $model->day : null , ['class' => 'form-control']) !!}
             </div>
         </div>
+        <div class="row">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-10">
+                {!! $errors->first('day', '<div class="text-danger">:message</div>') !!}
+            </div>
+        </div>
     </div>
 @endif
 
@@ -64,6 +113,12 @@
             <label class="col-sm-2 control-label">周次:</label>
             <div class="col-sm-10">
                 {!! Form::select('week_th', $weekThes, isset($model) ? $model->week_th : date('W'), ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-10">
+                {!! $errors->first('week_th', '<div class="text-danger">:message</div>') !!}
             </div>
         </div>
     </div>
@@ -123,7 +178,9 @@
         <label class="col-sm-2 control-label">&nbsp;</label>
         <div class="col-sm-10">
             {!! Form::submit(isset($model) ? '更新': '保存', ['class' => 'btn btn-primary']) !!}
+            @if(isset($model))
             {!! Form::hidden('day', isset($model) ? $model->day: date('Y-m-d')) !!}
+            @endif
         </div>
     </div>
 </div>

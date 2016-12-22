@@ -19,11 +19,18 @@ return [
         'title' => '考勤管理',
         'all' => '打卡列表',
         'create' => '打卡',
+        'subscribe' => '补签',
     ],
 
     'cart' =>[
         'title' => '学车管理',
         'all' => '记录列表',
         'create' => '添加',
+    ],
+
+    'wage' => [
+        'title' => '转账管理',
+        'list' => '转账记录',
+        'add' => '添加',
     ]
 ];

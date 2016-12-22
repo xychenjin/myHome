@@ -16,8 +16,16 @@
 
     <div class="container">
         <div class="form-horizontal">
-
-            @include('commute.form')
+            @if($commuted)
+                <div class="form-group">
+                    <div class="row">
+                        <h1>^_^ 你今天已经 <strong class="text-warning">打过卡</strong> 了，请明天再来！
+                            <small>{!! link_to_route('commute.subscribe', '补签', [], ['class'=>'btn btn-info']) !!}</small></h1>
+                    </div>
+                </div>
+            @else
+                @include('commute.partials.form')
+            @endif
 
         </div>
     </div>

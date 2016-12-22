@@ -1,21 +1,22 @@
 @extends($layouts)
 
 @section('title')
-    测试：编辑
+    测试：添加
 @endsection
 
 @section('style')
 
 @endsection
 
+@section('content-header')
+    <h1>工资详情</h1>
+@endsection
+
 @section('content')
-    <div class="text-center">
-        <h1>编辑</h1><small>{!! link_to_route('commute.index', '返回') !!}</small>
-    </div>
+
     <div class="container">
         <div class="form-horizontal">
 
-            @include('commute.partials.form')
 
         </div>
     </div>
