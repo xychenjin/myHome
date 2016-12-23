@@ -12,8 +12,10 @@
 @endsection
 
 @section("content")
+    <div class="container">
+        <div class="form-horizontal">
 
-    <div class="form-group-lg" >
+        @include('card.search')
 
         <table class="table table-hover">
             <thead>
@@ -48,7 +50,7 @@
         </div>
 
     </div>
-
+    </div>
 
 @endsection
 

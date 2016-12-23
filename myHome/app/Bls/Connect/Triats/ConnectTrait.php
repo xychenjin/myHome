@@ -54,7 +54,7 @@ trait ConnectTrait {
 
     public function createTableList($db, $tbLists)
     {
-        $tableList = '<div class="form-group" id="tb_'.$db.'">';
+        $tableList = '<div class="row form-group" id="tb_'.$db.'">';
         $tableList .= '<label class="col-sm-2 control-label">'. $db .'</label>';
         $tableList .= '<div class="col-sm-10" '. (! $tbLists->isEmpty() ? 'style="padding: 5px;border: 1px gray solid;"' : '').'>';
 
@@ -62,14 +62,19 @@ trait ConnectTrait {
             $tableList .= '<div class="col-md-3 " style="width: 100%">';
             $tableList .= Form::button('全选', ['class' => 'checkAll btn' , 'id'=> 'checkAll_'.$db, 'data-check'=> 'false']);
             $tableList .= '</div>';
+
+            foreach ($tbLists as $tb) {
+                $tableList .= '<div class="form-inline col-md-4"'. (strlen(($tb->table_name.'('.($tb->tableRowCount ? $tb->tableRowCount : 0 ). ')')) > 30 ? ' style="width:100%"' : '').' >';
+                $tableList .= Form::checkbox('tbName[]', $tb->table_name, false, ['class' => 'col-md-1' , 'id'=> $tb->table_name]);
+                $tableList .= '<span class="form-inline">' . Form::label($tb->table_name, $tb->table_name  , [ 'title'=>$db. '.'. $tb->table_rows]);
+                $tableList .=  ($tb->tableRowCount ?  "(<b style='color: green'>" .$tb->tableRowCount . "</b>)" : "(<b style='color: red'>0</b>)") ;
+                $tableList .=  '</span>';
+                $tableList .= '</div>';
+            }
+        } else {
+            $tableList .= '<span>&nbsp;</span>';
         }
 
-        foreach ($tbLists as $tb) {
-            $tableList .= '<div class="'. (strlen($tb->table_rows) > 30 ? 'row' : 'col-md-4  success').'" >';
-            $tableList .= Form::checkbox('tbName[]', $tb->table_name, false, ['class' => 'col-md-1' , 'id'=> $tb->table_name]);
-            $tableList .= Form::label($tb->table_name, $tb->table_rows, ['class' => 'col-md-3' ,'title'=>$tb->table_rows]);
-            $tableList .= '</div>';
-        }
         $tableList .= '</div>';
         $tableList .= '</div>';
         return $tableList;

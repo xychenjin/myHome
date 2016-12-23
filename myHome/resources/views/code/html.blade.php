@@ -71,7 +71,7 @@
         <span>`received_date` date NOT NULL COMMENT '入账日期',</span>
         <span>`received_at` datetime NOT NULL COMMENT '入账时间',</span>
         <span>`sent_at` datetime NOT NULL COMMENT '转账时间',</span>
-        <span>`sent_date` datetime NOT NULL COMMENT '转账日期',</span>
+        <span>`sent_date` date NOT NULL COMMENT '转账日期',</span>
         <span>`notice` text COLLATE utf8_unicode_ci NOT NULL COMMENT '备注',</span>
         <span>`trans_way` tinyint(4) NOT NULL DEFAULT '0' COMMENT '打钱渠道，方式：0.未知,1.网银转账，2.ATM转账，3.支付宝，4.微信，5.其他',</span>
         <span>`created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
