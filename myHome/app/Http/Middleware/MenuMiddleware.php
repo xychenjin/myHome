@@ -42,6 +42,8 @@ class MenuMiddleware
             $this->addCartRecordMenu($menu);
             //工资管理菜单
             $this->addWageMenu($menu);
+            //卡管理
+            $this->addCardMenu($menu);
         });
     }
 
@@ -129,4 +131,17 @@ class MenuMiddleware
         }
     }
 
+    //卡管理
+    private function addCardMenu($menu)
+    {
+        try {
+            if ($this->user) {
+                $menu->dropdown(trans('menus.card.title'), function ($sub) {
+                    $sub->route('card.list', trans('menus.card.list'), [], 1);
+                }, 5, ['icon' => 'fa fa-users']);
+            }
+        } catch(\Exception $e) {
+
+        }
+    }
 }

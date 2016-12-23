@@ -72,14 +72,14 @@ class AuthController extends Controller
         if (\Auth::attempt($credentials, $remember)) {
             $_SESSION['admin'] = \Auth::id();
 
-            return \Redirect::route('myHome')->withFlashMessage('Login Success!');
+            return \Redirect::route('myHome')->withFlashMessage('登录成功!');
         }
 
         if (getenv('PINGPONG_ADMIN_TESTING')) {
-            return \Redirect::to('admin/login')->withFlashMessage('Login failed!')->withFlashType('danger');
+            return \Redirect::to('admin/login')->withFlashMessage('登录失败！')->withFlashType('danger');
         }
 
-        return \Redirect::back()->withFlashMessage('Login failed!')->withFlashType('danger');
+        return \Redirect::back()->withFlashMessage('登录失败！用户名或密码错误')->withFlashType('danger');
     }
 
 }

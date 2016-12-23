@@ -33,6 +33,7 @@ require_once 'Routes/admin.php';
 require_once 'Routes/cart.php';
 require_once 'Routes/code.php';
 require_once 'Routes/wage.php';
+require_once 'Routes/card.php';
 
 Route::get('/', function () {
     return redirect()->route('myHome');

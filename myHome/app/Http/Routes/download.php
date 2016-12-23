@@ -29,4 +29,7 @@ Route::group(['prefix'=>'/download', 'middleware' => ['auth', 'menu']], function
 
     //删除
     Route::get('/delete', ['uses' => 'Download\\DownloadController@delete', 'as' => 'download.delete']);
+
+    //卡列表
+    Route::get('/cardList', ['uses' => 'Download\\DownloadController@cardList', 'as' => 'download.cardList']);
 });

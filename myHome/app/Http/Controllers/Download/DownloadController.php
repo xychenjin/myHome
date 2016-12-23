@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Download;
 
 
+use App\Bls\Card\CardBls;
 use App\Bls\Connect\ConnectBls;
 use App\Bls\Connect\Triats\ConnectTrait;
 use App\Bls\Data\DataBls;
@@ -396,5 +397,7 @@ class DownloadController extends Controller
            return $e->getMessage();
         }
     }
+
+
 
 }
