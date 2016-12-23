@@ -9,9 +9,17 @@
 namespace App\Bls\Wage\Model;
 
 
+use App\Consts\Wage\WageTransWayConst;
+
 class WageModel extends BaseModel
 {
     protected $table = 't_wage';
 
     protected $guarded = [];
+
+    public function getTransWayDescAttribute()
+    {
+        return WageTransWayConst::desc($this->trans_way);
+    }
+
 }

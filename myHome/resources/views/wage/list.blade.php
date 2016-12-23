@@ -48,13 +48,17 @@
                             <td>{!! $item->balance !!}</td>
                             <td>{!! $item->tax !!}</td>
                             <td>{!! $item->received_at !!}</td>
-                            <td>{!! $item->trans_way !!}</td>
+                            <td>{!! $item->transWayDesc !!}</td>
                             <td>{!! $item->notice !!}</td>
                             <td>{!! $item->created_at !!}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+
+            <div class="text-center">
+                {!! $data->render()!!}
+            </div>
 
         </div>
     </div>

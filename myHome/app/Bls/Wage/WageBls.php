@@ -15,6 +15,17 @@ class WageBls
 {
     public function getListByPage($searchData, $orderByRaw = '`id` desc', $paginator = 20)
     {
-        return WageModel::query()->orderByRaw($orderByRaw)->paginate($paginator);
+        $query = WageModel::query();
+        if (isset($searchData['way']) && !empty($searchData['way'])) {
+            $query->where('trans_way', $searchData['way']);
+        }
+        if (isset($searchData['startDate']) && !empty($searchData['startDate'])) {
+            $query->where('sent_date', '>=', $searchData['startDate']);
+        }
+        if (isset($searchData['endDate']) && !empty($searchData['endDate'])) {
+            $query->where('sent_date', '<=', $searchData['endDate']);
+        }
+
+        return $query->orderByRaw($orderByRaw)->paginate($paginator);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wage;
 
+use App\Bls\Wage\Model\WageModel;
 use App\Bls\Wage\WageBls;
 use App\Consts\Wage\WageTransWayConst;
 use App\Http\Controllers\Wage\Traits\WageTraits;
@@ -22,8 +23,11 @@ class WageController extends Controller
     {
         $data = (new WageBls())->getListByPage($request->all());
 
-        $selectedWays = array_merge(['' => '请选择'], WageTransWayConst::ways());
+        $selectedWays = WageTransWayConst::ways();
+        array_unshift($selectedWays, '请选择');
         $selectedDates = $this->getSelectedDates();
+        array_unshift($selectedDates, '请选择');
+
         $searchData = $request->all();
         ! empty($searchData['way']) && $data->appends('way', $request->get('way'));
         ! empty($searchData['startDate']) && $data->appends('startDate', $request->get('startDate'));
@@ -39,7 +43,8 @@ class WageController extends Controller
      */
     public function create()
     {
-        return \View('wage.create');
+        $selectedWays = WageTransWayConst::ways();
+        return \View::make('wage.create', compact('selectedWays'));
     }
 
     /**
@@ -50,7 +55,12 @@ class WageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $model = new WageModel();
+        $model->fill($input);
+        $model->save();
+
+        return redirect()->route('wage.index')->withFlashMessage('添加成功！')->withFlashType('success');
     }
 
     /**
@@ -72,7 +82,8 @@ class WageController extends Controller
      */
     public function edit($id)
     {
-        return \View('wage.edit');
+        $selectedWays = WageTransWayConst::ways();
+        return \View::make('wage.edit', compact('selectedWays'));
     }
 
     /**

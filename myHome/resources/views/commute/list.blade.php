@@ -83,7 +83,7 @@ $id = str_random();
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">确认</button>
+                                                <button type="submit" class="btn btn-primary delete">确认</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                             </div>
                                             {!! Form::close() !!}
@@ -162,7 +162,7 @@ $id = str_random();
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
 
-            <div>
+            <div class="text-center">
                 {!! $data->render() !!}
             </div>
         </div>
@@ -180,6 +180,12 @@ $id = str_random();
                 };
                 window.location.href = "{!! route('commute.export') !!}" + '?' + $.param(params);
             });
+
+            $(".delete").click(function(){
+                $(this).attr('disabled', true);
+            });
+
+            if ($('.delete').attr('disabled')) $('.delete').removeAttr('disabled');
         });
     </script>
 @endsection

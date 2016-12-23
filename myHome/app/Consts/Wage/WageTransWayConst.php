@@ -28,7 +28,6 @@ class WageTransWayConst
     public static function ways()
     {
         return [
-            static::WAY_UNKNOWN => static::WAY_UNKNOWN_DESC,
             static::WAY_TRANS_ONLINE_BLANK => static::WAY_TRANS_ONLINE_BLANK_DESC,
             static::WAY_TRANS_OFFLINE_ATM => static::WAY_TRANS_OFFLINE_ATM_DESC,
             static::WAY_TRANS_ALIPAY => static::WAY_TRANS_ALIPAY_DESC,

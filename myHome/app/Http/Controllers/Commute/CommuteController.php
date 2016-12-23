@@ -59,7 +59,8 @@ class CommuteController extends Controller
         //年份
         $yearThes = $this->yearThes();
         //是否已经打过卡了
-        $commuted = CommuteModel::where('day', date('Y-m-d'))->exists();
+        $user = \Auth::user() ? \Auth::user()->id : 0;
+        $commuted = CommuteModel::where('day', date('Y-m-d'))->where('user_id', $user)->exists();
         return \view::make('commute.create', compact('weekThes', 'weekDays', 'yearThes', 'commuted'));
     }
 

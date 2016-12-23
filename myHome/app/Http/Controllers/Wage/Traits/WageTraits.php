@@ -17,6 +17,7 @@ trait WageTraits
     {
         return WageModel::selectRaw('received_date')
             ->distinct()
-            ->lists('received_date', 'received_date');
+            ->lists('received_date', 'received_date')
+            ->toArray();
     }
 }

@@ -14,7 +14,7 @@ use Pingpong\Admin\Entities\User;
 
 class CommuteBls
 {
-    public function getListByPage($searchData, $orderByRaw = 'day desc, updated_at desc', $paginator = 10)
+    public function getListByPage($searchData, $orderByRaw = 'day desc, updated_at desc', $paginator = 8)
     {
         $query = CommuteModel::query();
 

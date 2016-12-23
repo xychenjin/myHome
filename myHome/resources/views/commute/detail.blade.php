@@ -9,7 +9,7 @@
 @endsection
 
 @section('content-header')
-    <h1>打卡记录详情</h1>
+    <h1>打卡记录详情<small>{!! link_to_route('commute.index', '返回') !!}</small></h1>
 @endsection
 
 @section('content')
