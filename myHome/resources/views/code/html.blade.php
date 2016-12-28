@@ -81,5 +81,60 @@
         <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</span>
     </pre>
 
+    <p class="text-warning">
+        2016年12月28日新加
+    </p>
+
+    <pre class="text-success">
+        <span>CREATE TABLE `db_m2016`.`t_exercise` (</span>
+        <span>`id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span>
+        <span>`day` date NOT NULL DEFAULT '0000-00-00' COMMENT '运动日期',</span>
+        <span>`period` time NOT NULL DEFAULT '00:00:00' COMMENT '运动时长',</span>
+        <span>`weekTh` tinyint(4) NOT NULL DEFAULT '0' COMMENT '星期',</span>
+        <span>`desc` text COLLATE utf8_unicode_ci NOT NULL COMMENT '内容',</span>
+        <span>`ext` text COLLATE utf8_unicode_ci NOT NULL COMMENT '其他',</span>
+        <span>`star` tinyint(4) NOT NULL COMMENT '自我评价：0-10分',</span>
+        <span>`created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
+        <span>`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
+        <span>`deleted_at` timestamp NULL DEFAULT NULL,</span>
+        <span>PRIMARY KEY (`id`)</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;</span>
+    </pre>
+
+    <pre class="text-success">
+        <span>CREATE TABLE `db_m2016`.`t_bonus` (</span>
+        <span>`id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span>
+        <span>`amount` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '金额：0.00元',</span>
+        <span>`balance` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '余额：0.00元',</span>
+        <span>`number` tinyint(4) NOT NULL DEFAULT '0' COMMENT '数量/份',</span>
+        <span>`name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '红包名称',</span>
+        <span>`owner` int(11) NOT NULL DEFAULT '0' COMMENT '发红包者',</span>
+        <span>`status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '红包状态：1.有效，2.已抢完，3.已过期，4.已撤回',</span>
+        <span>`type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '红包类型：1.普通红包，2.手气红包，3.定向红包。特别说明：1、2类限制上限为200 3类限制20000以内',</span>
+        <span>`created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
+        <span>`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
+        <span>`deleted_at` timestamp NULL DEFAULT NULL,</span>
+        <span>PRIMARY KEY (`id`)</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</span>
+    </pre>
+
+    <pre class="text-success">
+        <span>CREATE TABLE `t_bonus_log` (</span>
+        <span>  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span>
+        <span>  `amount` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '金额：0.00元',</span>
+        <span>  `balance` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '余额：0.00元',</span>
+        <span>  `number` tinyint(4) NOT NULL DEFAULT '0' COMMENT '数量/份',</span>
+        <span>  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '红包名称',</span>
+        <span>  `owner` int(11) NOT NULL DEFAULT '0' COMMENT '发红包者',</span>
+        <span>  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '抢到红包者',</span>
+        <span>  `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '红包类型：1.普通红包，2.手气红包，3.定向红包。特别说明：1、2类限制上限为200 3类限制20000以内',</span>
+        <span>  `desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '备注',</span>
+        <span>  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
+        <span>  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
+        <span>  `deleted_at` timestamp NULL DEFAULT NULL,</span>
+        <span>  PRIMARY KEY (`id`)</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;</span>
+    </pre>
+
 @endsection
 

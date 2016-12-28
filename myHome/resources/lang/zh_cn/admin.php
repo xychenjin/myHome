@@ -2,7 +2,7 @@
 
 return [
 	'menus' => [
-		'dashboard' => '仪表盘',
+		'dashboard' => '主页',
 		'articles' => [
 			'title' => '文章',
 			'all' => '文章列表',

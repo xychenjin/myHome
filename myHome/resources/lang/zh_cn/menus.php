@@ -48,5 +48,21 @@ return [
         'study' => '学习',
         'secret' => '秘密',
         'create' => '创建'
+    ],
+
+    'exercise' => [
+        'title' => '健身管理',
+        'index' => '健身记录',
+        'create' => '创建',
+    ],
+
+    'bonus' => [
+        'title' => '红包管理',
+        'index' => '红包记录',
+        'create' => '发红包',
+    ],
+
+    'about' => [
+        'title' => '关于本系统'
     ]
 ];

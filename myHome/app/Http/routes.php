@@ -36,6 +36,9 @@ require_once 'Routes/wage.php';
 require_once 'Routes/card.php';
 require_once 'Routes/backward.php';
 require_once 'Routes/memo.php';
+require_once 'Routes/exercise.php';
+require_once 'Routes/about.php';
+require_once 'Routes/bonus.php';
 
 Route::get('/', function () {
     return redirect()->route('myHome');
