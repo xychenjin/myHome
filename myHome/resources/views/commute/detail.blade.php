@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>周次: </label>
-                    <span>{!! $model->day !!}</span>
+                    <span>{!! $model->week_th !!}</span>
                 </div>
             </div>
         </div>

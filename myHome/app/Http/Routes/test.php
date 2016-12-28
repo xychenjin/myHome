@@ -19,7 +19,7 @@ Route::group(['prefix'=>'/test'], function(){
     Route::get('/download', ['uses'=>'Test\\TestController@download', 'as'=>'test.download']);//download测试
 
     Route::group(['prefix'=>'auth'], function() {
-        Route::get('/', ['uses'=>'Test\\AuthController@index', 'as'=>'test.auth']);
+//        Route::get('/', ['uses'=>'Test\\AuthController@index', 'as'=>'test.auth']);
     });
 
     //打印

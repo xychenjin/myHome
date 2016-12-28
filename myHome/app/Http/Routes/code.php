@@ -7,4 +7,6 @@
  */
 Route::group(['prefix' => 'code' ], function(){
    Route::get('/desc', ['uses'=> 'Code\\CodeController@desc', 'as' => 'code.desc']);
+
+   Route::get('/test', ['uses'=> 'Code\\CodeController@test', 'as' => 'code.test']);
 });

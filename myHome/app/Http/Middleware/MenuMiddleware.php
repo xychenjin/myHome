@@ -44,6 +44,13 @@ class MenuMiddleware
             $this->addWageMenu($menu);
             //卡管理
             $this->addCardMenu($menu);
+
+            //回顾过往
+            $this->addBackwardMenu($menu);
+
+            //备忘录
+            $this->addMemoMenu($menu);
+
         });
     }
 
@@ -70,6 +77,10 @@ class MenuMiddleware
         }
     }
 
+    /**
+     * 查看下载
+     * @param $menu
+     */
     private function addDownloadMenu($menu)
     {
         try {
@@ -88,6 +99,10 @@ class MenuMiddleware
         }
     }
 
+    /**
+     * 考勤管理
+     * @param $menu
+     */
     private function addCommuteMenu($menu)
     {
         try {
@@ -103,6 +118,10 @@ class MenuMiddleware
         }
     }
 
+    /**
+     * 卡管理
+     * @param $menu
+     */
     private function addCartRecordMenu($menu)
     {
         try {
@@ -117,6 +136,10 @@ class MenuMiddleware
         }
     }
 
+    /**
+     * 转账管理
+     * @param $menu
+     */
     private function addWageMenu($menu)
     {
         try {
@@ -131,7 +154,11 @@ class MenuMiddleware
         }
     }
 
-    //卡管理
+
+    /**
+     * 卡管理
+     * @param $menu
+     */
     private function addCardMenu($menu)
     {
         try {
@@ -139,6 +166,40 @@ class MenuMiddleware
                 $menu->dropdown(trans('menus.card.title'), function ($sub) {
                     $sub->route('card.list', trans('menus.card.list'), [], 1);
                 }, 5, ['icon' => 'fa fa-users']);
+            }
+        } catch(\Exception $e) {
+
+        }
+    }
+
+    /**
+     * 回顾过往
+     * @param $menu
+     */
+    private function addBackwardMenu($menu)
+    {
+        try {
+            if ($this->user) {
+                $menu->route('backward.index', trans('menus.backward.title'), [], 6, ['icon' => 'fa fa-users']);
+            }
+        } catch(\Exception $e) {
+
+        }
+    }
+
+    /**
+     * 备忘录
+     * @param $menu
+     */
+    private function addMemoMenu($menu)
+    {
+        try {
+            if ($this->user) {
+                $menu->dropdown(trans('menus.memo.title'), function ($sub) {
+                    $sub->route('memo.study', trans('menus.memo.study'), [], 1);
+                    $sub->route('memo.secret', trans('menus.memo.secret'), [], 2);
+                    $sub->route('memo.create', trans('menus.memo.create'), [], 3);
+                }, 7, ['icon' => 'fa fa-users']);
             }
         } catch(\Exception $e) {
 

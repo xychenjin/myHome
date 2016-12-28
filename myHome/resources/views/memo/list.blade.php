@@ -1,7 +1,12 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: jim
- * Date: 2016/12/27
- * Time: 17:10
- */
+@extends($layouts)
+
+@section('title')
+    备忘录
+@endsection
+
+@section('content')
+<div class="form-group">
+
+</div>
+
+@endsection

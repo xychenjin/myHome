@@ -17,4 +17,9 @@ class CodeController extends Controller
     {
         return \View::make('code.html');
     }
+
+    public function test()
+    {
+
+    }
 }

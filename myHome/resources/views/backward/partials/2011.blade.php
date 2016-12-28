@@ -1,23 +1,12 @@
-@extends($layouts)
+<div class="div-2011 form-group">
+    <p>
+        那一年，我读大一，暑假去丽江打了一个多月的工。赤日炎炎，在上海流浪了一个星期，第一次见到了外滩，在麦当劳呆了一个晚上，
+        外滩的镜头出现在我眼中，睡地铁..
+    </p>
 
-@section('title')
-    回顾：2011年记忆
-@endsection
-
-@section('style')
-
-@endsection
-
-@section('content-header')
-    <h1>2011年记忆</h1>
-@endsection
-
-@section('content')
-
-@endsection
-
-@section('script')
-    <script>
-
-    </script>
-@endsection    
+    <div class="row text-center">
+        {!! link_to_route('backward.detail', '上一年', ['y'=>$y-1 ], []) !!}
+        &nbsp;
+        {!! link_to_route('backward.detail', '下一年', ['y'=>$y+1 ], []) !!}
+    </div>
+</div>

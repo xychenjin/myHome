@@ -37,5 +37,16 @@ return [
     'card' => [
         'title' => '卡管理',
         'list' => '查看列表',
+    ],
+
+    'backward' => [
+        'title' => '回顾过往',
+    ],
+
+    'memo' => [
+        'title' => '备忘录',
+        'study' => '学习',
+        'secret' => '秘密',
+        'create' => '创建'
     ]
 ];

@@ -82,7 +82,7 @@ class CommuteController extends Controller
             'day_th' => date('z'),
             'day' => date('Y-m-d'),
             //一年的第几天
-            'week_th' => date('W'),
+            'week_th' => date('W') > 51 ? 0 : date('W'),
             //当前星期几
             'weekday' => date('w'),
             //当前年份
