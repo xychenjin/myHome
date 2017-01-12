@@ -7,5 +7,7 @@
 
     <div class="row text-center">
         {!! link_to_route('backward.detail', '上一年', ['y'=>$y-1 ], []) !!}
+        &nbsp;
+        {!! link_to_route('backward.detail', '下一年', ['y'=>$y+1 ], []) !!}
     </div>
 </div>

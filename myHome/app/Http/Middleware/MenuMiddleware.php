@@ -225,7 +225,7 @@ class MenuMiddleware
         try {
             if ($this->user) {
                 $menu->dropdown(trans('menus.memo.title'), function ($sub) {
-                    $sub->route('memo.study', trans('menus.memo.study'), [], 1);
+                    $sub->route('memo.index', trans('menus.memo.study'), [], 1);
                     $sub->route('memo.secret', trans('menus.memo.secret'), [], 2);
                     $sub->route('memo.create', trans('menus.memo.create'), [], 3);
                 }, 997, ['icon' => 'fa fa-pencil']);

@@ -20,7 +20,7 @@
     @endif
     
     <p>
-        {!! HTML::image('img\summarize.png', '暂无图片') !!}
+        {!! HTML::image('img\bg-2017.png', '暂无图片') !!}
     </p>
     
 @endsection

@@ -87,9 +87,9 @@ class MemoController extends Controller
         //
     }
 
-    public function study()
+    public function study(Request $request, $name = '')
     {
-        return \View::make('memo.study');
+        return \View::make('memo.study', compact('name'));
     }
 
     public function secret(Request $request)
@@ -113,6 +113,14 @@ class MemoController extends Controller
                 ->withFlashType('success');
         }
         return redirect()->back()->withInput()->withFlashMessage('验证失败！')
+            ->withFlashType('danger');
+    }
+
+    public function clear(Request $request)
+    {
+        $request->getSession()->remove('pwd');
+        Cache::forget('pwd');
+        return redirect()->back()->withInput()->withFlashMessage('操作成功！')
             ->withFlashType('danger');
     }
 }

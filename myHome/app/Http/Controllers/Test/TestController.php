@@ -20,9 +20,19 @@ class TestController extends Controller
 
     public function index(Request $request)
     {
-        $test = $this->makeSignMsg($request);
-
+//        $test = $this->makeSignMsg($request);
+//        \Redis::set('jim','jim123456');
+        $redis = new \Redis();
+        $redis::mset([
+            'ZHANGSAN' => '张三',
+            'LISI'=>'李四',
+            'WANGWU'=>'王五'
+        ]);
+//        $redis::expire('ZHANGSAN', 30);
+        echo $redis::get('ZHANGSAN'). "<br/>";
+        $test = $redis::keys('*');
         dd($test);
+
     }
 
     public function sign(Request $request)

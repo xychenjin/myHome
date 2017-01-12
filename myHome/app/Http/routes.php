@@ -39,6 +39,7 @@ require_once 'Routes/memo.php';
 require_once 'Routes/exercise.php';
 require_once 'Routes/about.php';
 require_once 'Routes/bonus.php';
+require_once 'Routes/study.php';
 
 Route::get('/', function () {
     return redirect()->route('myHome');

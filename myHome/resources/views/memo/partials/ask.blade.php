@@ -1,5 +1,5 @@
 <a data-toggle="modal" href="#modal-ask" id="show">
-    查看
+    需要验证，才能查看
 </a>
 <div id="modal-ask" class="modal text-left fade">
     <div class="modal-dialog">

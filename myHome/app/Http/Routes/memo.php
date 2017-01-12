@@ -8,9 +8,9 @@
 
 Route::group([ 'middleware' => 'auth'], function() {
     Route::group(['prefix' => 'memo'], function(){
-        Route::get('/study', ['uses' => 'Memo\\MemoController@study' , 'as' => 'memo.study']);
         Route::get('/secret', ['uses' => 'Memo\\MemoController@secret' , 'as' => 'memo.secret']);
         Route::put('/ask', ['uses' => 'Memo\\MemoController@ask' , 'as' => 'memo.ask']);
+        Route::get('/clear', ['uses' => 'Memo\\MemoController@clear' , 'as' => 'memo.clear']);
     });
 
     Route::resource('memo', 'Memo\\MemoController');

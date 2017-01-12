@@ -119,7 +119,7 @@
     </pre>
 
     <pre class="text-success">
-        <span>CREATE TABLE `t_bonus_log` (</span>
+        <span>CREATE TABLE `db_m2016`.`t_bonus_log` (</span>
         <span>  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span>
         <span>  `amount` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '金额：0.00元',</span>
         <span>  `balance` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '余额：0.00元',</span>
