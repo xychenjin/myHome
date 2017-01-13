@@ -15,9 +15,7 @@
 @endsection
 
 @section('content')
-    <div class="form-group">
-
-    </div>
+    @include('exercise.form')
 @endsection
 
 @section('script')

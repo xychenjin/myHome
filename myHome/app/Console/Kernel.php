@@ -23,6 +23,8 @@ class Kernel extends ConsoleKernel
 
         //生成空白卡
         Commands\M2016\Card\CreateBlank::class,
+        //刷新红包状态表
+        Commands\Bonus\FreshBonusStatus::class,
     ];
 
     /**
@@ -35,5 +37,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+
+        $schedule->command('bonus:freshStatus')
+            ->everyFiveMinutes();
     }
 }

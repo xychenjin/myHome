@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Exercise;
 
+use App\Bls\Exercise\ExerciseBls;
+use App\Bls\Exercise\Model\ExerciseModel;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,7 +18,10 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        return \View::make('exercise.index');
+        $data = (new ExerciseBls())->getList();
+
+
+        return \View::make('exercise.index', compact('data'));
     }
 
     /**
@@ -37,7 +42,10 @@ class ExerciseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $model = new ExerciseModel();
+        $model->fill($request->all());
+        $model->save();
+        return redirect()->route('exercise.index')->withFlashMessage('添加成功！')->withFlashType('danger');
     }
 
     /**

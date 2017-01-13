@@ -15,9 +15,12 @@
 @endsection
 
 @section('content')
-    <div class="form-group">
+    <p>
+       模仿红包发放原理：随机生成金额数，谁点到多少金额，该用户的账号上金额相加。
+    </p>
 
-    </div>
+
+    @include('bonus.form')
 @endsection
 
 @section('script')

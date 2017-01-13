@@ -52,7 +52,7 @@ return [
 
     'exercise' => [
         'title' => '健身管理',
-        'index' => '健身记录',
+        'index' => '锻炼记录',
         'create' => '创建',
     ],
 
@@ -60,6 +60,7 @@ return [
         'title' => '红包管理',
         'index' => '红包记录',
         'create' => '发红包',
+        'fetch' => '抢红包',
     ],
 
     'about' => [

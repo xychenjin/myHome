@@ -184,7 +184,8 @@ class MenuMiddleware
             if ($this->user) {
                 $menu->dropdown(trans('menus.bonus.title'), function ($sub) {
                     $sub->route('bonus.index', trans('menus.bonus.index'), [], 1);
-                    $sub->route('bonus.create', trans('menus.bonus.create'), [], 3);
+                    $sub->route('bonus.create', trans('menus.bonus.create'), [], 2);
+                    $sub->route('bonus.fetch', trans('menus.bonus.fetch'), [], 3);
                 }, 8, ['icon' => 'fa fa-money']);
             }
         } catch(\Exception $e) {
