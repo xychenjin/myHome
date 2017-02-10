@@ -59,6 +59,10 @@ class MenuMiddleware
 
             //关于本系统
             $this->addAboutMenu($menu);
+
+            //我的阅读
+            $this->addBookMenu($menu);
+
         });
     }
 
@@ -186,6 +190,7 @@ class MenuMiddleware
                     $sub->route('bonus.index', trans('menus.bonus.index'), [], 1);
                     $sub->route('bonus.create', trans('menus.bonus.create'), [], 2);
                     $sub->route('bonus.fetch', trans('menus.bonus.fetch'), [], 3);
+                    $sub->route('my.bonus', trans('menus.bonus.mine'), [], 3);
                 }, 8, ['icon' => 'fa fa-money']);
             }
         } catch(\Exception $e) {
@@ -262,6 +267,28 @@ class MenuMiddleware
         try {
             if ($this->user) {
                 $menu->route('about.index', trans('menus.about.title'), [], 999, ['icon' => 'fa fa-info']);
+            }
+        } catch(\Exception $e) {
+
+        }
+    }
+
+    /**
+     * 我的阅读
+     * @index 999
+     * @param $menu
+     */
+    private function addBookMenu($menu)
+    {
+        try {
+            if ($this->user) {
+                $menu->dropdown(trans('menus.read.title'), function ($sub) {
+                    $sub->route('read.index', trans('menus.read.index'), [], 1);
+                    $sub->route('read.add', trans('menus.read.add'), [], 2);
+                    $sub->route('read.done', trans('menus.read.done'), [], 3);
+                    $sub->route('read.note', trans('menus.read.note'), [], 4);
+                    $sub->route('read.got', trans('menus.read.got'), [], 5);
+                }, 9, ['icon' => 'fa fa-book']);
             }
         } catch(\Exception $e) {
 

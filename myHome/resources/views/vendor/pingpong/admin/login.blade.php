@@ -21,7 +21,7 @@ type="text/css"/>
 
         <div class="form-box" id="login-box">
             <div class="header">登 录</div>
-            {!! Form::open(['route' => 'login.store']) !!}
+            {!! Form::open(['route' => 'admin.login.stores']) !!}
                 <div class="body bg-gray">
                     @if(Session::has('flash_message'))
                         <p class="login-flash-text text-danger">
@@ -37,6 +37,10 @@ type="text/css"/>
                     <div class="form-group checkbox" style="margin-left:20px;">
                         <input type="checkbox" name="remember" value="1" /> 记住账号
                     </div>
+                        <div class="form-group form-inline">
+                            <input type="captcha" name="captcha" class="form-control" placeholder="验证码"/>
+                            <img src="/captcha" alt="验证码" id="captcha" class="captcha"/>
+                        </div>
                 </div>
                 <div class="footer">
                     <button type="submit" class="btn bg-olive btn-block">登录</button>
@@ -59,6 +63,12 @@ type="text/css"/>
 
         <script src="{!! admin_asset('components/jquery/dist/jquery.min.js') !!}"></script>
         <script src="{!! admin_asset('components/bootstrap/dist/js/bootstrap.min.js') !!}" type="text/javascript"></script>
-
+        <script>
+            $(function(){
+               $("#captcha").click(function(){
+                  $(this).attr('src', "{{ route('captcha') }}?" + new Date());
+               });
+            });
+        </script>
     </body>
 </html>

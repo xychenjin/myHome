@@ -35,8 +35,8 @@ trait BonusTrait
             $total = intval($inputTotal);
             $money = floatval($inputMoney);
 
-            if (! is_numeric($total)
-                || ! is_numeric($money)
+            if (! is_numeric($inputTotal)
+                || ! is_numeric($inputMoney)
                 || $total <= 0
                 || $money <= 0
                 || intval($money * 100) < $total
@@ -120,7 +120,7 @@ trait BonusTrait
                 return new \Exception('红包不存在！');
             }
             if (empty($ponds) || $model->status !== BonusStatusConsts::STATUS_ENABLE_CONST || $model->balance == 0) {
-                $msg = $model->statusDesc;
+                $msg = BonusStatusConsts::desc($model->status);
                 if (empty($ponds)) {
                     $model->status == BonusStatusConsts::STATUS_ENABLE_CONST && $model->status = BonusStatusConsts::STATUS_EXPIRE_CONST ;
                     $model->save();

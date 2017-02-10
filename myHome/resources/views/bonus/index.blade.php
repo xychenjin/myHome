@@ -11,7 +11,7 @@
 @endsection
 
 @section('content-header')
-    <h1>红包记录</h1>
+    <h1>红包记录({!! $data->total() !!})</h1>
 @endsection
 
 @section('content')

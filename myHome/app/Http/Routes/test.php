@@ -24,6 +24,13 @@ Route::group(['prefix'=>'/test'], function(){
 
     //打印
     Route::get('/print' , ['uses'=>'Test\\TestController@println', 'as'=>'test.print']);
+
+    //测试javascript对象写法
+    Route::get('/js',['uses'=>'Test\\TestController@js', 'as'=>'test.js', 'middleware' => 'auth']);
+    Route::get('/path',['uses'=>'Test\\TestController@path', 'as'=>'test.path', 'middleware' => 'auth']);
+
+
+
 });
 
 

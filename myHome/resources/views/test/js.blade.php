@@ -1,4 +1,4 @@
-@extends($layout)
+@extends($layouts)
 
 @section('content')
 
@@ -11,10 +11,19 @@
             this.parent = 'XML';
             this.child = 'SHTML';
             this.date = new Date();
+            this.getName = function() {
+                return this.name;
+            };
         };
         var element = new object();
 
-        document.write(element.name);
+        object.prototype.run = function(){
+            return "this:" + this.name + ", parent:" + this.parent + ", child:" + this.child;
+        };
+
+        document.write(element.run());
+//        document.write(element.date.getFullYear() + '-' + element.date.getMonth() + '-' + element.date.getDate()
+//                + " " + element.date.getHours() + ':' + element.date.getMinutes()+ ':' +element.date.getSeconds());
     </script>
 
 @endsection

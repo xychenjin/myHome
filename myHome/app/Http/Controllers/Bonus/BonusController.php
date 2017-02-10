@@ -140,7 +140,7 @@ class BonusController extends Controller
             $userId = \Auth::id();
 
             if ($getMoney = $this->fetch($model->id, $userId)) {
-                $msg = '你成功抢到了：'. $getMoney. '元' . ($model->isFetchOut ? $model->isFetchOutDesc. '已成功抢完！':'');
+                $msg = '你成功抢到了：'. $getMoney. '元' . ($model->isFetchOut ? '，'. $model->isFetchOutDesc. '被抢完！':'');
                 return redirect()->back()->withFlashMessage($msg)->withFlashType('danger');
             }
 
@@ -161,5 +161,17 @@ class BonusController extends Controller
         return \View::make('bonus.fetch', compact('data'));
     }
 
+    public function myBonus()
+    {
+        $searchData = \Input::all();
+        $searchData['user_id'] = \Auth::id();
+        $data = (new BonusBls())->getList($searchData, 'id desc, status asc', 12);
 
+        !empty(\Input::get('status')) && $data->appends('status', \Input::get('status'));
+        !empty(\Input::get('type')) && $data->appends('type', \Input::get('type'));
+        $selectStatus = BonusStatusConsts::status();
+        $selectType = BonusTypeConsts::type();
+
+        return \View::make('bonus.index', compact('data', 'searchData', 'selectType', 'selectStatus'));
+    }
 }

@@ -12,7 +12,7 @@ use App\Consts\Connect\ConnectConst;
 
 class ConnectBls
 {
-    protected $connection = null;
+    protected static $connection = null;
 
     protected $message = '';
 
@@ -30,15 +30,17 @@ class ConnectBls
     public function getConnection($hostName, $userName, $password, $database = null, $port = null)
     {
         try {
-            $dsn = "mysql:host=". $hostName. ($port ? ';port='.$port.';':'') . ($database ? ';dbname='. $database : '');
-            $pdo = new \PDO($dsn, $userName, $password);
-            $pdo->exec('set names utf8');
+            if (! isset(self::$connection)) {
+                $dsn = "mysql:host=". $hostName. ($port ? ';port='.$port.';':'') . ($database ? ';dbname='. $database : '');
+                $pdo = new \PDO($dsn, $userName, $password);
+                $pdo->exec('set names utf8');
 
-            $con = new Connection($pdo, $database ? $database : '');
+                $con = new Connection($pdo, $database ? $database : '');
+                self::$connection = $con ? $con : null;
+            }
+            $this->message = self::$connection ? '' : '连接失败：用户名或密码错误';
 
-            $this->connection = $con ? $con : null;
-            $this->message = $con ? '' : '连接失败：用户名或密码错误';
-            return $con;
+            return self::$connection;
         } catch (\Exception $e) {
             throw $e;
         }

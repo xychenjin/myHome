@@ -9,7 +9,14 @@
 namespace App\Bls\Read\Model;
 
 
-class BookModel
+use Illuminate\Database\Eloquent\Model;
+
+class BookModel extends Model
 {
+    protected $connection = 'db_m2016';
+
+    protected $table = 't_book';
+
+    protected $guarded = [];
 
 }

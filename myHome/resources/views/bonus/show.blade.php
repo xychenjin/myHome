@@ -22,16 +22,24 @@
                 <span class="label-control">{!! $model->amount . '元' !!}</span>
             </div>
             <div class="form-group ">
-                {!! Form::label('number', '数量:') !!}
-                <span class="label-control">{!! $model->numberDesc  !!}</span>
+                {!! Form::label('createdAt', '创建时间:') !!}
+                <span class="label-control">{!! $model->created_at  !!}</span>
             </div>
+
         </div>
 
         <div class="row form-inline">
             <div class="form-group ">
-                {!! Form::label('createdAt', '创建时间:') !!}
-                <span class="label-control">{!! $model->created_at  !!}</span>
+                {!! Form::label('number', '数量:') !!}
+                <span class="label-control">{!! $model->numberDesc  !!}</span>
             </div>
+            <div class="form-group ">
+                {!! Form::label('number', '发送人:') !!}
+                <span class="label-control">{!! ! is_null($model->user()->first()) ? $model->user()->first()->email  : null !!}</span>
+            </div>
+
+        </div>
+        <div class="row form-inline">
             <div class="form-group ">
                 {!! Form::label('status', '红包状态:') !!}
                 <span class="label-control">{!! $model->statusDesc  !!}</span>
@@ -65,7 +73,7 @@
         @foreach($data as $item)
             <tr>
                 <td>{!! $count !!}</td>
-                <td>{!! $item->owner !!} @if($item->IsBest)<span class="text-green">最佳</span>@endif</td>
+                <td>{!! $item->user()->first()->name !!} @if($item->IsBest)<span class="text-green">最佳</span>@endif</td>
                 <td>{!! $item->amount !!}</td>
                 <td>{!! $item->number !!}</td>
                 <td>{!! $item->balance !!}</td>

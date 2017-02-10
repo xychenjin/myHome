@@ -9,7 +9,12 @@
 namespace App\Bls\Read;
 
 
+use App\Bls\Read\Model\BookModel;
+
 class ReadBls
 {
-
+    public function getList($input , $orderBy = 'id desc', $paginator = 20)
+    {
+        return BookModel::query()->orderByRaw($orderBy)->paginate($paginator);
+    }
 }

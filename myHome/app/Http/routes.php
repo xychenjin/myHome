@@ -40,9 +40,12 @@ require_once 'Routes/exercise.php';
 require_once 'Routes/about.php';
 require_once 'Routes/bonus.php';
 require_once 'Routes/study.php';
+require_once 'Routes/reading.php';
 
 Route::get('/', function () {
     return redirect()->route('myHome');
 });
 
-
+Route::get('/captcha', function(){
+     (new Securimage(config('captcha')))->show();
+})->name('captcha');

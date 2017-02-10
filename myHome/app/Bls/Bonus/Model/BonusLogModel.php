@@ -11,6 +11,7 @@ namespace App\Bls\Bonus\Model;
 
 use App\Consts\Bonus\BonusStatusConsts;
 use Illuminate\Database\Eloquent\Model;
+use Pingpong\Admin\Entities\User;
 
 class BonusLogModel extends Model
 {
@@ -19,6 +20,11 @@ class BonusLogModel extends Model
     protected $table = 't_bonus_log';
 
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     public function bonus()
     {

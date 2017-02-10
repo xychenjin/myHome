@@ -9,7 +9,21 @@
 namespace App\Library\Securimage;
 
 
-class SecurimageServiceProvider
-{
+use Illuminate\Support\ServiceProvider;
 
+class SecurimageServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        $this->app['validator']->extend('captcha', function($attribute, $value, $parameters){
+            return (new \Securimage())->check($value);
+        });
+    }
+
+    public function register()
+    {
+        $this->app->bind('captcha', function(){
+            return new \Securimage();
+        });
+    }
 }

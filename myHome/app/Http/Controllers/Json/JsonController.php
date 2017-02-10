@@ -25,5 +25,46 @@ class JsonController extends Controller
         dd(json_decode($json_str, true));
     }
 
+    public function getFile()
+    {
+        echo "<title>一生中应该读的36本书</title>";
+        $url = 'http://www.360doc.com/content/15/0425/19/21865070_465959820.shtml';
 
+        echo "<a href='$url'>$url</a><br/>";
+
+        $t = file_get_contents($url);
+
+        preg_match_all('|<p+>(.*)</p>|i', $t, $matches);
+        $txt = '';
+        foreach($matches as $k => $match) {
+            foreach($match as $item) {
+                $str = strip_tags($item);
+                $txt .= strlen($str) <1 ? '': $str  . "\r\n";
+                echo strlen($str) <1 ? '': $str  . "<br/>";
+            }
+
+        }
+
+        file_put_contents('temp/txt/36books.txt',$txt);
+    }
+
+    public function getFiles()
+    {
+        echo "<title>一生中应该读的60本书</title>";
+        $url = 'http://www.eywedu.net/60.html';
+        echo "<a href='$url' >$url</a><br/>";
+        header("Content-Type:text/html;charset=utf-8");
+        $t = iconv('GB2312', 'UTF-8//IGNORE', file_get_contents($url));
+
+        preg_match_all('/<div\s*.*>\s*.*<\/div>/i', $t, $matches);
+        $txt = '';
+        foreach($matches as $match) {
+            foreach($match as $item) {
+                $str = strip_tags($item);
+                $txt .= strlen($str) <1 ? '': $str  . "\r\n";
+                echo strlen($str) <1 ? '': $str  . "<br/>";
+            }
+        }
+        file_put_contents('temp/txt/60books.txt',$txt);
+    }
 }

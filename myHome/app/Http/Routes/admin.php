@@ -15,4 +15,6 @@ Route::group(['prefix' => config('admin.prefix', 'admin')], function () {
         Route::get('/pwd', ['as' => 'admin.users.pwd', 'uses' => 'Admin\\AdminController@pwd']);
         Route::put('/updatePwd', ['as' => 'admin.users.updatePwd', 'uses' => 'Admin\\AdminController@updatePwd']);
     });
+
+    Route::post('/stores', ['as' => 'admin.login.stores', 'uses' => 'Admin\\LoginController@store']);
 });

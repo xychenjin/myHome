@@ -148,6 +148,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //验证码
+        \App\Library\Securimage\SecurimageServiceProvider::class,
     ],
 
     /*
@@ -196,6 +198,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
+        'Securimage' => App\Library\Securimage\Facades\Securimage::class,
     ],
 
 ];

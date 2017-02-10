@@ -24,6 +24,58 @@
 @endsection
 
 @section("content")
+
+    <p class="text-warning">
+        2017年2月9日新加
+    </p>
+
+    <pre class="text-success">
+        <span>CREATE TABLE `t_book` (</span>
+        <span>`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',</span>
+        <span>`name` varchar(100) NOT NULL DEFAULT '' COMMENT '书名',</span>
+        <span>`author` varchar(100) NOT NULL DEFAULT '' COMMENT '作者',</span>
+        <span>`version` varchar(10) NOT NULL DEFAULT '' COMMENT '版本',</span>
+        <span>`page` int(10) NOT NULL DEFAULT '0' COMMENT '页数',</span>
+        <span>`status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态：1.未阅读,2.已阅读,3.已下架,4.已丢失',</span>
+        <span>`cover` varchar(100) NOT NULL DEFAULT '' COMMENT '封面',</span>
+        <span>`brief` longtext NOT NULL COMMENT '书简介和描述',</span>
+        <span>`star` int(5) NOT NULL DEFAULT '0' COMMENT '评分：1-10分',</span>
+        <span>`type` varchar(200) NOT NULL DEFAULT '' COMMENT '所属类型：言情，技术，法律，宗教，科幻，小说，论文等',</span>
+        <span>`created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',</span>
+        <span>`updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',</span>
+        <span> `deleted_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '删除时间',</span>
+        <span> PRIMARY KEY (`id`)</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='书列表';</span>
+    </pre>
+
+    <pre class="text-success">
+        <span>  CREATE TABLE `t_book_note` (</span>
+        <span>  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',</span>
+        <span>  `book_id` int(10) NOT NULL DEFAULT '0' COMMENT '书ID',</span>
+        <span>  `user_id` int(10) NOT NULL DEFAULT '0' COMMENT '读者ID',</span>
+        <span>  `note` longtext NOT NULL COMMENT '读书笔记',</span>
+        <span>  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '1：正常，2已删除',</span>
+        <span>  `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',</span>
+        <span>  `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',</span>
+        <span>  `deleted_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '删除时间',</span>
+        <span>  PRIMARY KEY (`id`)</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='书-笔记表';</span>
+    </pre>
+
+    <pre class="text-success">
+        <span>  CREATE TABLE `t_book_got` (</span>
+        <span>  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',</span>
+        <span>`book_id` int(10) NOT NULL DEFAULT '0' COMMENT '书ID',</span>
+        <span>`user_id` int(10) NOT NULL DEFAULT '0' COMMENT '读者ID',</span>
+        <span> `note` longtext NOT NULL COMMENT '心得体会',</span>
+        <span>`status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '1：正常，2:失效, 3:已删除',</span>
+        <span>`created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',</span>
+        <span>`updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',</span>
+        <span>`deleted_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '删除时间',</span>
+        <span>PRIMARY KEY (`id`)</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='书-心得表';</span>
+    </pre>
+
     <p class="text-warning">
         2016年12月18日新加
     </p>
@@ -78,7 +130,7 @@
         <span>`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
         <span>`deleted_at` timestamp NULL DEFAULT NULL,</span>
         <span>PRIMARY KEY (`id`)</span>
-        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci comment='转账记录表'</span>
     </pre>
 
     <p class="text-warning">
@@ -98,7 +150,7 @@
         <span>`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
         <span>`deleted_at` timestamp NULL DEFAULT NULL,</span>
         <span>PRIMARY KEY (`id`)</span>
-        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci comment='健身表';</span>
     </pre>
 
     <pre class="text-success">
@@ -115,7 +167,7 @@
         <span>`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
         <span>`deleted_at` timestamp NULL DEFAULT NULL,</span>
         <span>PRIMARY KEY (`id`)</span>
-        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci comment='红包记录表';</span>
     </pre>
 
     <pre class="text-success">
@@ -126,6 +178,7 @@
         <span>  `number` tinyint(4) NOT NULL DEFAULT '0' COMMENT '数量/份',</span>
         <span>  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '红包名称',</span>
         <span>  `owner` int(11) NOT NULL DEFAULT '0' COMMENT '发红包者',</span>
+        <span>  `bonus_id` int(10) NOT NULL DEFAULT '0' COMMENT '红包ID，来源于t_bonus表',</span>
         <span>  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '抢到红包者',</span>
         <span>  `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '红包类型：1.普通红包，2.手气红包，3.定向红包。特别说明：1、2类限制上限为200 3类限制20000以内',</span>
         <span>  `desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '备注',</span>
@@ -133,8 +186,9 @@
         <span>  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',</span>
         <span>  `deleted_at` timestamp NULL DEFAULT NULL,</span>
         <span>  PRIMARY KEY (`id`)</span>
-        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;</span>
+        <span>) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci comment='红包日志表';</span>
     </pre>
+
 
 @endsection
 

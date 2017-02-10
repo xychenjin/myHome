@@ -25,6 +25,9 @@ class BonusBls
         if (isset($where['type']) ) {
             $query->where('type', $where['type']);
         }
+        if (isset($where['user_id']) ) {
+            $query->where('owner', $where['user_id']);
+        }
         return $query->orderByRaw($orderBy)->paginate($paginator);
     }
 

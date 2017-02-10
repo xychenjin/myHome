@@ -9,7 +9,12 @@
 namespace App\Library\Securimage\Facades;
 
 
-class Securimage
-{
+use Illuminate\Support\Facades\Facade;
 
+class Securimage extends Facade
+{
+    protected static function getFacadeAccessor()
+    {
+        return 'securimage';
+    }
 }
