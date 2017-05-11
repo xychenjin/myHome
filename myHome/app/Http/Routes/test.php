@@ -28,6 +28,8 @@ Route::group(['prefix'=>'/test'], function(){
     //测试javascript对象写法
     Route::get('/js',['uses'=>'Test\\TestController@js', 'as'=>'test.js', 'middleware' => 'auth']);
     Route::get('/path',['uses'=>'Test\\TestController@path', 'as'=>'test.path', 'middleware' => 'auth']);
+    Route::get('/test1',['uses'=>'Test\\TestController@test1', 'as'=>'test.path', 'middleware' => 'auth']);
+    Route::get('/c',['uses'=>'Test\\TestController@c', 'as'=>'test.c', 'middleware' => 'auth']);
 
 
 

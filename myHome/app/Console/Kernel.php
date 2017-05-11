@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\Inspire::class,
         Commands\scanMyFiles::class,
         Commands\TestConsole::class,
+        Commands\TestAdd::class,
         Commands\Database\createUser::class,
 
         //修复脚本刷的用户的错误密码

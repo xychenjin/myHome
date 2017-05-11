@@ -9,6 +9,7 @@
 Route::get('/json',['uses'=>'Json\\JsonController@index', 'as'=>'json.index']);
 Route::get('/json/file',['uses'=>'Json\\JsonController@getFile', 'as'=>'json.file']);
 Route::get('/json/files',['uses'=>'Json\\JsonController@getFiles', 'as'=>'json.files']);
+Route::get('/json/puc',['uses'=>'Json\\JsonController@puc', 'as'=>'json.puc']);
 
 
 

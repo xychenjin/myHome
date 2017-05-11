@@ -1,0 +1,440 @@
+<div class="markdown_views"><p>2016.10.15 - 10.25 <br>
+《程序是怎样跑起来的》1-6章 <br>
+- 矢泽久雄 / 著  <br>
+- 李俊峰 / 译  <br>
+个人学习笔记。</p>
+
+<p>10.15</p>
+
+
+
+<h1 id="1-对程序员来说cpu是什么"><strong>1 对程序员来说CPU是什么</strong></h1>
+
+
+
+<h2 id="0-问题-重点"><strong>0 问题 &amp; 重点</strong></h2>
+
+<p><strong>1. 程序是什么</strong>？ <br>
+[1] 存储在内存中的高低电平序列。 <br>
+[2] 指示计算机每一步动作的一组指令。</p>
+
+<p><strong>2. 程序是由什么组成的</strong>？ <br>
+[1] 高低电平序列[有的序列对应数据；有的序列对应指令]。 <br>
+[2] 指令和数据。</p>
+
+<p><strong>3. 什么是机器语言</strong>？ <br>
+[1] 输入CPU后能让CPU产生相应高低电平输出的高低电平序列所组成的集合。[高低电平序列被逻辑的10序列来抽象表示，10序列再被助记符来对应表示] <br>
+[2] CPU可以直接识别并使用的语言。</p>
+
+<p><strong>4. 正在运行的程序存储在什么位置</strong>？ <br>
+[1] 内存或cahe。 <br>
+[2] 内存。</p>
+
+<p><strong>5. 什么是内存地址</strong>？ <br>
+[1] 通过它输入给地址译码器后可以访问到一块内存的逻辑编号。 <br>
+[2] 用来表示指令和数据存储在内存中位置的数值。</p>
+
+<p><strong>6. 计算机的构成元件中，负责程序的解释和运行的是哪个</strong>？ <br>
+[1] 控制器。 <br>
+[2] CPU。 <br>
+<strong>需要按照问题所在层次回答问题</strong>。</p>
+
+<p><strong>重点</strong>。程序员需要了解CPU是如何运行的，特别是要弄清楚负责保存指令和数据的寄存器的机制。</p>
+
+
+
+<h2 id="11-cpu的内部结构解析"><strong>1.1 CPU的内部结构解析</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031161714645" alt="这里写图片描述" title=""> <br>
+寄存器是程序员需要了解的。剩余部分不需要太过于关注。<strong>机器语言级别的程序是通过操作寄存器来描述功能的</strong>。</p>
+
+
+
+<h2 id="12-cpu是寄存器的集合体"><strong>1.2 CPU是寄存器的集合体</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031161748975" alt="这里写图片描述" title=""></p>
+
+<p><strong>程序计数器</strong>。程序计数器寄存器的值是内存地址，CPU会将程序计数器内的值（内存地址）中的内容取出来放到相应寄存器中（指令、数据、地址）。汇编指令中有很多指令都能够更改程序计数器的值（从C语言层面来讲，是分支和循环；从汇编语言层面讲，是转移指令），程序计数器的值决定程序执行流程。</p>
+
+<p><strong>标志寄存器</strong>。一些汇编指令执行后还会更改标志寄存器某些位的值。也有一些依赖于标志寄存器某些位作为条件的汇编指令。（这些指令运算后的某个输出与该寄存器的某个位相连接）</p>
+
+<p>10.16</p>
+
+
+
+<h2 id="15-函数调用机制"><strong>1.5 函数调用机制</strong></h2>
+
+<p>[1] 先插入点其它的话题 —— 关于程序被编译链接成的区域。</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cs"><span class="hljs-comment">/* main.c
+ * 调用stack.c中的函数，
+ * 查看程序的指令区、数据区、栈区以及函数被调用时的栈帧
+ * 2016.10.16
+ */</span>
+
+<span class="hljs-comment">/* global variable*/</span>
+<span class="hljs-keyword">double</span> fv = <span class="hljs-number">0.1</span>f;
+
+<span class="hljs-comment">/* declare function defined in stack.c */</span>
+<span class="hljs-keyword">void</span> push(<span class="hljs-keyword">double</span> f);
+<span class="hljs-keyword">double</span> pop(<span class="hljs-keyword">void</span>);
+
+<span class="hljs-keyword">int</span> main(<span class="hljs-keyword">void</span>)
+{
+    push(fv);
+    fv  = pop();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">/* stack.c
+ * 定义一个数组以栈的机制使用它
+ * routine form 《TCPL》Section 4.3, modified a little by me
+ * 2016.10.16
+ */</span>
+
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> MAXVAL  100         /* maximum depth of val stack */</span>
+
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> sp = <span class="hljs-number">0</span>;          <span class="hljs-comment">/* next free stack position */</span>
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">double</span> val[MAXVAL];  <span class="hljs-comment">/* value stack */</span>
+
+<span class="hljs-comment">/* push: push f onto value stack */</span>
+<span class="hljs-keyword">void</span> push(<span class="hljs-keyword">double</span> f)
+{
+    <span class="hljs-keyword">if</span> (sp &lt; MAXVAL)
+        val[sp++]   = f;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span>;
+}
+
+<span class="hljs-comment">/* pop: pop and return top value from stack */</span>
+<span class="hljs-keyword">double</span> pop(<span class="hljs-keyword">void</span>)
+{
+    <span class="hljs-keyword">if</span> (sp &gt; <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> val[--sp];
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>;
+}</code></pre>
+
+<p><img src="http://img.blog.csdn.net/20161031161909476" alt="这里写图片描述" title=""> <br>
+截取segment中关于代码段和数据段的信息： <br>
+<img src="http://img.blog.csdn.net/20161031162224244" alt="这里写图片描述" title=""></p>
+
+<p>然后在segment所在文件中搜索main、push、pop三个函数（如/main）： <br>
+<img src="http://img.blog.csdn.net/20161031162259011" alt="这里写图片描述" title=""> <br>
+.text段的（虚拟）地址范围为0x08048300 ~ 0x080484fc。再查看这三个函数的（虚拟）地址，pop为0x08048418，push为0x080483e0，main为0x080483b4。它们的内容都在.text段中。</p>
+
+<p>.data段的（虚拟）地址范围为0x0804a008 ~ 0x0804a018，再查看全局变量fv的虚拟地址： <br>
+<img src="http://img.blog.csdn.net/20161031162342245" alt="这里写图片描述" title=""></p>
+
+<p>.bss段的（虚拟）地址范围为0x0804a020 ~ 0x0804a380，两个静态全局变量的（虚拟）地址为： <br>
+<img src="http://img.blog.csdn.net/20161031162414183" alt="这里写图片描述" title=""></p>
+
+<p>[2] 函数调用机制 <br>
+<img src="http://img.blog.csdn.net/20161031162445528" alt="这里写图片描述" title=""> <br>
+[整张图不清晰，将各部分分解如下]</p>
+
+<p><img src="http://img.blog.csdn.net/20161031162516904" alt="这里写图片描述" title=""></p>
+
+<p><img src="http://img.blog.csdn.net/20161031162542998" alt="这里写图片描述" title=""></p>
+
+<p><img src="http://img.blog.csdn.net/20161031162614202" alt="这里写图片描述" title=""></p>
+
+<p>10.17</p>
+
+
+
+<h2 id="16-cpu处理指令的类型"><strong>1.6 CPU处理指令的类型</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031162648996" alt="这里写图片描述" title=""></p>
+
+
+
+<h1 id="2-数据是用二进制数表示的"><strong>2 数据是用二进制数表示的</strong></h1>
+
+
+
+<h2 id="0-问题-重点-1"><strong>0 问题 &amp; 重点</strong></h2>
+
+<p><strong>1. 32位是几个字节</strong>？ <br>
+4。</p>
+
+<p><strong>2. 二进制数01011100转换成十进制数是多少</strong>？ <br>
+92。</p>
+
+<p><strong>3. 二进制数00001111左移两位后，会变成原数的几倍</strong>？ <br>
+4。</p>
+
+<p><strong>4. 补码形式表示的8位二进制数11111111，用十进制数表示的话是多少</strong>？ <br>
+无符号数255；有符号数-1。</p>
+
+<p><strong>5.补码形式表示的8位二进制数10101010，用16位二进制数表示的话是多少</strong>？ <br>
+66.[理解错了] <br>
+1111111110101010</p>
+
+<p><strong>6. 反转部分图形模式时，使用的是什么逻辑运算</strong>？ <br>
+[2] XOR。</p>
+
+<p><strong>重点</strong>。为什么计算机处理的信息要用二进制数来表示呢？</p>
+
+
+
+<h2 id="21-用二进制数表示计算机信息的原因"><strong>2.1 用二进制数表示计算机信息的原因</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031162736860" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="22-什么是二进制数"><strong>2.2 什么是二进制数</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031162811559" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="24-便于计算机处理的补数"><strong>2.4 便于计算机处理的“补数”</strong></h2>
+
+<p>10.18 <br>
+<img src="http://img.blog.csdn.net/20161031201635495" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="25-逻辑右移和算术右移的区别"><strong>2.5 逻辑右移和算术右移的区别</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031203949198" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="26-掌握逻辑运算的窍门"><strong>2.6 掌握逻辑运算的窍门</strong></h2>
+
+<p><strong>逻辑运算</strong>是指对二进制数各数字位的0和1分别进行处理的运算。</p>
+
+
+
+<h1 id="3-计算机进行小数运算时出错的原因"><strong>3 计算机进行小数运算时出错的原因</strong></h1>
+
+
+
+<h2 id="0-问题-重点-2"><strong>0 问题 &amp; 重点</strong></h2>
+
+<p><strong>1. 二进制数0.1，用十进制数表示的话是多少</strong>？ <br>
+0.5。</p>
+
+<p><strong>2. 用小数点后有3位的二进制数，能表示十进制数0.625吗</strong>？ <br>
+可以。</p>
+
+<p><strong>3. 将小数分为符号、尾数、基数、指数4部分进行表现的形式称为什么</strong>？ <br>
+[1] 科学计数法。 <br>
+[2] 浮点数。</p>
+
+<p><strong>4. 二进制的基数是多少</strong>？ <br>
+2．</p>
+
+<p><strong>5. 通过把0作为数值范围的中间值，从而在不使用符号位的情况下来表示负数的表示方法称为什么</strong>？ <br>
+[2] EXCESS系统表现。</p>
+
+<p><strong>6. 10101100.01010011这个二进制数，用十六进制数表示的话是多少</strong>？ <br>
+0xac.53。</p>
+
+<p><strong>重点</strong>。计算机进行小数处理的机制。</p>
+
+
+
+<h2 id="31-将01累加到100次也得不到10"><strong>3.1 将0.1累加到100次也得不到10</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031204053746" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="34-什么是浮点数"><strong>3.4 什么是浮点数</strong></h2>
+
+<p><strong>浮点数</strong>是指用符号、尾数、基数（二进制为2）和指数这四部分来表示的小数。[像<span class="MathJax_Preview"></span><span class="MathJax" id="MathJax-Element-1-Frame" role="textbox" aria-readonly="true"><nobr><span class="math" id="MathJax-Span-1" style="width: 6.616em; display: inline-block;"><span style="display: inline-block; position: relative; width: 5.283em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.709em 1000em 2.883em -0.424em); top: -2.717em; left: 0.003em;"><span class="mrow" id="MathJax-Span-2"><span class="mn" id="MathJax-Span-3" style="font-family: MathJax_Main;">0.12345</span><span class="mi" id="MathJax-Span-4" style="font-family: MathJax_Math-italic;">x</span><span class="msubsup" id="MathJax-Span-5"><span style="display: inline-block; position: relative; width: 1.443em; height: 0px;"><span style="position: absolute; clip: rect(1.923em 1000em 2.883em -0.371em); top: -2.717em; left: 0.003em;"><span class="mn" id="MathJax-Span-6" style="font-family: MathJax_Main;">10</span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span><span style="position: absolute; top: -2.877em; left: 1.016em;"><span class="mn" id="MathJax-Span-7" style="font-size: 70.7%; font-family: MathJax_Main;">3</span><span style="display: inline-block; width: 0px; height: 2.509em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span></span><span style="border-left: 0.003em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.27em; vertical-align: -0.063em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-1">0.12345 x 10^3</script>和<span class="MathJax_Preview"></span><span class="MathJax" id="MathJax-Element-2-Frame" role="textbox" aria-readonly="true"><nobr><span class="math" id="MathJax-Span-8" style="width: 7.309em; display: inline-block;"><span style="display: inline-block; position: relative; width: 5.816em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.709em 1000em 2.883em -0.424em); top: -2.717em; left: 0.003em;"><span class="mrow" id="MathJax-Span-9"><span class="mn" id="MathJax-Span-10" style="font-family: MathJax_Main;">0.12345</span><span class="mi" id="MathJax-Span-11" style="font-family: MathJax_Math-italic;">x</span><span class="msubsup" id="MathJax-Span-12"><span style="display: inline-block; position: relative; width: 1.976em; height: 0px;"><span style="position: absolute; clip: rect(1.923em 1000em 2.883em -0.371em); top: -2.717em; left: 0.003em;"><span class="mn" id="MathJax-Span-13" style="font-family: MathJax_Main;">10</span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span><span style="position: absolute; top: -2.877em; left: 1.016em;"><span class="texatom" id="MathJax-Span-14"><span class="mrow" id="MathJax-Span-15"><span class="mo" id="MathJax-Span-16" style="font-size: 70.7%; font-family: MathJax_Main;">−</span><span class="mn" id="MathJax-Span-17" style="font-size: 70.7%; font-family: MathJax_Main;">1</span></span></span><span style="display: inline-block; width: 0px; height: 2.509em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span></span><span style="border-left: 0.003em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.27em; vertical-align: -0.063em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-2">0.12345 x 10^{-1}</script>这样使用与实际小数点位置不同的书写方法来表示小数的形式称为浮点数。与浮点数相对的是定点数，使用定点数表示小数时，小数点的实际位置固定不变。如<span class="MathJax_Preview"></span><span class="MathJax" id="MathJax-Element-3-Frame" role="textbox" aria-readonly="true"><nobr><span class="math" id="MathJax-Span-18" style="width: 6.616em; display: inline-block;"><span style="display: inline-block; position: relative; width: 5.283em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.709em 1000em 2.883em -0.424em); top: -2.717em; left: 0.003em;"><span class="mrow" id="MathJax-Span-19"><span class="mn" id="MathJax-Span-20" style="font-family: MathJax_Main;">0.12345</span><span class="mi" id="MathJax-Span-21" style="font-family: MathJax_Math-italic;">x</span><span class="msubsup" id="MathJax-Span-22"><span style="display: inline-block; position: relative; width: 1.443em; height: 0px;"><span style="position: absolute; clip: rect(1.923em 1000em 2.883em -0.371em); top: -2.717em; left: 0.003em;"><span class="mn" id="MathJax-Span-23" style="font-family: MathJax_Main;">10</span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span><span style="position: absolute; top: -2.877em; left: 1.016em;"><span class="mn" id="MathJax-Span-24" style="font-size: 70.7%; font-family: MathJax_Main;">3</span><span style="display: inline-block; width: 0px; height: 2.509em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span></span><span style="border-left: 0.003em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.27em; vertical-align: -0.063em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-3">0.12345 x 10^3</script>和<span class="MathJax_Preview"></span><span class="MathJax" id="MathJax-Element-4-Frame" role="textbox" aria-readonly="true"><nobr><span class="math" id="MathJax-Span-25" style="width: 7.309em; display: inline-block;"><span style="display: inline-block; position: relative; width: 5.816em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.709em 1000em 2.883em -0.424em); top: -2.717em; left: 0.003em;"><span class="mrow" id="MathJax-Span-26"><span class="mn" id="MathJax-Span-27" style="font-family: MathJax_Main;">0.12345</span><span class="mi" id="MathJax-Span-28" style="font-family: MathJax_Math-italic;">x</span><span class="msubsup" id="MathJax-Span-29"><span style="display: inline-block; position: relative; width: 1.976em; height: 0px;"><span style="position: absolute; clip: rect(1.923em 1000em 2.883em -0.371em); top: -2.717em; left: 0.003em;"><span class="mn" id="MathJax-Span-30" style="font-family: MathJax_Main;">10</span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span><span style="position: absolute; top: -2.877em; left: 1.016em;"><span class="texatom" id="MathJax-Span-31"><span class="mrow" id="MathJax-Span-32"><span class="mo" id="MathJax-Span-33" style="font-size: 70.7%; font-family: MathJax_Main;">−</span><span class="mn" id="MathJax-Span-34" style="font-size: 70.7%; font-family: MathJax_Main;">1</span></span></span><span style="display: inline-block; width: 0px; height: 2.509em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span></span><span style="border-left: 0.003em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.27em; vertical-align: -0.063em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-4">0.12345 x 10^{-1}</script>用定点数来表示的话即为123.45和0.012345]</p>
+
+<p><img src="http://img.blog.csdn.net/20161031204127711" alt="这里写图片描述" title=""></p>
+
+<p>10.19</p>
+
+
+
+<h2 id="37-如何避免计算机计算出错"><strong>3.7 如何避免计算机计算出错</strong></h2>
+
+<p><strong>无视错误</strong>。根据程序目的的不同，有时一些微小的偏差并不会造成什么问题。例如，假设使用计算机设计工业制品。将100个长0.1mm的零件连接起来后，其长度并非一定要是10mm，10.000002mm也没有任何问题。 <br>
+将小数换成整数来计算，然后再倍数回小数。</p>
+
+
+
+<h1 id="4-熟练使用有棱有角的内存"><strong>4 熟练使用有棱有角的内存</strong></h1>
+
+
+
+<h2 id="0-问题-重点-3"><strong>0 问题 &amp; 重点</strong></h2>
+
+<p><strong>1. 有十个地址信号引脚的内存IC（集成电路）可以指定的地址范围是多少</strong>？ <br>
+0 ~ <span class="MathJax_Preview"></span><span class="MathJax" id="MathJax-Element-5-Frame" role="textbox" aria-readonly="true"><nobr><span class="math" id="MathJax-Span-35" style="width: 3.683em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.936em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.709em 1000em 2.883em -0.424em); top: -2.717em; left: 0.003em;"><span class="mrow" id="MathJax-Span-36"><span class="msubsup" id="MathJax-Span-37"><span style="display: inline-block; position: relative; width: 1.229em; height: 0px;"><span style="position: absolute; clip: rect(1.923em 1000em 2.883em -0.424em); top: -2.717em; left: 0.003em;"><span class="mn" id="MathJax-Span-38" style="font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span><span style="position: absolute; top: -2.877em; left: 0.483em;"><span class="texatom" id="MathJax-Span-39"><span class="mrow" id="MathJax-Span-40"><span class="mn" id="MathJax-Span-41" style="font-size: 70.7%; font-family: MathJax_Main;">10</span></span></span><span style="display: inline-block; width: 0px; height: 2.509em;"></span></span></span></span><span class="mo" id="MathJax-Span-42" style="font-family: MathJax_Main; padding-left: 0.216em;">−</span><span class="mn" id="MathJax-Span-43" style="font-family: MathJax_Main; padding-left: 0.216em;">1</span></span><span style="display: inline-block; width: 0px; height: 2.723em;"></span></span></span><span style="border-left: 0.003em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.203em; vertical-align: -0.063em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-5">2^{10} - 1</script></p>
+
+<p><strong>2. 高级编程语言中的数据类型表示的是什么</strong>？ <br>
+[1] 占用内存的大小。 <br>
+[2] 占用内存的大小和存储在该内存区域的数据类型。</p>
+
+<p><strong>3. 在32位内存地址的环境中，指针变量的长度是多少位</strong>？ <br>
+32位。</p>
+
+<p><strong>4. 与物理内存有着相同构造的数组的数据类型长度是多少</strong>？ <br>
+[1] 没看懂。 <br>
+[2] 1字节。</p>
+
+<p><strong>5. 用LIFO方式进行数据读写的数据结构称为什么</strong>？ <br>
+栈。</p>
+
+<p><strong>6. 根据数据的大小链表分叉成两个方向的数据结构称为什么</strong>？ <br>
+[1] 二叉树。 <br>
+[2] 二叉查找树。</p>
+
+<p><strong>重点</strong>。只要在程序上花一些心思，就可以将内存变成各种各样的数据结构来使用。</p>
+
+
+
+<h2 id="41-内存的物理机制和内存的逻辑模型"><strong>4.1 内存的物理机制和内存的逻辑模型</strong></h2>
+
+<p>10.20 <br>
+<img src="http://img.blog.csdn.net/20161031204255233" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="43-简单的指针"><strong>4.3 简单的指针</strong></h2>
+
+<p>10.22 <br>
+指针的理解：变量 +类型。</p>
+
+
+
+<h2 id="44-数组是高效使用内存的基础"><strong>4.4 数组是高效使用内存的基础</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031204347212" alt="这里写图片描述" title=""></p>
+
+
+
+<h1 id="5-内存和磁盘的亲密关系"><strong>5 内存和磁盘的亲密关系</strong></h1>
+
+
+
+<h2 id="0-问题-重点-4"><strong>0 问题 &amp; 重点</strong></h2>
+
+<p>10.24 <br>
+<strong>1. 存储程序方式指的是什么</strong>？ <br>
+[1] 问题何意。 <br>
+[2] 在存储装置中保存程序，并逐一运行的方式。</p>
+
+<p><strong>2. 通过使用内存来提高磁盘访问速度的机制称为什么</strong>？ <br>
+磁盘缓存机制。</p>
+
+<p><strong>3. 把磁盘的一部分作为假想内存来使用的机制称为什么</strong>？ <br>
+虚拟内存。</p>
+
+<p><strong>4. Windows中，在程序运行时，存储着可以动态加载调用的函数和数据的文件称为什么</strong>？ <br>
+动态链接文件。</p>
+
+<p><strong>5. 在EXE程序文件中，静态加载函数的方式称为什么</strong>？ <br>
+静态链接。</p>
+
+<p><strong>6. 在Windows计算机中，一般磁盘的1个扇区是多少字节</strong>。 <br>
+512字节。</p>
+
+<p><strong>重点</strong>。内存和磁盘的亲密关系。</p>
+
+
+
+<h2 id="51-不读入内存就无法运行"><strong>5.1 不读入内存就无法运行</strong></h2>
+
+<p><strong>存储程序方式</strong>机制是指程序保存在存储设备中，通过有序地读出来实现运行。 <br>
+因为负责解析和运行程序-的CPU是通过程序计数器来指定内存地址，然后才能读取程序。所以在磁盘中保存的原始程序是无法直接运行的，必须加载到内存中才能运行。[即使CPU可以用程序计数器指定磁盘地址并可直接读取磁盘中保存的程序，由于磁盘读取速度较慢，程序的运行速度还是会降低。]</p>
+
+
+
+<h2 id="52-磁盘缓存加快了磁盘访问速度"><strong>5.2 磁盘缓存加快了磁盘访问速度</strong></h2>
+
+<p><strong>磁盘缓存</strong>指的是把磁盘中读出的数据存储到内存空间中的方式。这样一来，当接下来需要读取同一数据时，就不用通过实际的磁盘，而是从磁盘缓存中把内容读出。使用磁盘缓存可以大大改善磁盘数据的访问速度。</p>
+
+<p>[随着硬盘访问速度的大幅度改善，磁盘缓存的效果也没有之前那么明显了。这种缓存的机制在其他情况下也会遇到。如在Web浏览器中，Web浏览器是通过网络来获取远程Web服务器的数据并将其显示出来的。在显示较大图片等文件时，会花费不少时间。于是，Web浏览器就可以把获取的数据暂时保存在磁盘中，然后在需要时再显示磁盘中的数据]</p>
+
+
+
+<h2 id="53-虚拟内存把磁盘作为部分内存来使用"><strong>5.3 虚拟内存把磁盘作为部分内存来使用</strong></h2>
+
+<p><strong>虚拟内存</strong>是指把磁盘的一部分作为假想的内存来使用。[这与磁盘缓存是假想的磁盘（实际上是内存）相对，虚拟内存是假想的内存（实际上是磁盘）]</p>
+
+<p><strong>分页式虚拟内存</strong>。不考虑程序构造，把运行的程序按照一定大小的页进行分割，并以页为单位在内存和磁盘间进行置换。[一般情况下，Windows计算机的页大小是4KB。也就是说，把大程序用4KB的页来进行划分，并以页为单位放入磁盘（虚拟内存）或内存中。为了实现虚拟内存功能，Windows在磁盘上提供了虚拟内存用的文件（page file，页文件）。该文件由Windows自动做成和管理。文件的大小也就是虚拟内存的大小，通常是实际内存的相同程度至两倍程度] <br>
+<img src="http://img.blog.csdn.net/20161031204437454" alt="这里写图片描述" title=""></p>
+
+<p><strong>分段式虚拟内存</strong>。把要运行的程序分割成以处理集合及数据集合等为单位的段落，然后再以分割后的段落为单位在内存和磁盘之间进行数据置换。</p>
+
+
+
+<h2 id="54-节约内存的编程方法"><strong>5.4 节约内存的编程方法</strong></h2>
+
+<p>虚拟内存无法彻底解决内存不足问题。[page in、page out携带的低速访问等]</p>
+
+<p><strong>栈清理处理</strong>指把不再需要的数据 从接收和传递 函数的参数时使用的内存上的栈区域中清理出去（即清理形参所占用的空间）。该命令不是程序记述的，而是在程序编译时由编译器自动附加到程序中的。编译器默认将该处理附加在函数调用方。 <br>
+<img src="http://img.blog.csdn.net/20161031204509690" alt="这里写图片描述" title=""></p>
+
+
+
+<h2 id="55-磁盘的物理结构"><strong>5.5 磁盘的物理结构</strong></h2>
+
+<p><img src="http://img.blog.csdn.net/20161031204540244" alt="这里写图片描述" title=""></p>
+
+<p>扇区是（BIOS）对磁盘进行物理读写的最小单位。<strong>簇</strong>是Windows在逻辑方面（软件方面）对磁盘进行读写的单位，它是扇区的整数倍。windows中的文件以簇为单位进行存储。<strong>扇区和簇的大小，是由处理速度和存储容量的平衡来决定的</strong>。</p>
+
+<p>如果跳出BIOS或Windows，只要掌握磁盘读写原理，随汝怎么样规划磁盘读写方式。</p>
+
+
+
+<h1 id="6-亲自尝试压缩数据"><strong>6 亲自尝试压缩数据</strong></h1>
+
+
+
+<h2 id="0-问题-重点-5"><strong>0 问题 &amp; 重点</strong></h2>
+
+<p>10.25 <br>
+<strong>1. 文件储存的基本单位是什么</strong>？ <br>
+1字节。</p>
+
+<p><strong>2. DOC、LZH和TXT这些扩展名中，哪一个是压缩文件的扩展名</strong>？ <br>
+LZH。</p>
+
+<p><strong>3. 文件内容用“数据的值 x 循环次数”来表示的压缩方法是RLE算法还是哈夫曼算法</strong>？ <br>
+RLE。</p>
+
+<p><strong>4. 在Windows计算机经常使用SHIFT JIS字符编码中，1个半角英数是用几个字节的数据来表示的</strong>？ <br>
+1字节。</p>
+
+<p><strong>5. BMP（BITMAP）格式的图像文件，是压缩过的吗</strong>？ <br>
+没有。</p>
+
+<p><strong>6. 可逆压缩和非可逆压缩的不同点是什么</strong>？ <br>
+可逆压缩可解压；非可逆压缩不可解压（不可还原）或还原后会丢失一部分信息。</p>
+
+<p><strong>重点</strong>。为什么文件可以压缩。</p>
+
+
+
+<h2 id="61-文件以字节为单位保存"><strong>6.1 文件以字节为单位保存</strong></h2>
+
+<p>程序文件中存储数据的单位是字节。文字、颜色等都有对应的编码。[单位也是基于字节的]</p>
+
+
+
+<h2 id="62-rle算法的机制"><strong>6.2 RLE算法的机制</strong></h2>
+
+<p>AAAAAABBCDDEEEEEF采用RLE（Run Length Encoding）方式压缩为A6B2C1D2E5F1。因为图像重复的相同字节比较多，所以RLE常用于压缩图像。但不太适合文本文件的压缩。但如果再在RLE算法的基础上下点功夫，如不以1个字符为单位，而以字符串为单位来查找重复次数，这样压缩的文件也能小一些。</p>
+
+
+
+<h2 id="64-通过莫尔斯编码来看哈夫曼算法的基础"><strong>6.4 通过莫尔斯编码来看哈夫曼算法的基础</strong></h2>
+
+<p>哈夫曼算法抛弃了半角英文数字的1个字符是1个字节的数据[虽然保存数据是以1字节为单位]，即多次出现的字符用小于8位的字节数来表示[短编码]，不常出现的字符则可以用超过8位的字节数来表示[长编码]。[采用不同位长的初衷是每个数字对应一个编码]</p>
+
+<p>莫尔斯编码是根据日常文本中各字符出现频率来决定表示各字符的编码的数据长度的。哈夫曼为压缩对象文件构造最佳的编码体系[即在文中出现频率最高者采用短编码]，并以该编码体系为基础来进行压缩。用哈夫曼算法压缩过的文件中，存储着哈夫曼编码信息和压缩过的数据。 <br>
+<img src="http://img.blog.csdn.net/20161031204636989" alt="这里写图片描述" title=""></p>
+
+<p>[2016.11.01 - 10:21]</p></div>

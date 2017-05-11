@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Json;
 
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class JsonController extends Controller
 {
@@ -21,8 +22,28 @@ class JsonController extends Controller
         $json_str =  file_get_contents('file:///D:/webdocument/testJson/seats201611281124.json');
 
         dd(gzcompress($json_str));
-
         dd(json_decode($json_str, true));
+
+    }
+
+    public function getFiles()
+    {
+        echo "<title>一生中应该读的60本书</title>";
+        $url = 'http://www.eywedu.net/60.html';
+        echo "<a href='$url' >$url</a><br/>";
+        header("Content-Type:text/html;charset=utf-8");
+        $t = iconv('GB2312', 'UTF-8//IGNORE', file_get_contents($url));
+
+        preg_match_all('/<div\s*.*>\s*.*<\/div>/i', $t, $matches);
+        $txt = '';
+        foreach($matches as $match) {
+            foreach($match as $item) {
+                $str = strip_tags($item);
+                $txt .= strlen($str) <1 ? '': $str  . "\r\n";
+                echo strlen($str) <1 ? '': $str  . "<br/>";
+            }
+        }
+        file_put_contents('temp/txt/60books.txt',$txt);
     }
 
     public function getFile()
@@ -48,23 +69,22 @@ class JsonController extends Controller
         file_put_contents('temp/txt/36books.txt',$txt);
     }
 
-    public function getFiles()
+    public function puc(Request $request)
     {
-        echo "<title>一生中应该读的60本书</title>";
-        $url = 'http://www.eywedu.net/60.html';
-        echo "<a href='$url' >$url</a><br/>";
-        header("Content-Type:text/html;charset=utf-8");
-        $t = iconv('GB2312', 'UTF-8//IGNORE', file_get_contents($url));
+        $file = $request->get('url');
 
-        preg_match_all('/<div\s*.*>\s*.*<\/div>/i', $t, $matches);
-        $txt = '';
-        foreach($matches as $match) {
-            foreach($match as $item) {
-                $str = strip_tags($item);
-                $txt .= strlen($str) <1 ? '': $str  . "\r\n";
-                echo strlen($str) <1 ? '': $str  . "<br/>";
-            }
+        if (empty($file)) {
+            dd("没带参数：url");
         }
-        file_put_contents('temp/txt/60books.txt',$txt);
+
+        $text = file_get_contents($file);
+
+        preg_match_all('/<div\s+class="markdown_views">.*?<\/div>/ism', $text, $matches);
+//        dd($matches);
+        file_put_contents(time().".txt", $matches[0][0]);
+
     }
+
+
+
 }

@@ -9,6 +9,7 @@ Route::group(['prefix' => 'read', 'middleware' => 'auth'], function(){
 
     //图书列表
     Route::get('/', ['uses' => 'Read\\ReadController@index', 'as' =>'read.index']);
+    Route::post('/distribute', ['uses' => 'Read\\ReadController@distribute', 'as' =>'read.distribute']);
     //添加
     Route::get('/add', ['uses' => 'Read\\ReadController@add', 'as' =>'read.add']);
     Route::get('/{id}/edit', ['uses' => 'Read\\ReadController@edit', 'as' =>'read.edit']);

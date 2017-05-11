@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Input;
 use Pingpong\Admin\Entities\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use View;
+use DB;
 
 class TestController extends Controller
 {
@@ -39,7 +40,7 @@ class TestController extends Controller
     public function sign(Request $request)
     {
         $test = $this->makeSignMsg($request);
-
+        $test = [1,'hello', ['a', 'b', 'c']];
         dd($test);
     }
 
@@ -315,6 +316,18 @@ class TestController extends Controller
     {
         dd(storage_path('vendor/bin'));
 
+    }
+
+    public function test1()
+    {
+        dd(DB::table('users')->whereIdOrEmail(7, '953440772@qq.com')->get());
+    }
+
+    public function c()
+    {
+        $path = require_once storage_path(). '/app/loan.php';
+
+        dd($path);
     }
 
 }
